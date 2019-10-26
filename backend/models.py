@@ -7,6 +7,7 @@ class Book(models.Model):
     isbn = models.CharField(max_length=13, null=True)
     published_year = models.CharField(max_length=4, null=True)
     description = models.TextField(null=True)
+    album_art_url = models.URLField(null=True)
 
     class Meta:
         db_table = "book"
