@@ -2,15 +2,40 @@ from django.db import models
 
 
 class Book(models.Model):
-    gutenberg_id = models.IntegerField(null=True)
+    gutenberg_id = models.CharField(max_length=16, null=True)
     title = models.CharField(max_length=1024, null=True)
-    isbn = models.CharField(max_length=13, null=True)
-    published_year = models.CharField(max_length=4, null=True)
     description = models.TextField(null=True)
     album_art_url = models.URLField(null=True)
 
     class Meta:
         db_table = "book"
+
+    def __repr__(self):
+        author_set = self.author_set.all()
+        authors = ', '.join(map(str, author_set))
+        string = "Book\n----\n" \
+                 "Title: {0}\n" \
+                 "Author(s): {1}\n"
+        return string.format(self.title, authors)
+
+    def __str__(self):
+        return repr(self)
+
+
+class Subject(models.Model):
+    book = models.ForeignKey(Book, on_delete=models.SET_NULL, null=True)
+    description = models.TextField(null=True)
+
+    class Meta:
+        db_table = "subject"
+
+
+class FormatURI(models.Model):
+    book = models.ForeignKey(Book, on_delete=models.SET_NULL, null=True)
+    url = models.URLField(null=True)
+
+    class Meta:
+        db_table = "format_uri"
 
 
 class Author(models.Model):
@@ -22,6 +47,12 @@ class Author(models.Model):
 
     class Meta:
         db_table = "author"
+
+    def __repr__(self):
+        return "{0} {1}".format(self.first_name, self.last_name)
+
+    def __str__(self):
+        return repr(self)
 
 
 class Chapter(models.Model):
