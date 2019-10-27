@@ -1,5 +1,6 @@
 import React from 'react';
-import {StatusBar, StyleSheet, Text, View} from 'react-native';
+import {StatusBar, StyleSheet, Text, View, ScrollView} from 'react-native';
+import GeneralStatusBarColor from "react-native-general-statusbar";
 
 
 console.log('statusBarHeight: ', StatusBar.currentHeight);
@@ -22,20 +23,26 @@ function Book(props) {
 }
 
 export default function App() {
+    var bookShelves = [];
+    for (let i = 0; i < 10; i++) {
+      bookShelves.push(
+        <View style={styles.bookShelfHome}>
+            <Book title='Frankenstein' author='Mary Shelly'/>
+            <Book title='Frankenstein' author='Mary Shelly'/>
+            <Book title='Frankenstein' author='Mary Shelly'/>
+        </View>
+      )
+    }
+
     return (
-        <View style={styles.homePage}>
-            <View style={styles.bookShelfHome}>
-
-                <Book title='Frankenstein' author='Mary Shelly'/>
-
-                <View style={styles.book}>
-                    <View style={styles.albumArt}/>
-                </View>
-
-                <View style={styles.book}>
-                    <View style={styles.albumArt}/>
-                </View>
-            </View>
+        <View style={{flex: 1}}>
+            <GeneralStatusBarColor backgroundColor="#ffffff" barStyle="light-content"/>
+          <View style={styles.homePage}>
+            <ScrollView>
+                <View style={styles.homePageTitle}/>
+                {bookShelves}
+            </ScrollView>
+          </View>
         </View>
     );
 }
@@ -46,17 +53,21 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
-        paddingTop: StatusBar.currentHeight * 1.25,
         paddingLeft: bookMargin,
         paddingRight: bookMargin,
         marginLeft: 0,
-        marginRight: 0
+        marginRight: 0,
+    },
+    homePageTitle: {
+      width: '100%',
+      height: StatusBar.currentHeight + 20,
     },
     bookShelfHome: {
         flex: 1,
         flexDirection: 'row',
         marginRight: 0,
-        marginLeft: 0
+        marginLeft: 0,
+        marginBottom: 20
     },
     book: {
         width: '30%',
@@ -65,18 +76,18 @@ const styles = StyleSheet.create({
         marginRight: bookMargin,
         borderColor: 'black',
         borderWidth: 2,
-        borderRadius: 5
+        borderRadius: 5,
     },
     albumArt: {
         borderColor: 'red',
         height: '80%',
         backgroundColor: 'blue',
-        borderWidth: 2
+        borderWidth: 2,
     },
     bookMetadata: {
         borderColor: 'green',
         borderWidth: 2,
         height: '20%',
-        backgroundColor: 'orange'
+        backgroundColor: 'orange',
     }
 });
