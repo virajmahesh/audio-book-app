@@ -2,10 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="72a94fc8-d358-4617-87f4-76231a164392" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/scripts/populate_db.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/audio-book-app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/audio-book-app.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/scripts/chapterize.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/scripts/populate_db.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/scripts/populate_db.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -67,66 +68,6 @@
       <path>
         <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
         <item name="audiobookapp@localhost" type="feb32156:DbDataSourceImpl" />
-        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="audiobookapp: database" type="162271b6:PgImplModel$Database" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
-        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="author: table" type="69fad909:PgImplModel$LocalTable" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="audiobookapp@localhost" type="feb32156:DbDataSourceImpl" />
-        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="audiobookapp: database" type="162271b6:PgImplModel$Database" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
-        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="author_books: table" type="69fad909:PgImplModel$LocalTable" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="audiobookapp@localhost" type="feb32156:DbDataSourceImpl" />
-        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="audiobookapp: database" type="162271b6:PgImplModel$Database" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
-        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="book: table" type="69fad909:PgImplModel$LocalTable" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="audiobookapp@localhost" type="feb32156:DbDataSourceImpl" />
-        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="audiobookapp: database" type="162271b6:PgImplModel$Database" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
-        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="chapter: table" type="69fad909:PgImplModel$LocalTable" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="audiobookapp@localhost" type="feb32156:DbDataSourceImpl" />
-        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="audiobookapp: database" type="162271b6:PgImplModel$Database" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
-        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="format_uri: table" type="69fad909:PgImplModel$LocalTable" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="audiobookapp@localhost" type="feb32156:DbDataSourceImpl" />
-        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="audiobookapp: database" type="162271b6:PgImplModel$Database" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
-        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="subject: table" type="69fad909:PgImplModel$LocalTable" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="audiobookapp@localhost" type="feb32156:DbDataSourceImpl" />
         <item name="roles" type="d4e8921:DatabaseStructure$FamilyGroup" />
       </path>
     </expand>
@@ -142,20 +83,54 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/backend/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-307">
-              <caret line="14" column="49" selection-start-line="14" selection-start-column="49" selection-end-line="14" selection-end-column="49" />
+            <state relative-caret-position="840">
+              <caret line="56" selection-start-line="56" selection-end-line="56" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/backend/scripts/chapterize.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="4020">
+              <caret line="268" column="28" selection-start-line="268" selection-start-column="28" selection-end-line="268" selection-end-column="28" />
+              <folding>
+                <element signature="e#0#12#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/backend/scripts/populate_db.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="518">
+              <caret line="71" column="24" selection-start-line="71" selection-start-column="24" selection-end-line="71" selection-end-column="24" />
+              <folding>
+                <element signature="e#0#9#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="das://3fdf738b-8f92-414a-951c-18b01d7b04c7/database/audiobookapp/schema/public/table/chapter">
+          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+            <state projectRestartId="7798e98e-84a3-4a6f-af61-368db2916a2b">
+              <filtering>
+                <filter text="" />
+              </filtering>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/backend/scripts/populate_db.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="35" column="25" lean-forward="true" selection-start-line="35" selection-start-column="25" selection-end-line="35" selection-end-column="25" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
+        <entry file="das://3fdf738b-8f92-414a-951c-18b01d7b04c7/database/audiobookapp/schema/public/table/audio_recording">
+          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+            <state projectRestartId="7798e98e-84a3-4a6f-af61-368db2916a2b">
+              <filtering>
+                <filter text="" />
+              </filtering>
             </state>
           </provider>
         </entry>
@@ -176,6 +151,7 @@
       <find>authors</find>
       <find>author&quot;:[</find>
       <find>.txt</find>
+      <find>getHe</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -190,6 +166,7 @@
         <option value="$PROJECT_DIR$/backend/migrations/0004_auto_20191026_1809.py" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/audiobookapp/settings.py" />
+        <option value="$PROJECT_DIR$/backend/scripts/chapterize.py" />
         <option value="$PROJECT_DIR$/backend/models.py" />
         <option value="$PROJECT_DIR$/backend/scripts/populate_db.py" />
       </list>
@@ -337,12 +314,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1572070736981</updated>
-      <workItem from="1572070742745" duration="22299000" />
+      <workItem from="1572070742745" duration="27547000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="22299000" />
+    <option name="totallyTimeSpent" value="27547000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="810" extended-state="6" />
@@ -361,13 +338,13 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49928468" weight="0.32729805" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4994985" visible="true" weight="0.29387188" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4994985" weight="0.29387188" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="right" id="Remote Host" />
       <window_info anchor="right" id="SciView" />
-      <window_info active="true" anchor="right" id="Database" visible="true" weight="0.29828325" />
+      <window_info active="true" anchor="right" id="Database" visible="true" weight="0.26108727" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -375,6 +352,17 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/backend/scripts/chapterize.py</url>
+          <line>36</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/audio_book_app$populate_db.coverage" NAME="populate_db Coverage Results" MODIFIED="1572129295835" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend/scripts" />
@@ -415,9 +403,6 @@
           </filtering>
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/backend/views.py">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/backend/apps.py">
       <provider selected="true" editor-type-id="text-editor" />
@@ -476,14 +461,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/staticfiles/data/book_metadata_complete.json">
-      <provider selected="true" editor-type-id="LargeFileEditor">
-        <state relative-caret-position="-7968">
-          <caret line="12400" selection-start-line="12400" selection-end-line="12400" selection-end-column="46" />
-        </state>
-      </provider>
-      <provider editor-type-id="text-editor" />
-    </entry>
     <entry file="das://3fdf738b-8f92-414a-951c-18b01d7b04c7/database/audiobookapp/schema/public/table/django_admin_log">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state projectRestartId="7798e98e-84a3-4a6f-af61-368db2916a2b">
@@ -521,15 +498,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="das://3fdf738b-8f92-414a-951c-18b01d7b04c7/database/audiobookapp/schema/public/table/chapter">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="7798e98e-84a3-4a6f-af61-368db2916a2b">
-          <filtering>
-            <filter text="" />
-          </filtering>
-        </state>
-      </provider>
-    </entry>
     <entry file="das://3fdf738b-8f92-414a-951c-18b01d7b04c7/database/audiobookapp/schema/public/table/book">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state projectRestartId="7798e98e-84a3-4a6f-af61-368db2916a2b">
@@ -557,12 +525,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/backend/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-307">
-          <caret line="14" column="49" selection-start-line="14" selection-start-column="49" selection-end-line="14" selection-end-column="49" />
+    <entry file="das://3fdf738b-8f92-414a-951c-18b01d7b04c7/database/audiobookapp/schema/public/table/subject">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state projectRestartId="7798e98e-84a3-4a6f-af61-368db2916a2b">
+          <filtering>
+            <filter text="" />
+          </filtering>
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/staticfiles/data/book_metadata_complete.json">
+      <provider selected="true" editor-type-id="LargeFileEditor">
+        <state relative-caret-position="-213">
+          <caret line="12400" selection-start-line="12400" selection-end-line="12400" selection-end-column="46" />
+        </state>
+      </provider>
+      <provider editor-type-id="text-editor" />
     </entry>
     <entry file="das://3fdf738b-8f92-414a-951c-18b01d7b04c7/database/audiobookapp/schema/public/table/format_uri">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
@@ -573,7 +551,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="das://3fdf738b-8f92-414a-951c-18b01d7b04c7/database/audiobookapp/schema/public/table/subject">
+    <entry file="file://$PROJECT_DIR$/backend/views.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/backend/scripts/chapterize.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4020">
+          <caret line="268" column="28" selection-start-line="268" selection-start-column="28" selection-end-line="268" selection-end-column="28" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/backend/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="840">
+          <caret line="56" selection-start-line="56" selection-end-line="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/backend/scripts/populate_db.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="518">
+          <caret line="71" column="24" selection-start-line="71" selection-start-column="24" selection-end-line="71" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://3fdf738b-8f92-414a-951c-18b01d7b04c7/database/audiobookapp/schema/public/table/chapter">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state projectRestartId="7798e98e-84a3-4a6f-af61-368db2916a2b">
           <filtering>
@@ -582,13 +590,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/backend/scripts/populate_db.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="35" column="25" lean-forward="true" selection-start-line="35" selection-start-column="25" selection-end-line="35" selection-end-column="25" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
+    <entry file="das://3fdf738b-8f92-414a-951c-18b01d7b04c7/database/audiobookapp/schema/public/table/audio_recording">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state projectRestartId="7798e98e-84a3-4a6f-af61-368db2916a2b">
+          <filtering>
+            <filter text="" />
+          </filtering>
         </state>
       </provider>
     </entry>

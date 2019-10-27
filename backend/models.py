@@ -56,7 +56,8 @@ class Author(models.Model):
 
 
 class Chapter(models.Model):
-    chapter_title = models.CharField(max_length=1024, null=True)
+    number = models.IntegerField(null=True)
+    title = models.CharField(max_length=1024, null=True)
     book = models.ForeignKey(Book, on_delete=models.SET_NULL, null=True)
     url = models.URLField(null=True)
 
