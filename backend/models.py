@@ -54,6 +54,9 @@ class Author(models.Model):
     def __str__(self):
         return repr(self)
 
+    def full_name(self):
+        return repr(self)
+
 
 class Chapter(models.Model):
     number = models.IntegerField(null=True)

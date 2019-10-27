@@ -1,10 +1,10 @@
 import os
+import json
 from django.core.wsgi import get_wsgi_application
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'audiobookapp.settings'
 application = get_wsgi_application()
 
-import json
 from audiobookapp.settings import *
 from backend.models import *
 
