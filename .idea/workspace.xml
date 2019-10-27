@@ -5,7 +5,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/AudioBookApp/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/AudioBookApp/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/AudioBookApp/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/AudioBookApp/app.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/AudioBookApp/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/AudioBookApp/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/AudioBookApp/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/AudioBookApp/package.json" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -194,7 +193,7 @@
       <updated>1572070736981</updated>
       <workItem from="1572070742745" duration="28437000" />
       <workItem from="1572147108322" duration="2757000" />
-      <workItem from="1572155117299" duration="10121000" />
+      <workItem from="1572155117299" duration="18949000" />
     </task>
     <servers />
   </component>

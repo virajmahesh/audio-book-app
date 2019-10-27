@@ -1,7 +1,7 @@
 import React from 'react';
+import * as Font from 'expo-font';
 import {StatusBar, StyleSheet, Text, View, ScrollView} from 'react-native';
-import GeneralStatusBarColor from "react-native-general-statusbar";
-
+import {AppLoading} from 'expo';
 
 console.log('statusBarHeight: ', StatusBar.currentHeight);
 console.log('statusBarHeight: ', StatusBar.currentHeight * 1.25);
@@ -15,36 +15,64 @@ function Book(props) {
         <View style={styles.book}>
             <View style={styles.albumArt}/>
             <View style={styles.bookMetadata}>
-                <Text>{props.title}</Text>
-                <Text>{props.author}</Text>
+                <Text style={styles.bookMetadataText}>{props.title}</Text>
+                <Text style={styles.bookMetadataText}>{props.author}</Text>
             </View>
         </View>
     )
 }
 
-export default function App() {
-    var bookShelves = [];
-    for (let i = 0; i < 10; i++) {
-      bookShelves.push(
-        <View style={styles.bookShelfHome}>
-            <Book title='Frankenstein' author='Mary Shelly'/>
-            <Book title='Frankenstein' author='Mary Shelly'/>
-            <Book title='Frankenstein' author='Mary Shelly'/>
-        </View>
-      )
+export default class App extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            fontsLoaded: false
+        };
+        console.log('Constructor: ' + this.state.fontsLoaded);
     }
 
-    return (
-        <View style={{flex: 1}}>
-            <GeneralStatusBarColor backgroundColor="#ffffff" barStyle="light-content"/>
-          <View style={styles.homePage}>
-            <ScrollView>
-                <View style={styles.homePageTitle}/>
-                {bookShelves}
-            </ScrollView>
-          </View>
-        </View>
-    );
+    async loadFonts() {
+        await Font.loadAsync({
+            'product-sans': require('./assets/fonts/ProductSansRegular.ttf'),
+            'product-sans-bold': require('./assets/fonts/ProductSansBold.ttf'),
+            'product-sans-italic': require('./assets/fonts/ProductSansItalic.ttf'),
+            'product-sans-bold-italic': require('./assets/fonts/ProductSansBoldItalic.ttf'),
+        });
+    }
+
+    render() {
+        //TODO: Log App startup time
+        if (!this.state.fontsLoaded) {
+            return <AppLoading
+                startAsync={this.loadFonts}
+                onFinish={() => this.setState({fontsLoaded: true}) }
+            />;
+        }
+
+        let bookShelves = [];
+        for (let i = 0; i < 10; i++) {
+            bookShelves.push(
+                <View style={styles.bookShelfHome} key={(i * 10) + 4}>
+                    <Book title='Frankenstein' author='Mary Shelly' key={(i * 10) + 1}/>
+                    <Book title='Frankenstein' author='Mary Shelly' key={(i * 10) + 2}/>
+                    <Book title='Frankenstein' author='Mary Shelly' key={(i * 10) + 3}/>
+                </View>
+            )
+        }
+
+        return (
+            <View style={{flex: 1}}>
+                <StatusBar barStyle="dark-content"/>
+                <View style={styles.homePage}>
+                    <ScrollView>
+                        <Text style={styles.homePageTitle} key={99}>Classic Audiobooks</Text>
+                        {bookShelves}
+                    </ScrollView>
+                </View>
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
@@ -58,9 +86,14 @@ const styles = StyleSheet.create({
         marginLeft: 0,
         marginRight: 0,
     },
+    bookMetadataText: {
+        fontFamily: 'product-sans',
+    },
     homePageTitle: {
-      width: '100%',
-      height: StatusBar.currentHeight + 20,
+        fontSize: 32,
+        fontFamily: 'product-sans-bold',
+        padding: 20,
+        textAlign: 'center',
     },
     bookShelfHome: {
         flex: 1,
