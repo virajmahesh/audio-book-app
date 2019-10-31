@@ -2,9 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="72a94fc8-d358-4617-87f4-76231a164392" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/frontend/AudioBookApp/Book.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/AudioBookApp/BookDetailsPage.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/AudioBookApp/Home.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/AudioBookApp/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/AudioBookApp/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/AudioBookApp/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/AudioBookApp/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/AudioBookApp/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/AudioBookApp/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/AudioBookApp/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/AudioBookApp/package.json" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -81,16 +84,12 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Python Script" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="y" value="23" />
-    <option name="width" value="906" />
-    <option name="height" value="810" />
   </component>
   <component name="ProjectId" id="1SlnXfhovqTu0q7hJF4EXieWVzT" />
   <component name="PropertiesComponent">
@@ -193,7 +192,7 @@
       <updated>1572070736981</updated>
       <workItem from="1572070742745" duration="28437000" />
       <workItem from="1572147108322" duration="2757000" />
-      <workItem from="1572155117299" duration="18949000" />
+      <workItem from="1572155117299" duration="38192000" />
     </task>
     <servers />
   </component>
