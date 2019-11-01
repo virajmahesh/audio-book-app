@@ -40,19 +40,39 @@ class Chapter extends React.Component {
     }
 
     render() {
+        console.log(this.props.isLastChapter);
         return (
-            <View style={styles.chapter}>
-                <View style={styles.chapterTitle}>
-                    <Text style={{fontFamily: 'product-sans-bold', fontSize: 15}}>{this.state.title}</Text>
+            <TouchableHighlight
+                onPress={() => this.props.navigation.navigate('ChapterPlayer', {
+                    'book': null,
+                    'chapter': this
+                })}>
+                <View style={chapterStyle(this.props.isLastChapter)}>
+                    <View style={styles.chapterTitle}>
+                        <Text style={{fontFamily: 'product-sans-bold', fontSize: 15}}>{this.state.title}</Text>
+                    </View>
+                    <View style={styles.playIcon}>
+                        <Icon
+                            type="material"
+                            name="play-circle-outline"
+                            color="#000000"/>
+                    </View>
                 </View>
-                <View style={styles.playIcon}>
-                    <Icon
-                        type="material"
-                        name="play-circle-outline"
-                        color="#000000"/>
-                </View>
-            </View>
+            </TouchableHighlight>
         )
+    }
+}
+
+function chapterStyle(isLastChapter) {
+    return {
+        borderBottomWidth: (isLastChapter) ? 0 : 1,
+        borderColor: '#eaeaea',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        height: 55,
+        width: '100%',
+        backgroundColor: 'white'
     }
 }
 
@@ -65,8 +85,6 @@ const styles = StyleSheet.create({
         height: 200,
         marginLeft: bookMargin,
         marginRight: bookMargin,
-        borderColor: 'black',
-        borderWidth: 2,
         borderRadius: 5,
     },
     albumArt: {
@@ -81,20 +99,13 @@ const styles = StyleSheet.create({
         height: '20%',
         backgroundColor: 'orange',
     },
-    chapter: {
-        borderTopWidth: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        height: 50,
-        width: '100%'
-    },
     chapterTitle: {
         flex: 0.9
     },
     playIcon: {
         flex: 0.1,
-    }
+    },
+    chapterTouch: {}
 });
 
 export {Book, Chapter};

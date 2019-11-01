@@ -2,11 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="72a94fc8-d358-4617-87f4-76231a164392" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/AudioBookApp/Book.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/AudioBookApp/BookDetailsPage.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/AudioBookApp/Home.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/AudioBookApp/ChapterPlayer.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/AudioBookApp/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/AudioBookApp/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/AudioBookApp/Book.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/AudioBookApp/Book.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/AudioBookApp/BookDetailsPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/AudioBookApp/BookDetailsPage.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/AudioBookApp/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/AudioBookApp/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/AudioBookApp/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/AudioBookApp/package.json" afterDir="false" />
     </list>
@@ -192,7 +192,7 @@
       <updated>1572070736981</updated>
       <workItem from="1572070742745" duration="28437000" />
       <workItem from="1572147108322" duration="2757000" />
-      <workItem from="1572155117299" duration="38192000" />
+      <workItem from="1572155117299" duration="44748000" />
     </task>
     <servers />
   </component>

@@ -20,21 +20,12 @@ class BookDetailsPage extends React.Component {
     }
 
     componentDidMount() {
-        console.log('5e434 ' + this.props.navigation.getParam('book'));
         this.setState({
             book: this.props.navigation.getParam('book')
         });
-
-        console.log(this.state.book);
-        if (this.state.book != null) {
-            console.log(this.state.book.state.title);
-            console.log(this.state.book.state.author);
-        }
-
     }
 
     render() {
-        console.log(loremIpsum);
         // No book to show details
         if (this.state.book == null) {
             return null;
@@ -42,9 +33,13 @@ class BookDetailsPage extends React.Component {
 
         let chapters = [];
         for (let i = 0; i < 25; i++) {
-            chapters.push(
-                <Chapter title={'Chapter ' + (i + 1)} />
-            )
+            let c = null;
+            if (i < 24) {
+                c = <Chapter title={'Chapter ' + (i + 1)} navigation={this.props.navigation} isLastChapter={false}/>;
+            } else {
+               c = <Chapter title={'Chapter ' + (i + 1)} navigation={this.props.navigation} isLastChapter={true}/>;
+            }
+            chapters.push(c);
         }
 
         return (
@@ -86,7 +81,7 @@ class BookDetailsPage extends React.Component {
 
 const styles = StyleSheet.create({
     bookDetailsPage: {
-        padding: 25,
+        padding: 30,
     },
     detailsPanel: {
         flexDirection: 'row',
@@ -120,7 +115,7 @@ const styles = StyleSheet.create({
         fontSize: 15
     },
     playButton: {
-        marginBottom: 20
+        marginBottom: 10
     }
 });
 
