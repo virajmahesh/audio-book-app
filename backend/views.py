@@ -24,6 +24,7 @@ def get_books(request, book_id=None):
 
 def get_chapters(request, book_id):
     book = Book.objects.filter(gutenberg_id=book_id)
+
     if book is None:
         pass
         #TODO: Raise and log an error. Track what % of requests result in an error

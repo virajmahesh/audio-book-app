@@ -25,8 +25,8 @@ def cli(book, nochapters, stats, verbose, debug):
         logging.basicConfig(level=logging.DEBUG)
 
     logging.info('Now attempting to break the file %s into chapters.' % book)
-
     bookObj = Book(book, nochapters, stats)
+
 
 class Book():
     def __init__(self, filename, nochapters, stats):
@@ -270,6 +270,7 @@ class Book():
                 chapter = '\n'.join(chapter)
                 with open(path, 'w') as f:
                     f.write(chapter.replace("_", ''))
+
 
 if __name__ == '__main__':
     cli()
