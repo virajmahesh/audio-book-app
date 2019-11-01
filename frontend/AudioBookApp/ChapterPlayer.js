@@ -1,6 +1,7 @@
 import React from "react";
 import {Audio} from 'expo-av';
-import {StyleSheet, Text, View} from "react-native";
+import {Slider, StyleSheet, Text, View} from "react-native";
+import {Icon} from "react-native-elements";
 
 
 class ChapterPlayerPage extends React.Component {
@@ -31,7 +32,7 @@ class ChapterPlayerPage extends React.Component {
             playThroughEarpieceAndroid: true
         });
 
-        this.loadAudio();
+        //this.loadAudio();
     }
 
     async loadAudio() {
@@ -60,14 +61,57 @@ class ChapterPlayerPage extends React.Component {
             <View>
                 <View style={styles.chapterPlayer}>
                     <View style={styles.bookDetails}>
-                        <Text>Frankenstein</Text>
-                        <Text>Mary Shelly</Text>
                         <View style={styles.albumArt}>
                         </View>
-                        <Text>Chapter 1</Text>
                     </View>
                     <View style={styles.audioPlayer}>
-
+                        <Text style={styles.chapterName}>Chapter 1</Text>
+                        <Text style={styles.bookTitleAndAuthor}>Frankenstein · Mary Shelly</Text>
+                        <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 20}}>
+                            <View><Text>00:00</Text></View>
+                            <View style={{alignItems: 'center'}}>
+                                <Slider
+                                    style={styles.audioSeekBar}
+                                    minimumValue={0}
+                                    maximumValue={1}
+                                    minimumTrackTintColor="#FFFFFF"
+                                    maximumTrackTintColor="#000000"
+                                />
+                            </View>
+                            <View><Text>10:00</Text></View>
+                        </View>
+                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                            <Icon
+                                type="material"
+                                name="skip-previous"
+                                size={30}
+                                color="#000000"
+                            />
+                            <Icon
+                                type="material"
+                                name="replay-30"
+                                size={35}
+                                color="#000000"
+                            />
+                            <Icon
+                                type="material"
+                                name="play-arrow"
+                                size={50}
+                                color="#000000"
+                            />
+                            <Icon
+                                type="material"
+                                name="forward-30"
+                                size={35}
+                                color="#000000"
+                            />
+                            <Icon
+                                type="material"
+                                name="skip-next"
+                                size={30}
+                                color="#000000"
+                            />
+                        </View>
                     </View>
                 </View>
             </View>
@@ -83,19 +127,34 @@ const styles = StyleSheet.create({
     },
     bookDetails: {
         flex: 7,
-        backgroundColor: 'yellow',
-        borderWidth: 1,
         justifyContent: 'center',
         alignItems: 'center'
     },
     audioPlayer: {
-        flex: 3,
-        backgroundColor: 'blue'
+        flex: 3.5,
+        backgroundColor: '#eeeeee',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     albumArt: {
         height: 200,
         width: 150,
-        backgroundColor: 'red'
+        backgroundColor: 'red',
+        marginBottom: 25
+    },
+    chapterName: {
+        fontFamily: 'product-sans-bold',
+        fontSize: 20,
+        marginBottom: 5
+    },
+    bookTitleAndAuthor: {
+        fontFamily: 'product-sans',
+        fontSize: 15,
+        marginBottom: 20
+    },
+    audioSeekBar: {
+        width: 250,
+        height: 10
     }
 });
 
