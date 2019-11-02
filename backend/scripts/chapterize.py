@@ -1,38 +1,12 @@
-import click
 import logging
-import re
 import os
-
-@click.command()
-@click.argument('book')
-@click.option('--nochapters', is_flag=True, default=False, help="Don't actually split the book into chapters. Just extract the inner text.")
-@click.option('--stats', is_flag=True, default=False, help="Don't actually split the book into chapters. Just return statistics about the chapters.")
-@click.option('--verbose', is_flag=True, help='Get extra information about what\'s happening behind the scenes.')
-@click.option('--debug', is_flag=True, help='Turn on debugging messages.')
-@click.version_option('0.1')
-def cli(book, nochapters, stats, verbose, debug):
-    """ This tool breaks up a plain text book into chapters.
-    It works especially well with Project Gutenberg plain text ebooks.
-    This may also be used to strip metatextual text (tables of contents,
-    headings, Project Gutenberg licenses) from a book, to prepare it
-    for text analysis. Just use the --nochapters option.
-    """
-
-    if verbose:
-        logging.basicConfig(level=logging.INFO)
-
-    if debug:
-        logging.basicConfig(level=logging.DEBUG)
-
-    logging.info('Now attempting to break the file %s into chapters.' % book)
-    bookObj = Book(book, nochapters, stats)
+import re
 
 
-class Book():
-    def __init__(self, filename, nochapters, stats):
-        self.filename = filename
+class Chapter:
+    def __init__(self, contents, nochapters=False, stats=False):
         self.nochapters = nochapters
-        self.contents = self.getContents()
+        self.contents = contents
         self.lines = self.getLines()
         self.headings = self.getHeadings()
         # Alias for historical reasons. FIXME
@@ -44,11 +18,6 @@ class Book():
         self.chapters = self.getTextBetweenHeadings()
         # logging.info('Chapters: %s' % self.chapters)
         self.numChapters = len(self.chapters)
-
-        if stats:
-            self.getStats()
-        else:
-            self.writeChapters()
 
     def getContents(self):
         """
@@ -71,7 +40,7 @@ class Book():
         arabicNumerals = '\d+'
         romanNumerals = '(?=[MDCLXVI])M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})'
         numberWordsByTens = ['twenty', 'thirty', 'forty', 'fifty', 'sixty',
-                              'seventy', 'eighty', 'ninety']
+                             'seventy', 'eighty', 'ninety']
         numberWords = ['one', 'two', 'three', 'four', 'five', 'six',
                        'seven', 'eight', 'nine', 'ten', 'eleven',
                        'twelve', 'thirteen', 'fourteen', 'fifteen',
@@ -79,7 +48,7 @@ class Book():
         numberWordsPat = '(' + '|'.join(numberWords) + ')'
         ordinalNumberWordsByTens = ['twentieth', 'thirtieth', 'fortieth', 'fiftieth',
                                     'sixtieth', 'seventieth', 'eightieth', 'ninetieth'] + \
-                                    numberWordsByTens
+                                   numberWordsByTens
         ordinalNumberWords = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth',
                               'seventh', 'eighth', 'ninth', 'twelfth', 'last'] + \
                              [numberWord + 'th' for numberWord in numberWords] + ordinalNumberWordsByTens
@@ -126,21 +95,16 @@ class Book():
         headings = []
         for i, line in enumerate(self.lines):
             if pat.match(line) is not None:
-                print(i)
-                print('pat: ' + line)
                 headings.append(i)
             if pat3.match(line) is not None:
-                print(i)
-                print("pat3: " + line)
                 headings.append(i)
             if (pat2.match(line) is not None) and ('M. Waldman' not in line) and ('M. Krempe' not in line):
-                print(i)
-                print("pat2: " + line)
                 headings.append(i)
 
         if len(headings) < 3:
             logging.info('Headings: %s' % headings)
-            logging.error("Detected fewer than three chapters. This probably means there's something wrong with chapter detection for this book.")
+            logging.error(
+                "Detected fewer than three chapters. This probably means there's something wrong with chapter detection for this book.")
             exit()
 
         self.endLocation = self.getEndLocation()
@@ -186,9 +150,9 @@ class Book():
                 self.endLine = self.lines[endLocation]
                 break
 
-        if endLocation is None: # Can't find the ending.
+        if endLocation is None:  # Can't find the ending.
             logging.info("Can't find an ending line. Assuming that the book ends at the end of the text.")
-            endLocation = len(self.lines)-1 # The end
+            endLocation = len(self.lines) - 1  # The end
             self.endLine = 'None'
 
         logging.info('End line: %s at line %s' % (self.endLine, endLocation))
@@ -199,8 +163,8 @@ class Book():
         lastHeading = len(self.headingLocations) - 1
         for i, headingLocation in enumerate(self.headingLocations):
             if i != lastHeading:
-                nextHeadingLocation = self.headingLocations[i+1]
-                chapters.append(self.lines[headingLocation+1:nextHeadingLocation])
+                nextHeadingLocation = self.headingLocations[i + 1]
+                chapters.append(self.lines[headingLocation + 1:nextHeadingLocation])
         return chapters
 
     def zeroPad(self, numbers):
@@ -213,35 +177,8 @@ class Book():
         numberStrs = [str(number).zfill(maxDigits) for number in numbers]
         return numberStrs
 
-    def getStats(self):
-        """
-        Returns statistics about the chapters, like their length.
-        """
-        # TODO: Check to see if there's a log file. If not, make one.
-        # Write headings to file.
-        numChapters = self.numChapters
-        averageChapterLength = sum([len(chapter) for chapter in self.chapters])/numChapters
-        headings = ['Filename', 'Average chapter length', 'Number of chapters']
-        stats = ['"' + self.filename + '"', averageChapterLength, numChapters]
-        stats = [str(val) for val in stats]
-        headings = ','.join(headings) + '\n'
-        statsLog = ','.join(stats) + '\n'
-        print(self.headings)
-        logging.info('Log headings: %s' % headings)
-        logging.info('Log stats: %s' % statsLog)
-
-        if not os.path.exists('log.txt'):
-            logging.info('Log file does not exist. Creating it.')
-            with open('log.txt', 'w') as f:
-                f.write(headings)
-                f.close()
-
-        with open('log.txt', 'a') as f:
-            f.write(statsLog)
-            f.close()
-
     def writeChapters(self):
-        chapterNums = self.zeroPad(range(1, len(self.chapters)+1))
+        chapterNums = self.zeroPad(range(1, len(self.chapters) + 1))
         logging.debug('Writing chapter headings: %s' % chapterNums)
         basename = os.path.basename(self.filename)
         noExt = os.path.splitext(basename)[0]
@@ -270,7 +207,3 @@ class Book():
                 chapter = '\n'.join(chapter)
                 with open(path, 'w') as f:
                     f.write(chapter.replace("_", ''))
-
-
-if __name__ == '__main__':
-    cli()
