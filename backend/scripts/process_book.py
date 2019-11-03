@@ -92,6 +92,10 @@ def get_book_metadata(metadata_path):
         return json.loads(f.read())
 
 
+def get_book_title(book_id, book_metadata):
+    return book_metadata[book_id]['title'][0]
+
+
 def download_gutenberg_book(book_id, book_metadata):
     """
     Downloads the text file from gutenberg servers
@@ -299,29 +303,31 @@ def upload_chapter_recordings(book_id, recordings):
 
 
 def main():
-    book_id = BOOK_ID
+    random.seed()
+
+    # Parse book metadata file
     book_metadata = get_book_metadata(BOOK_METADATA_PATH)
-    book = download_gutenberg_book(book_id, book_metadata)
-    # print(book[:10000])
-    # upload_book(book_id, book)  # TODO: Log success/fail for this step
-    chapters = get_book_chapters(book)
-    upload_book_chapters(book_id, chapters)
-    print(chapters[0])
+
+    for book_id in range(1, 10):
+        print('Downloading {0} (ID: {1})'.format(get_book_title(book_id, book_metadata), book_id))
+        book = download_gutenberg_book(book_id, book_metadata)
+
+        # Break book text into Chapters
+        print('Parsing book into chapters')
+        chapters = get_book_chapters(book)
+
+        # Convert chapters into SSML
+        print('Converting chapters into SSML')
+        chapter_ssml_strings = list(map(chapter_to_ssml, chapters))
+
+        # Upload all files to Google Cloud
+        print('Uploading files to Cloud Storage')
+        upload_book(book_id, book)
+        upload_book_chapters(book_id, chapters)
+        upload_chapter_ssml(book_id, chapter_ssml_strings)
 
 
 if __name__ == '__main__':
-    random.seed()
+    main()
 
-    # Parse book metadata and download the book from Project Gutenberg
-    book_id = BOOK_ID
-    book_metadata = get_book_metadata(BOOK_METADATA_PATH)
-    book = download_gutenberg_book(book_id, book_metadata)
 
-    # Break book text into Chapters
-    chapters = get_book_chapters(book)
-    chapter_ssml_strings = list(map(chapter_to_ssml, chapters))
-
-    # Upload all files to Google Cloud
-    upload_book(book_id, book)
-    upload_book_chapters(book_id, chapters)
-    upload_chapter_ssml(book_id, chapter_ssml_strings)
