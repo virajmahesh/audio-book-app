@@ -3,7 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="72a94fc8-d358-4617-87f4-76231a164392" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/scripts/chapterize.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/scripts/chapterize.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/scripts/process_book.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/scripts/process_book.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/staticfiles/books/84/chapters/01.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/staticfiles/books/84/chapters/02.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/staticfiles/books/84/chapters/03.txt" beforeDir="false" />
@@ -191,7 +193,7 @@
       <updated>1572070736981</updated>
       <workItem from="1572070742745" duration="28437000" />
       <workItem from="1572147108322" duration="2757000" />
-      <workItem from="1572155117299" duration="76001000" />
+      <workItem from="1572155117299" duration="78513000" />
     </task>
     <servers />
   </component>

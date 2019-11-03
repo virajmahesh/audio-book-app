@@ -97,12 +97,6 @@ class Chapter:
             if (pat2.match(line) is not None) and ('M. Waldman' not in line) and ('M. Krempe' not in line):
                 headings.append(i)
 
-        if len(headings) < 3:
-            logging.info('Headings: %s' % headings)
-            logging.error(
-                "Detected fewer than three chapters. This probably means there's something wrong with chapter detection for this book.")
-            exit()
-
         self.endLocation = self.getEndLocation()
 
         # Treat the end location as a heading.

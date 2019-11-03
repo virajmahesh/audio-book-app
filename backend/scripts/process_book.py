@@ -30,10 +30,6 @@ from google.cloud import storage, texttospeech
 from google.cloud.exceptions import GoogleCloudError
 
 from chapterize import Chapter
-
-os.environ['DJANGO_SETTINGS_MODULE'] = 'audiobookapp.settings'
-application = get_wsgi_application()
-
 from audiobookapp.settings import *
 
 # Debug Variables. These should eventually be over-written and not used directly.
@@ -93,7 +89,7 @@ def get_book_metadata(metadata_path):
 
 
 def get_book_title(book_id, book_metadata):
-    return book_metadata[book_id]['title'][0]
+    return book_metadata[str(book_id)]['title'][0]
 
 
 def download_gutenberg_book(book_id, book_metadata):
@@ -308,7 +304,7 @@ def main():
     # Parse book metadata file
     book_metadata = get_book_metadata(BOOK_METADATA_PATH)
 
-    for book_id in range(1, 10):
+    for book_id in range(2, 11):
         print('Downloading {0} (ID: {1})'.format(get_book_title(book_id, book_metadata), book_id))
         book = download_gutenberg_book(book_id, book_metadata)
 
