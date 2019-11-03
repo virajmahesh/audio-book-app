@@ -79,6 +79,7 @@ def is_ebook(book_id, book_metadata):
     :param book_metadata: Python dict with book metadata
     :type book_metadata: dict
     :return: True if there's a Project Gutenberg book with id book_id
+    :rtype: bool
     """
     return (str(book_id) in book_metadata) and (len(book_metadata[str(book_id)]['title']) > 0)
 
