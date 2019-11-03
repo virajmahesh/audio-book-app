@@ -70,6 +70,19 @@ nlp = spacy.load("en_core_web_sm")
 nlp.max_length = 100000000
 
 
+def is_ebook(book_id, book_metadata):
+    """
+    Validate that there's a Project Gutenberg book corresponding to the specified
+    eBook id
+    :param book_id: The Project Gutenberg book id
+    :type book_id: int
+    :param book_metadata: Python dict with book metadata
+    :type book_metadata: dict
+    :return: True if there's a Project Gutenberg book with id book_id
+    """
+    return str(book_id) in book_metadata
+
+
 def strip_gutenberg_headers(book):
     """
     Removes Gutenberg headers from book text, and removes leading and trailing whitespace
@@ -328,6 +341,11 @@ def main(start, stop):
     book_metadata = get_book_metadata(BOOK_METADATA_PATH)
 
     for book_id in range(start, stop):
+        # Validate that there's a Project Gutenberg book with this ID
+        if not is_ebook(book_id, book_metadata):
+            print('Skipping ID: {0} because metadata could not be found'.format(book_id))
+            continue
+
         print('Downloading {0} (ID: {1})'.format(get_book_title(book_id, book_metadata), book_id))
         book = download_gutenberg_book(book_id, book_metadata)
 
