@@ -33,10 +33,12 @@ from chapterize import Chapter
 
 # Debug Variables. These should eventually be over-written and not used directly.
 BOOK_ID = 84
+N_HEADERS = 1
 
 # These should eventually come from a cloud bucket
 DATA_DIRECTORY = os.path.join(STATIC_ROOT, "data")
 BOOK_METADATA_PATH = os.path.join(DATA_DIRECTORY, "book_metadata_complete.json")
+HEADER_PATH = os.path.join(DATA_DIRECTORY, "gutenberg_headers/{0}.txt")
 
 # Google Cloud Settings
 GOOGLE_CLOUD_BUCKET = 'audiobookapp'
@@ -64,6 +66,24 @@ polly_client = boto3.client('polly')
 
 # NLP Models. Used to identify punctuation marks
 nlp = spacy.load("en_core_web_sm")
+
+
+def strip_gutenberg_headers(book):
+    """
+    Removes Gutenberg headers from book text, and removes leading and trailing whitespace
+    :param book:
+    :type book: str
+    :return: Cleaned up book text
+    :rtype: str
+    """
+    book = strip_headers(book).strip()
+    for i in range(N_HEADERS):
+        header_path = HEADER_PATH.format(i + 1)
+        with open(header_path, 'r') as f:
+            header = f.read()
+            for line in header.splitlines():
+                book = book.replace(line, '')
+    return book.lstrip().rstrip()
 
 
 def get_book_metadata(metadata_path):
@@ -109,7 +129,7 @@ def download_gutenberg_book(book_id, book_metadata):
         if '.txt' in uri:
             response = requests.get(uri)
             response.encoding = response.apparent_encoding
-            return strip_headers(response.text).strip()
+            return strip_gutenberg_headers(response.text)
     return None  # A URI for a plain text file couldn't be found
 
 
@@ -302,10 +322,9 @@ def main():
     # Parse book metadata file
     book_metadata = get_book_metadata(BOOK_METADATA_PATH)
 
-    for book_id in range(2, 10):
+    for book_id in range(2, 1000):
         print('Downloading {0} (ID: {1})'.format(get_book_title(book_id, book_metadata), book_id))
         book = download_gutenberg_book(book_id, book_metadata)
-        print(book[:1000])
 
         # Break book text into Chapters
         print('Parsing book into chapters')
