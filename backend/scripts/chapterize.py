@@ -80,15 +80,11 @@ class Chapter:
         form4 = enumerators
 
         pat = re.compile(form1, re.IGNORECASE)
-        print(form5)
-        print(pat)
 
         # This one is case-sensitive.
         pat2 = re.compile('(%s|%s|%s)' % (form2, form3, form4))
-        print(pat2)
 
         pat3 = re.compile(form5, re.IGNORECASE)
-        print(pat3)
 
         # TODO: can't use .index() since not all lines are unique.
 

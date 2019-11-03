@@ -17,15 +17,19 @@ Processing stages:
    between AWS and Google Cloud or (3) Happen automatically if Cloud TTS saved the files to a Google Cloud bucket
 """
 
-import os
 import json
-import requests
+import os
 import random
-from chapterize import Chapter
+from time import sleep
 
+import boto3
+import requests
+import spacy
 from django.core.wsgi import get_wsgi_application
-from google.cloud import storage
+from google.cloud import storage, texttospeech
 from google.cloud.exceptions import GoogleCloudError
+
+from chapterize import Chapter
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'audiobookapp.settings'
 application = get_wsgi_application()
@@ -42,13 +46,29 @@ BOOK_METADATA_PATH = os.path.join(DATA_DIRECTORY, "book_metadata_complete.json")
 # Google Cloud Settings
 GOOGLE_CLOUD_BUCKET = 'audiobookapp'
 BASE_PATH = 'books/{0}'
-CHAPTER_PATH = os.path.join(BASE_PATH, 'chapters/{1}.txt')
-SSML_PATH = os.path.join(BASE_PATH, 'chapters/{1}.ssml')
-RECORDING_PATH = os.path.join(BASE_PATH, 'recordings/{1}.mp3')
+CHAPTER_PATH = os.path.join(BASE_PATH, 'chapters/{1}/chapter_text.txt')
+SSML_PATH = os.path.join(BASE_PATH, 'chapters/{1}/chapter_ssml.ssml')
+RECORDING_PATH = os.path.join(BASE_PATH, 'chapters/{1}/chapter_recording.mp3')
 
 # Google Cloud Clients
 storage_client = storage.Client()
 bucket = storage_client.get_bucket(GOOGLE_CLOUD_BUCKET)
+
+tts_client = texttospeech.TextToSpeechClient()
+british_male_voice = texttospeech.types.VoiceSelectionParams(
+    language_code='en-GB',
+    name='en-GB-Standard-B'
+)
+audio_config = texttospeech.types.AudioConfig(
+    audio_encoding=texttospeech.enums.AudioEncoding.MP3,
+    effects_profile_id=['headphone-class-device']
+)
+
+# AWS TTS Client
+polly_client = boto3.client('polly')
+
+# NLP Models. Used to identify punctuation marks
+nlp = spacy.load("en_core_web_sm")
 
 
 def get_book_metadata(metadata_path):
@@ -146,64 +166,135 @@ def upload_book_chapters(book_id, chapters):
     pass
 
 
+def break_chapter_into_sections(chapter, char_limit=5000):
+    """
+
+    :param chapter:
+    :type chapter: str
+    :param char_limit:
+    :type char_limit: int
+    :return:
+    :rtype: list
+    """
+    result = []
+    section = ''
+    section_char_count = 0
+    for line in chapter.splitlines(keepends=True):
+        line_char_count = len(line)
+        if section_char_count + line_char_count > char_limit:
+            result.append(section)
+            section = line
+            section_char_count = line_char_count
+        else:
+            section += line
+            section_char_count += line_char_count
+    result.append(section)
+    return result
+
+
 def chapter_to_ssml(chapter):
     """
     Converts a chapter to SSML. Inserts pauses between sentences and after punctuation.
     :param chapter:
     :type chapter: str
-    :return: SSML text for that chapter
+    :return: A list of SSML texts for that chapter
+    :rtype: str
     """
-    punctuation_breaths = {
-        ',': lambda: random.random() < 0.4,
-        ';': lambda: random.random() < 0.5,
-        ':': lambda: random.random() < 0.6,
-        '?': lambda: random.random() < 0.6,
-        '.': lambda: random.random() < 0.8
+    # These can be used later to add custom spacing. For now, we're using Amazon's automatic
+    # breath insertion.
+    punctuation_breaks = {
+        '-': lambda: random.uniform(0.05, 0.20),
+        ',': lambda: random.uniform(0.05, 0.20),
+        ';': lambda: random.uniform(0.50, 0.70),
+        ':': lambda: random.uniform(0.40, 0.60),
+        '?': lambda: random.uniform(0.60, 0.90),
+        '.': lambda: random.uniform(0.70, 1.00)
     }
-    punctuation_marks = ',;:.?'
-    ssml = '<speak> {0} </speak>'
 
+    def get_punct_break(punct):
+        """
+        :param punct: The punctuation token
+        :return: Returns the SSML <break> element that corresponds to the punctuation token.
+        """
+        if punct.text not in punctuation_breaks:
+            return ''
+        break_length = punctuation_breaks[punct.text]()
+        return '<break time="{0}ms" />'.format(round(break_length * 1000))
+
+    # Clean up chapter text
     chapter = chapter.replace('"', '&quot;')
     chapter = chapter.replace('&', '&amp;')
     chapter = chapter.replace("'", '&apos;')
     chapter = chapter.replace('<', '&lt;')
     chapter = chapter.replace('>', '&gt;')
+    chapter = chapter.replace('_', '')
 
-    chapter_with_breaths = ''
-    punctuation_idx = [i for i, s in enumerate(chapter) if s in punctuation_marks]
+    chapter_with_ssml_pauses = ''
+    nlp_chapter = nlp(chapter)
 
-    # Insert breaths after punctuation to increase pauses
-    start = 0
-    for i in punctuation_idx:
-        splice = chapter[start : i] # Everything between start and the punctuation (not including the punctuation).
-        punctuation = chapter[i]
-        insert_breath = punctuation_breaths[punctuation]()  # True if a breath should be inserted after this punctuation
+    for token in nlp_chapter:
+        chapter_with_ssml_pauses += token.text_with_ws
+        if token.is_punct:
+            chapter_with_ssml_pauses += get_punct_break(token)
 
-        chapter_with_breaths += splice
-
-        if insert_breath:
-            chapter_with_breaths += '<amazon:breath />'
-        start = i
-
-    # Grab anything that's left after the last punctuation
-    chapter_with_breaths +=  chapter[start:]
-
-    return ssml.format(chapter_with_breaths)
+    return chapter_with_ssml_pauses
 
 
-def upload_ssml(book_id, chapter_ssml):
+def upload_chapter_ssml(book_id, chapter_ssml_strings):
     """
-    :param chapter_ssml: A list of strings. Each item in the list is chapter text that's been converted to SSML.
+    :param book_id:
+    :type book_id: int
+    :param chapter_ssml_strings: A list of strings. Each item in the list is chapter text that's
+    been converted to SSML (without the enclosing <speak> tags)
+    :type chapter_ssml_strings: list
     :return: True if the upload succeeded
     """
+    for idx, s in enumerate(chapter_ssml_strings):
+        blob = bucket.blob(SSML_PATH.format(book_id, idx + 1))
+        blob.upload_from_string(s, content_type='text/plain;charset=utf-8')
     pass
 
 
-def create_audio_files():
+def google_ssml_to_audio_file(ssml_sections):
+    for ssml in ssml_sections:
+        input_text = texttospeech.types.SynthesisInput(ssml=ssml)
+        response = tts_client.synthesize_speech(input_text, british_male_voice, audio_config)
+
+        with open('output.mp3', 'wb') as out:
+            out.write(response.audio_content)
+            print('Audio content written to file "output.mp3"')
+
+        break
+
+
+def ssml_to_audio_file(book_id, chapter_id, ssml_string):
+    ssml_template = '<speak> ' \
+                    '{0}' \
+                    '</speak>'
+
+    response = polly_client.start_speech_synthesis_task(
+        Engine='neural',
+        LanguageCode='en-GB',
+        VoiceId='Brian',
+        OutputFormat='mp3',
+        TextType='ssml',
+        Text=ssml_template.format(ssml_string),
+        OutputS3BucketName=GOOGLE_CLOUD_BUCKET,
+        OutputS3KeyPrefix=RECORDING_PATH.format(book_id, chapter_id),
+    )
+
+    while True:
+        response = polly_client.list_speech_synthesis_tasks(
+            Status='completed'
+        )
+        print(response['SynthesisTasks'])
+        sleep(2)
+        if response is not None and len(response['SynthesisTasks']) > 0:
+            break
+
+
+def upload_chapter_recordings(book_id, recordings):
     pass
-
-
-def upload_audio_files():
     pass
 
 
@@ -212,7 +303,7 @@ def main():
     book_metadata = get_book_metadata(BOOK_METADATA_PATH)
     book = download_gutenberg_book(book_id, book_metadata)
     # print(book[:10000])
-    #upload_book(book_id, book)  # TODO: Log success/fail for this step
+    # upload_book(book_id, book)  # TODO: Log success/fail for this step
     chapters = get_book_chapters(book)
     upload_book_chapters(book_id, chapters)
     print(chapters[0])
@@ -220,11 +311,17 @@ def main():
 
 if __name__ == '__main__':
     random.seed()
+
+    # Parse book metadata and download the book from Project Gutenberg
     book_id = BOOK_ID
     book_metadata = get_book_metadata(BOOK_METADATA_PATH)
     book = download_gutenberg_book(book_id, book_metadata)
-    # print(book[:10000])
-    # upload_book(book_id, book)  # TODO: Log success/fail for this step
+
+    # Break book text into Chapters
     chapters = get_book_chapters(book)
-    # upload_book_chapters(book_id, chapters)
-    print(chapter_to_ssml(chapters[0]))
+    chapter_ssml_strings = list(map(chapter_to_ssml, chapters))
+
+    # Upload all files to Google Cloud
+    upload_book(book_id, book)
+    upload_book_chapters(book_id, chapters)
+    upload_chapter_ssml(book_id, chapter_ssml_strings)

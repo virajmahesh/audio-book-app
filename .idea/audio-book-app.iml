@@ -17,6 +17,8 @@
       <sourceFolder url="file://$MODULE_DIR$/audiobookapp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/audiobookapp/audiobookapp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/audiobookapp/audiobookbackend" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/backend" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/backend/scripts" isTestSource="false" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.7 (audio-book-app)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
