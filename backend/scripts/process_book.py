@@ -18,19 +18,18 @@ Processing stages:
 """
 
 import json
-import os
 import random
 from time import sleep
+from gutenberg.cleanup import strip_headers
 
 import boto3
 import requests
 import spacy
-from django.core.wsgi import get_wsgi_application
 from google.cloud import storage, texttospeech
 from google.cloud.exceptions import GoogleCloudError
 
-from chapterize import Chapter
 from audiobookapp.settings import *
+from chapterize import Chapter
 
 # Debug Variables. These should eventually be over-written and not used directly.
 BOOK_ID = 84
@@ -110,7 +109,7 @@ def download_gutenberg_book(book_id, book_metadata):
         if '.txt' in uri:
             response = requests.get(uri)
             response.encoding = response.apparent_encoding
-            return response.text
+            return strip_headers(response.text).strip()
     return None  # A URI for a plain text file couldn't be found
 
 
@@ -295,7 +294,6 @@ def ssml_to_audio_file(book_id, chapter_id, ssml_string):
 
 def upload_chapter_recordings(book_id, recordings):
     pass
-    pass
 
 
 def main():
@@ -304,9 +302,10 @@ def main():
     # Parse book metadata file
     book_metadata = get_book_metadata(BOOK_METADATA_PATH)
 
-    for book_id in range(2, 11):
+    for book_id in range(2, 10):
         print('Downloading {0} (ID: {1})'.format(get_book_title(book_id, book_metadata), book_id))
         book = download_gutenberg_book(book_id, book_metadata)
+        print(book[:1000])
 
         # Break book text into Chapters
         print('Parsing book into chapters')
@@ -325,5 +324,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
