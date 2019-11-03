@@ -80,7 +80,7 @@ def is_ebook(book_id, book_metadata):
     :type book_metadata: dict
     :return: True if there's a Project Gutenberg book with id book_id
     """
-    return str(book_id) in book_metadata
+    return (str(book_id) in book_metadata) and (len(book_metadata[str(book_id)]['title']) > 0)
 
 
 def strip_gutenberg_headers(book):
