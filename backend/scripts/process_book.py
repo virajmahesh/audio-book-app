@@ -66,6 +66,7 @@ polly_client = boto3.client('polly')
 
 # NLP Models. Used to identify punctuation marks
 nlp = spacy.load("en_core_web_sm")
+nlp.max_length = 100000000
 
 
 def strip_gutenberg_headers(book):
@@ -322,7 +323,7 @@ def main():
     # Parse book metadata file
     book_metadata = get_book_metadata(BOOK_METADATA_PATH)
 
-    for book_id in range(2, 1000):
+    for book_id in range(50, 1000):
         print('Downloading {0} (ID: {1})'.format(get_book_title(book_id, book_metadata), book_id))
         book = download_gutenberg_book(book_id, book_metadata)
 

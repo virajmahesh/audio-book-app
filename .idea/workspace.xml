@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="72a94fc8-d358-4617-87f4-76231a164392" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/staticfiles/data/gutenberg_headers/1.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/scripts/process_book.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/scripts/process_book.py" afterDir="false" />
     </list>
@@ -191,7 +190,7 @@
       <workItem from="1572070742745" duration="28437000" />
       <workItem from="1572147108322" duration="2757000" />
       <workItem from="1572155117299" duration="81302000" />
-      <workItem from="1572807044552" duration="2934000" />
+      <workItem from="1572807044552" duration="4052000" />
     </task>
     <servers />
   </component>
