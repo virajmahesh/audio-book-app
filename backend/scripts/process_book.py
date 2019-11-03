@@ -18,6 +18,7 @@ Processing stages:
 """
 
 import json
+import click
 import random
 from time import sleep
 from gutenberg.cleanup import strip_headers
@@ -317,13 +318,16 @@ def upload_chapter_recordings(book_id, recordings):
     pass
 
 
-def main():
+@click.command()
+@click.option('--start', required=True, type=int)
+@click.option('--stop', required=True, type=int)
+def main(start, stop):
     random.seed()
 
     # Parse book metadata file
     book_metadata = get_book_metadata(BOOK_METADATA_PATH)
 
-    for book_id in range(50, 1000):
+    for book_id in range(start, stop):
         print('Downloading {0} (ID: {1})'.format(get_book_title(book_id, book_metadata), book_id))
         book = download_gutenberg_book(book_id, book_metadata)
 
