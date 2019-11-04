@@ -1,4 +1,5 @@
 import csv
+import click
 from goodreads.client import GoodreadsClient
 from process_book import *
 
@@ -62,8 +63,10 @@ def goodreads_book_to_dict(book_id, b):
 def file_exists(f):
     return f.tell()
 
-
-if __name__ == '__main__':
+@click.command()
+@click.option('--start', required=True, type=int)
+@click.option('--stop', required=True, type=int)
+def main(start, stop):
     book_metadata = get_book_metadata(BOOK_METADATA_PATH)
     with open(GOODREADS_PATH, 'a+') as f:
         csv_writer = csv.DictWriter(f, fieldnames=goodreads_csv_header())
@@ -71,14 +74,18 @@ if __name__ == '__main__':
         if not file_exists(f):
             csv_writer.writeheader()
 
-        for book_id in range(1, 10000):
+        for book_id in range(start, stop):
 
             if not is_ebook(book_id, book_metadata):
                 print('Skipping ID: {0}'.format(book_id))
                 continue
 
             book_title = get_book_title(book_id, book_metadata)
-            gr_search_result = gr_client.search_books(q=book_title)
+            try:
+                gr_search_result = gr_client.search_books(q=book_title)
+            except TypeError:
+                print('Skipping ID: {0} because Goodreads API failed'.format(book_id))
+                continue
 
             print('Found {0} results'.format(len(gr_search_result)))
 
@@ -88,3 +95,7 @@ if __name__ == '__main__':
             top_result = gr_search_result[0]
             csv_writer.writerow(goodreads_book_to_dict(book_id, top_result))
             f.flush()
+
+
+if __name__ == '__main__':
+    main()
