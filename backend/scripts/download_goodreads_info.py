@@ -1,5 +1,6 @@
 import csv
 import click
+import logging
 from goodreads.client import GoodreadsClient
 from process_book import *
 
@@ -11,6 +12,7 @@ gr_client = GoodreadsClient(
 
 # These should eventually come from a cloud bucket
 DATA_DIRECTORY = os.path.join(STATIC_ROOT, "data")
+LOG_FORMAT = '%(asctime)s: %(name)s - %(levelname)s - %(message)s'
 BOOK_METADATA_PATH = os.path.join(DATA_DIRECTORY, "book_metadata_complete.json")
 GOODREADS_PATH = os.path.join(DATA_DIRECTORY, "goodreads_data.csv")
 HEADER_PATH = os.path.join(DATA_DIRECTORY, "gutenberg_headers/{0}.txt")
@@ -63,11 +65,15 @@ def goodreads_book_to_dict(book_id, b):
 def file_exists(f):
     return f.tell()
 
+
 @click.command()
 @click.option('--start', required=True, type=int)
 @click.option('--stop', required=True, type=int)
 def main(start, stop):
     book_metadata = get_book_metadata(BOOK_METADATA_PATH)
+    logging.basicConfig(filename='goodreads.log', filemode='w', format=LOG_FORMAT)
+    logging.getLogger().setLevel(logging.DEBUG)
+
     with open(GOODREADS_PATH, 'a+') as f:
         csv_writer = csv.DictWriter(f, fieldnames=goodreads_csv_header())
 
@@ -77,17 +83,18 @@ def main(start, stop):
         for book_id in range(start, stop):
 
             if not is_ebook(book_id, book_metadata):
-                print('Skipping ID: {0}'.format(book_id))
+                logging.debug('Skipping ID: {0}'.format(book_id))
                 continue
 
             book_title = get_book_title(book_id, book_metadata)
+
             try:
                 gr_search_result = gr_client.search_books(q=book_title)
             except TypeError:
-                print('Skipping ID: {0} because Goodreads API failed'.format(book_id))
+                logging.error('Skipping ID: {0} because Goodreads API failed'.format(book_id))
                 continue
 
-            print('Found {0} results'.format(len(gr_search_result)))
+            logging.debug('Found {0} results'.format(len(gr_search_result)))
 
             if len(gr_search_result) == 0:
                 continue
@@ -95,6 +102,8 @@ def main(start, stop):
             top_result = gr_search_result[0]
             csv_writer.writerow(goodreads_book_to_dict(book_id, top_result))
             f.flush()
+
+    logging.shutdown()
 
 
 if __name__ == '__main__':
