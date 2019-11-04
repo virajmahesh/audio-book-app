@@ -40,12 +40,16 @@ def goodreads_csv_header():
     ]
 
 
+def has_authors(b):
+    return b._book_dict['authors'] is not None and b.authors is not None and len(b.authors) > 0
+
+
 def goodreads_book_to_dict(book_id, b):
     return {
         'gutenberg_id': book_id,
         'goodreads_id': b.gid,
         'goodreads_title': b.title,
-        'goodreads_author': None if b.authors is None or len(b.authors) == 0 else b.authors[0],
+        'goodreads_author': b.authors[0] if  has_authors(b) else None,
         'goodreads_description': b.description,
         'goodreads_average_rating': b.average_rating,
         'goodreads_rating_dist': b.rating_dist,
