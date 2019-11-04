@@ -349,36 +349,53 @@ def main(start, stop):
     book_metadata = get_book_metadata(BOOK_METADATA_PATH)
 
     for book_id in range(start, stop):
+
         # Validate that there's a Project Gutenberg book with this ID
         if not is_ebook(book_id, book_metadata):
-            logging.debug('Skipping ID: {0} because metadata could not be found'.format(book_id))
+            logging.info('Skipping ID: {0} because metadata could not be found'.format(book_id))
             continue
 
-        logging.debug('Downloading {0} (ID: {1})'.format(get_book_title(book_id, book_metadata), book_id))
-
+        # Download book text from Project Gutenberg and strip legalese
         try:
+            logging.info('Downloading {0} (ID: {1})'.format(get_book_title(book_id, book_metadata), book_id))
             book = download_gutenberg_book(book_id, book_metadata)
+
+            logging.info('Uploading book to Cloud Storage')
+            upload_book(book_id, book)
         except AttributeError as e:
             logging.error('Failed to download book ID:{0} from Project Gutenberg'.format(book_id))
             logging.error('AttributeError: {0}'.format(e))
             continue
         except Exception as e:
-            logging.error('Unexpected error: {0}'.format(e))
+            logging.error('Unexpected error while downloading book: {0}'.format(e))
             continue
 
         # Break book text into Chapters
-        logging.debug('Parsing book into chapters')
-        chapters = get_book_chapters(book)
+        try:
+            logging.info('Parsing book into chapters')
+            logging.debug('Book text: BEGIN:{0}:END'.format(book[:100]))
+
+            chapters = get_book_chapters(book)
+            upload_book_chapters(book_id, chapters)
+        except AttributeError as e:
+            logging.error('Failed to download book ID:{0} from Project Gutenberg'.format(book_id))
+            logging.error('AttributeError: {0}'.format(e))
+            continue
+        except Exception as e:
+            logging.error('Unexpected error while creating chapters: {0}'.format(e))
+            continue
 
         # Convert chapters into SSML
-        logging.debug('Converting chapters into SSML')
-        chapter_ssml_strings = list(map(chapter_to_ssml, chapters))
+        try:
+            logging.info('Converting chapters into SSML')
 
-        # Upload all files to Google Cloud
-        logging.debug('Uploading files to Cloud Storage')
-        upload_book(book_id, book)
-        upload_book_chapters(book_id, chapters)
-        upload_chapter_ssml(book_id, chapter_ssml_strings)
+            chapter_ssml_strings = list(map(chapter_to_ssml, chapters))
+            upload_chapter_ssml(book_id, chapter_ssml_strings)
+        except Exception as e:
+            logging.error('Unexpected error while creating : {0}'.format(e))
+            continue
+
+    logging.shutdown()
 
 
 if __name__ == '__main__':
