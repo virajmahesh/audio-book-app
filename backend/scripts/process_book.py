@@ -71,7 +71,7 @@ polly_client = boto3.client('polly')
 
 # NLP Models. Used to identify punctuation marks
 nlp = spacy.load("en_core_web_sm")
-nlp.max_length = 100000000
+nlp.max_length = 20000000
 
 
 def is_ebook(book_id, book_metadata):
