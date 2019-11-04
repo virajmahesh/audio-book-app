@@ -45,7 +45,7 @@ def goodreads_book_to_dict(book_id, b):
         'gutenberg_id': book_id,
         'goodreads_id': b.gid,
         'goodreads_title': b.title,
-        'goodreads_author': b.authors[0],
+        'goodreads_author': None if b.authors is None or len(b.authors) == 0 else b.authors[0],
         'goodreads_description': b.description,
         'goodreads_average_rating': b.average_rating,
         'goodreads_rating_dist': b.rating_dist,
