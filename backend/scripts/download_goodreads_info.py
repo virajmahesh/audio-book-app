@@ -13,8 +13,9 @@ gr_client = GoodreadsClient(
 # These should eventually come from a cloud bucket
 DATA_DIRECTORY = os.path.join(STATIC_ROOT, "data")
 LOG_FORMAT = '%(asctime)s: %(name)s - %(levelname)s - %(message)s'
+
 BOOK_METADATA_PATH = os.path.join(DATA_DIRECTORY, "book_metadata_complete.json")
-GOODREADS_PATH = os.path.join(DATA_DIRECTORY, "goodreads_data.csv")
+GOODREADS_PATH = os.path.join(DATA_DIRECTORY, "goodreads_data_{0}.csv")
 HEADER_PATH = os.path.join(DATA_DIRECTORY, "gutenberg_headers/{0}.txt")
 
 
@@ -49,7 +50,7 @@ def goodreads_book_to_dict(book_id, b):
         'gutenberg_id': book_id,
         'goodreads_id': b.gid,
         'goodreads_title': b.title,
-        'goodreads_author': b.authors[0] if  has_authors(b) else None,
+        'goodreads_author': b.authors[0] if has_authors(b) else None,
         'goodreads_description': b.description,
         'goodreads_average_rating': b.average_rating,
         'goodreads_rating_dist': b.rating_dist,
@@ -73,12 +74,13 @@ def file_exists(f):
 @click.command()
 @click.option('--start', required=True, type=int)
 @click.option('--stop', required=True, type=int)
-def main(start, stop):
+@click.option('--process', required=True, type=int)
+def main(start, stop, process):
     book_metadata = get_book_metadata(BOOK_METADATA_PATH)
-    logging.basicConfig(filename='goodreads.log', filemode='w', format=LOG_FORMAT)
+    logging.basicConfig(filename='goodreads_{0}.log'.format(process), filemode='w', format=LOG_FORMAT)
     logging.getLogger().setLevel(logging.DEBUG)
 
-    with open(GOODREADS_PATH, 'a+') as f:
+    with open(GOODREADS_PATH.format(process), 'a+') as f:
         csv_writer = csv.DictWriter(f, fieldnames=goodreads_csv_header())
 
         if not file_exists(f):
