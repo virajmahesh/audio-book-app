@@ -7,7 +7,7 @@
     <database id="2" parent="1" name="audiobookapp">
       <ObjectId>16631</ObjectId>
       <Owner>audiobookapp_admin</Owner>
-      <IntrospectionStateNumber>1376</IntrospectionStateNumber>
+      <IntrospectionStateNumber>27043</IntrospectionStateNumber>
       <Current>1</Current>
       <Relations>sequence|table|16632|16634|1
 sequence|table|16643|16645|1
@@ -114,7 +114,7 @@ TimeZone=UTC</Config>
       <Comment>standard public schema</Comment>
       <StateNumber>959</StateNumber>
       <Owner>viraj</Owner>
-      <IntrospectionStateNumber>1377</IntrospectionStateNumber>
+      <IntrospectionStateNumber>27145</IntrospectionStateNumber>
       <Current>1</Current>
     </schema>
     <access-method id="18" parent="2" name="btree">
@@ -312,72 +312,72 @@ TimeZone=UTC</Config>
     <table id="42" parent="17" name="audio_recording">
       <ObjectId>16833</ObjectId>
       <Owner>audiobookapp_admin</Owner>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
     </table>
     <table id="43" parent="17" name="auth_group">
       <ObjectId>16663</ObjectId>
       <Owner>audiobookapp_admin</Owner>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
     </table>
     <table id="44" parent="17" name="auth_group_permissions">
       <ObjectId>16673</ObjectId>
       <Owner>audiobookapp_admin</Owner>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
     </table>
     <table id="45" parent="17" name="auth_permission">
       <ObjectId>16655</ObjectId>
       <Owner>audiobookapp_admin</Owner>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
     </table>
     <table id="46" parent="17" name="auth_user">
       <ObjectId>16681</ObjectId>
       <Owner>audiobookapp_admin</Owner>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
     </table>
     <table id="47" parent="17" name="auth_user_groups">
       <ObjectId>16691</ObjectId>
       <Owner>audiobookapp_admin</Owner>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
     </table>
     <table id="48" parent="17" name="auth_user_user_permissions">
       <ObjectId>16699</ObjectId>
       <Owner>audiobookapp_admin</Owner>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
     </table>
     <table id="49" parent="17" name="author">
       <ObjectId>16814</ObjectId>
       <Owner>audiobookapp_admin</Owner>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
     </table>
     <table id="50" parent="17" name="author_books">
       <ObjectId>16825</ObjectId>
       <Owner>audiobookapp_admin</Owner>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
     </table>
     <table id="51" parent="17" name="backend_goodreadsbook">
       <ObjectId>17455</ObjectId>
       <Owner>audiobookapp_admin</Owner>
-      <StateNumber>1370</StateNumber>
+      <StateNumber>7210</StateNumber>
     </table>
     <table id="52" parent="17" name="book">
       <ObjectId>16792</ObjectId>
       <Owner>audiobookapp_admin</Owner>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
     </table>
     <table id="53" parent="17" name="chapter">
       <ObjectId>16803</ObjectId>
       <Owner>audiobookapp_admin</Owner>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
     </table>
     <table id="54" parent="17" name="django_admin_log">
       <ObjectId>16759</ObjectId>
       <Owner>audiobookapp_admin</Owner>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
     </table>
     <table id="55" parent="17" name="django_content_type">
       <ObjectId>16645</ObjectId>
       <Owner>audiobookapp_admin</Owner>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
     </table>
     <table id="56" parent="17" name="django_migrations">
       <ObjectId>16634</ObjectId>
@@ -387,22 +387,22 @@ TimeZone=UTC</Config>
     <table id="57" parent="17" name="django_session">
       <ObjectId>16865</ObjectId>
       <Owner>audiobookapp_admin</Owner>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
     </table>
     <table id="58" parent="17" name="format_uri">
       <ObjectId>16902</ObjectId>
       <Owner>audiobookapp_admin</Owner>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
     </table>
     <table id="59" parent="17" name="subject">
       <ObjectId>16885</ObjectId>
       <Owner>audiobookapp_admin</Owner>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
     </table>
-    <table id="60" parent="17" name="subject_book">
+    <table id="60" parent="17" name="subject_books">
       <ObjectId>17469</ObjectId>
       <Owner>audiobookapp_admin</Owner>
-      <StateNumber>1372</StateNumber>
+      <StateNumber>7210</StateNumber>
     </table>
     <column id="61" parent="42" name="id">
       <Position>1</Position>
@@ -432,14 +432,14 @@ TimeZone=UTC</Config>
     </column>
     <index id="65" parent="42" name="audio_recording_pkey">
       <ObjectId>16837</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
     <index id="66" parent="42" name="audio_recording_chapter_id_cc9fab7d">
       <ObjectId>16864</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>chapter_id</ColNames>
     </index>
     <key id="67" parent="42" name="audio_recording_pkey">
@@ -478,20 +478,20 @@ TimeZone=UTC</Config>
     </column>
     <index id="71" parent="43" name="auth_group_pkey">
       <ObjectId>16667</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
     <index id="72" parent="43" name="auth_group_name_key">
       <ObjectId>16787</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>name</ColNames>
       <Unique>1</Unique>
     </index>
     <index id="73" parent="43" name="auth_group_name_a6ea08ec_like">
       <ObjectId>16789</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>name</ColNames>
     </index>
     <key id="74" parent="43" name="auth_group_pkey">
@@ -531,26 +531,26 @@ TimeZone=UTC</Config>
     </column>
     <index id="79" parent="44" name="auth_group_permissions_pkey">
       <ObjectId>16677</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
     <index id="80" parent="44" name="auth_group_permissions_group_id_permission_id_0cd325b0_uniq">
       <ObjectId>16724</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>group_id
 permission_id</ColNames>
       <Unique>1</Unique>
     </index>
     <index id="81" parent="44" name="auth_group_permissions_group_id_b120cbf9">
       <ObjectId>16726</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>group_id</ColNames>
     </index>
     <index id="82" parent="44" name="auth_group_permissions_permission_id_84c5c92e">
       <ObjectId>16727</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>permission_id</ColNames>
     </index>
     <key id="83" parent="44" name="auth_group_permissions_pkey">
@@ -622,21 +622,21 @@ permission_id</ColNames>
     </column>
     <index id="91" parent="45" name="auth_permission_pkey">
       <ObjectId>16659</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
     <index id="92" parent="45" name="auth_permission_content_type_id_codename_01ab375a_uniq">
       <ObjectId>16710</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>content_type_id
 codename</ColNames>
       <Unique>1</Unique>
     </index>
     <index id="93" parent="45" name="auth_permission_content_type_id_2f476e4b">
       <ObjectId>16712</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>content_type_id</ColNames>
     </index>
     <key id="94" parent="45" name="auth_permission_pkey">
@@ -744,20 +744,20 @@ codename</ColNames>
     </column>
     <index id="108" parent="46" name="auth_user_pkey">
       <ObjectId>16685</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
     <index id="109" parent="46" name="auth_user_username_key">
       <ObjectId>16781</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>username</ColNames>
       <Unique>1</Unique>
     </index>
     <index id="110" parent="46" name="auth_user_username_6821ab7c_like">
       <ObjectId>16783</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>username</ColNames>
     </index>
     <key id="111" parent="46" name="auth_user_pkey">
@@ -797,26 +797,26 @@ codename</ColNames>
     </column>
     <index id="116" parent="47" name="auth_user_groups_pkey">
       <ObjectId>16695</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
     <index id="117" parent="47" name="auth_user_groups_user_id_group_id_94350c0c_uniq">
       <ObjectId>16739</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>user_id
 group_id</ColNames>
       <Unique>1</Unique>
     </index>
     <index id="118" parent="47" name="auth_user_groups_user_id_6a12ed8b">
       <ObjectId>16741</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>user_id</ColNames>
     </index>
     <index id="119" parent="47" name="auth_user_groups_group_id_97559544">
       <ObjectId>16742</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>group_id</ColNames>
     </index>
     <key id="120" parent="47" name="auth_user_groups_pkey">
@@ -881,26 +881,26 @@ group_id</ColNames>
     </column>
     <index id="127" parent="48" name="auth_user_user_permissions_pkey">
       <ObjectId>16703</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
     <index id="128" parent="48" name="auth_user_user_permissions_user_id_permission_id_14a6b632_uniq">
       <ObjectId>16753</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>user_id
 permission_id</ColNames>
       <Unique>1</Unique>
     </index>
     <index id="129" parent="48" name="auth_user_user_permissions_user_id_a95ead1b">
       <ObjectId>16755</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>user_id</ColNames>
     </index>
     <index id="130" parent="48" name="auth_user_user_permissions_permission_id_1fbb5f2c">
       <ObjectId>16756</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>permission_id</ColNames>
     </index>
     <key id="131" parent="48" name="auth_user_user_permissions_pkey">
@@ -967,18 +967,19 @@ permission_id</ColNames>
       <StateNumber>1039</StateNumber>
       <TypeId>25</TypeId>
     </column>
-    <column id="139" parent="49" name="wikipedia_url">
-      <Position>5</Position>
-      <DataType>varchar(200)|0s</DataType>
-      <StateNumber>1039</StateNumber>
-      <TypeId>1043</TypeId>
-    </column>
-    <index id="140" parent="49" name="author_pkey">
+    <index id="139" parent="49" name="author_pkey">
       <ObjectId>16821</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
+    </index>
+    <index id="140" parent="49" name="author_first_name_last_name_03c38ae7_uniq">
+      <ObjectId>17593</ObjectId>
+      <StateNumber>7210</StateNumber>
+      <ColNames>first_name
+last_name</ColNames>
+      <Unique>1</Unique>
     </index>
     <key id="141" parent="49" name="author_pkey">
       <ObjectId>16822</ObjectId>
@@ -987,7 +988,14 @@ permission_id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>author_pkey</UnderlyingIndexName>
     </key>
-    <column id="142" parent="50" name="id">
+    <key id="142" parent="49" name="author_first_name_last_name_03c38ae7_uniq">
+      <ObjectId>17594</ObjectId>
+      <StateNumber>1393</StateNumber>
+      <ColNames>first_name
+last_name</ColNames>
+      <UnderlyingIndexName>author_first_name_last_name_03c38ae7_uniq</UnderlyingIndexName>
+    </key>
+    <column id="143" parent="50" name="id">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
@@ -995,59 +1003,59 @@ permission_id</ColNames>
       <DefaultExpression>nextval(&apos;author_books_id_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
     </column>
-    <column id="143" parent="50" name="author_id">
+    <column id="144" parent="50" name="author_id">
       <Position>2</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1039</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="144" parent="50" name="book_id">
+    <column id="145" parent="50" name="book_id">
       <Position>3</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1039</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <index id="145" parent="50" name="author_books_pkey">
+    <index id="146" parent="50" name="author_books_pkey">
       <ObjectId>16829</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
-    <index id="146" parent="50" name="author_books_author_id_book_id_41454530_uniq">
+    <index id="147" parent="50" name="author_books_author_id_book_id_41454530_uniq">
       <ObjectId>16855</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>author_id
 book_id</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="147" parent="50" name="author_books_author_id_e3596131">
+    <index id="148" parent="50" name="author_books_author_id_e3596131">
       <ObjectId>16857</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>author_id</ColNames>
     </index>
-    <index id="148" parent="50" name="author_books_book_id_430b66a6">
+    <index id="149" parent="50" name="author_books_book_id_430b66a6">
       <ObjectId>16858</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>book_id</ColNames>
     </index>
-    <key id="149" parent="50" name="author_books_pkey">
+    <key id="150" parent="50" name="author_books_pkey">
       <ObjectId>16830</ObjectId>
       <StateNumber>1039</StateNumber>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>author_books_pkey</UnderlyingIndexName>
     </key>
-    <key id="150" parent="50" name="author_books_author_id_book_id_41454530_uniq">
+    <key id="151" parent="50" name="author_books_author_id_book_id_41454530_uniq">
       <ObjectId>16856</ObjectId>
       <StateNumber>1039</StateNumber>
       <ColNames>author_id
 book_id</ColNames>
       <UnderlyingIndexName>author_books_author_id_book_id_41454530_uniq</UnderlyingIndexName>
     </key>
-    <foreign-key id="151" parent="50" name="author_books_author_id_e3596131_fk_author_id">
+    <foreign-key id="152" parent="50" name="author_books_author_id_e3596131_fk_author_id">
       <ObjectId>17085</ObjectId>
       <Deferrable>1</Deferrable>
       <InitiallyDeferred>1</InitiallyDeferred>
@@ -1059,7 +1067,7 @@ book_id</ColNames>
       <RefKeyName>author_pkey</RefKeyName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="152" parent="50" name="author_books_book_id_430b66a6_fk_book_id">
+    <foreign-key id="153" parent="50" name="author_books_book_id_430b66a6_fk_book_id">
       <ObjectId>17080</ObjectId>
       <Deferrable>1</Deferrable>
       <InitiallyDeferred>1</InitiallyDeferred>
@@ -1071,12 +1079,6 @@ book_id</ColNames>
       <RefKeyName>book_pkey</RefKeyName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="153" parent="51" name="gutenberg_id">
-      <Position>1</Position>
-      <DataType>varchar(16)|0s</DataType>
-      <StateNumber>1370</StateNumber>
-      <TypeId>1043</TypeId>
-    </column>
     <column id="154" parent="51" name="id">
       <Position>2</Position>
       <DataType>varchar(64)|0s</DataType>
@@ -1174,26 +1176,49 @@ book_id</ColNames>
       <StateNumber>1370</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <index id="170" parent="51" name="backend_goodreadsbook_pkey">
+    <column id="170" parent="51" name="book_id">
+      <Position>18</Position>
+      <DataType>integer|0s</DataType>
+      <StateNumber>1393</StateNumber>
+      <TypeId>23</TypeId>
+    </column>
+    <index id="171" parent="51" name="backend_goodreadsbook_pkey">
       <ObjectId>17461</ObjectId>
-      <StateNumber>1370</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
-    <index id="171" parent="51" name="backend_goodreadsbook_id_c9fb268d_like">
+    <index id="172" parent="51" name="backend_goodreadsbook_id_c9fb268d_like">
       <ObjectId>17463</ObjectId>
-      <StateNumber>1370</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>id</ColNames>
     </index>
-    <key id="172" parent="51" name="backend_goodreadsbook_pkey">
+    <index id="173" parent="51" name="backend_goodreadsbook_book_id_1283380d">
+      <ObjectId>17595</ObjectId>
+      <StateNumber>7210</StateNumber>
+      <ColNames>book_id</ColNames>
+    </index>
+    <key id="174" parent="51" name="backend_goodreadsbook_pkey">
       <ObjectId>17462</ObjectId>
       <StateNumber>1370</StateNumber>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>backend_goodreadsbook_pkey</UnderlyingIndexName>
     </key>
-    <column id="173" parent="52" name="id">
+    <foreign-key id="175" parent="51" name="backend_goodreadsbook_book_id_1283380d_fk_book_id">
+      <ObjectId>17596</ObjectId>
+      <Deferrable>1</Deferrable>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <StateNumber>1393</StateNumber>
+      <ColNames>book_id</ColNames>
+      <RefTableId>16792</RefTableId>
+      <RefColPositions>1</RefColPositions>
+      <RefTableName>book</RefTableName>
+      <RefKeyName>book_pkey</RefKeyName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="176" parent="52" name="id">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
@@ -1201,62 +1226,63 @@ book_id</ColNames>
       <DefaultExpression>nextval(&apos;book_id_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
     </column>
-    <column id="174" parent="52" name="gutenberg_id">
+    <column id="177" parent="52" name="gutenberg_id">
       <Position>2</Position>
       <DataType>varchar(16)|0s</DataType>
-      <StateNumber>1057</StateNumber>
+      <NotNull>1</NotNull>
+      <StateNumber>1393</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="175" parent="52" name="title">
+    <column id="178" parent="52" name="title">
       <Position>3</Position>
       <DataType>varchar(1024)|0s</DataType>
       <StateNumber>1039</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="176" parent="52" name="description">
+    <column id="179" parent="52" name="description">
       <Position>6</Position>
       <DataType>text|0s</DataType>
       <StateNumber>1039</StateNumber>
       <TypeId>25</TypeId>
     </column>
-    <column id="177" parent="52" name="album_art_url">
+    <column id="180" parent="52" name="album_art_url">
       <Position>7</Position>
       <DataType>varchar(200)|0s</DataType>
       <StateNumber>1056</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <index id="178" parent="52" name="book_pkey">
+    <index id="181" parent="52" name="book_pkey">
       <ObjectId>16799</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
-    <index id="179" parent="52" name="book_gutenberg_id_14656ec9_uniq">
+    <index id="182" parent="52" name="book_gutenberg_id_14656ec9_uniq">
       <ObjectId>17464</ObjectId>
-      <StateNumber>1371</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>gutenberg_id</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="180" parent="52" name="book_gutenberg_id_14656ec9_like">
+    <index id="183" parent="52" name="book_gutenberg_id_14656ec9_like">
       <ObjectId>17466</ObjectId>
-      <StateNumber>1371</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>gutenberg_id</ColNames>
     </index>
-    <key id="181" parent="52" name="book_pkey">
+    <key id="184" parent="52" name="book_pkey">
       <ObjectId>16800</ObjectId>
       <StateNumber>1039</StateNumber>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>book_pkey</UnderlyingIndexName>
     </key>
-    <key id="182" parent="52" name="book_gutenberg_id_14656ec9_uniq">
+    <key id="185" parent="52" name="book_gutenberg_id_14656ec9_uniq">
       <ObjectId>17465</ObjectId>
       <StateNumber>1371</StateNumber>
       <ColNames>gutenberg_id</ColNames>
       <UnderlyingIndexName>book_gutenberg_id_14656ec9_uniq</UnderlyingIndexName>
     </key>
-    <column id="183" parent="53" name="id">
+    <column id="186" parent="53" name="id">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
@@ -1264,50 +1290,50 @@ book_id</ColNames>
       <DefaultExpression>nextval(&apos;chapter_id_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
     </column>
-    <column id="184" parent="53" name="title">
+    <column id="187" parent="53" name="title">
       <Position>2</Position>
       <DataType>varchar(1024)|0s</DataType>
       <StateNumber>1321</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="185" parent="53" name="url">
+    <column id="188" parent="53" name="url">
       <Position>3</Position>
       <DataType>varchar(200)|0s</DataType>
       <StateNumber>1039</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="186" parent="53" name="book_id">
+    <column id="189" parent="53" name="book_id">
       <Position>4</Position>
       <DataType>integer|0s</DataType>
       <StateNumber>1039</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="187" parent="53" name="number">
+    <column id="190" parent="53" name="number">
       <Position>5</Position>
       <DataType>integer|0s</DataType>
       <StateNumber>1321</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <index id="188" parent="53" name="chapter_pkey">
+    <index id="191" parent="53" name="chapter_pkey">
       <ObjectId>16810</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
-    <index id="189" parent="53" name="chapter_book_id_d85c6d77">
+    <index id="192" parent="53" name="chapter_book_id_d85c6d77">
       <ObjectId>16844</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>book_id</ColNames>
     </index>
-    <key id="190" parent="53" name="chapter_pkey">
+    <key id="193" parent="53" name="chapter_pkey">
       <ObjectId>16811</ObjectId>
       <StateNumber>1039</StateNumber>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>chapter_pkey</UnderlyingIndexName>
     </key>
-    <foreign-key id="191" parent="53" name="chapter_book_id_d85c6d77_fk_book_id">
+    <foreign-key id="194" parent="53" name="chapter_book_id_d85c6d77_fk_book_id">
       <ObjectId>16839</ObjectId>
       <Deferrable>1</Deferrable>
       <InitiallyDeferred>1</InitiallyDeferred>
@@ -1319,7 +1345,7 @@ book_id</ColNames>
       <RefKeyName>book_pkey</RefKeyName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="192" parent="54" name="id">
+    <column id="195" parent="54" name="id">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
@@ -1327,78 +1353,78 @@ book_id</ColNames>
       <DefaultExpression>nextval(&apos;django_admin_log_id_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
     </column>
-    <column id="193" parent="54" name="action_time">
+    <column id="196" parent="54" name="action_time">
       <Position>2</Position>
       <DataType>timestamp with time zone|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1025</StateNumber>
       <TypeId>1184</TypeId>
     </column>
-    <column id="194" parent="54" name="object_id">
+    <column id="197" parent="54" name="object_id">
       <Position>3</Position>
       <DataType>text|0s</DataType>
       <StateNumber>1025</StateNumber>
       <TypeId>25</TypeId>
     </column>
-    <column id="195" parent="54" name="object_repr">
+    <column id="198" parent="54" name="object_repr">
       <Position>4</Position>
       <DataType>varchar(200)|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1025</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="196" parent="54" name="action_flag">
+    <column id="199" parent="54" name="action_flag">
       <Position>5</Position>
       <DataType>smallint|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1025</StateNumber>
       <TypeId>21</TypeId>
     </column>
-    <column id="197" parent="54" name="change_message">
+    <column id="200" parent="54" name="change_message">
       <Position>6</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1025</StateNumber>
       <TypeId>25</TypeId>
     </column>
-    <column id="198" parent="54" name="content_type_id">
+    <column id="201" parent="54" name="content_type_id">
       <Position>7</Position>
       <DataType>integer|0s</DataType>
       <StateNumber>1025</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="199" parent="54" name="user_id">
+    <column id="202" parent="54" name="user_id">
       <Position>8</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1025</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <index id="200" parent="54" name="django_admin_log_pkey">
+    <index id="203" parent="54" name="django_admin_log_pkey">
       <ObjectId>16767</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
-    <index id="201" parent="54" name="django_admin_log_content_type_id_c4bce8eb">
+    <index id="204" parent="54" name="django_admin_log_content_type_id_c4bce8eb">
       <ObjectId>16779</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>content_type_id</ColNames>
     </index>
-    <index id="202" parent="54" name="django_admin_log_user_id_c564eba6">
+    <index id="205" parent="54" name="django_admin_log_user_id_c564eba6">
       <ObjectId>16780</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>user_id</ColNames>
     </index>
-    <key id="203" parent="54" name="django_admin_log_pkey">
+    <key id="206" parent="54" name="django_admin_log_pkey">
       <ObjectId>16768</ObjectId>
       <StateNumber>1025</StateNumber>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>django_admin_log_pkey</UnderlyingIndexName>
     </key>
-    <foreign-key id="204" parent="54" name="django_admin_log_content_type_id_c4bce8eb_fk_django_co">
+    <foreign-key id="207" parent="54" name="django_admin_log_content_type_id_c4bce8eb_fk_django_co">
       <ObjectId>16769</ObjectId>
       <Deferrable>1</Deferrable>
       <InitiallyDeferred>1</InitiallyDeferred>
@@ -1410,7 +1436,7 @@ book_id</ColNames>
       <RefKeyName>django_content_type_pkey</RefKeyName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="205" parent="54" name="django_admin_log_user_id_c564eba6_fk_auth_user_id">
+    <foreign-key id="208" parent="54" name="django_admin_log_user_id_c564eba6_fk_auth_user_id">
       <ObjectId>16774</ObjectId>
       <Deferrable>1</Deferrable>
       <InitiallyDeferred>1</InitiallyDeferred>
@@ -1422,13 +1448,13 @@ book_id</ColNames>
       <RefKeyName>auth_user_pkey</RefKeyName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <check id="206" parent="54" name="django_admin_log_action_flag_check">
+    <check id="209" parent="54" name="django_admin_log_action_flag_check">
       <ObjectId>16763</ObjectId>
       <StateNumber>1025</StateNumber>
       <ColNames>action_flag</ColNames>
       <Predicate>action_flag &gt;= 0</Predicate>
     </check>
-    <column id="207" parent="55" name="id">
+    <column id="210" parent="55" name="id">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
@@ -1436,49 +1462,49 @@ book_id</ColNames>
       <DefaultExpression>nextval(&apos;django_content_type_id_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
     </column>
-    <column id="208" parent="55" name="app_label">
+    <column id="211" parent="55" name="app_label">
       <Position>3</Position>
       <DataType>varchar(100)|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1023</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="209" parent="55" name="model">
+    <column id="212" parent="55" name="model">
       <Position>4</Position>
       <DataType>varchar(100)|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1023</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <index id="210" parent="55" name="django_content_type_pkey">
+    <index id="213" parent="55" name="django_content_type_pkey">
       <ObjectId>16649</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
-    <index id="211" parent="55" name="django_content_type_app_label_model_76bd3d3b_uniq">
+    <index id="214" parent="55" name="django_content_type_app_label_model_76bd3d3b_uniq">
       <ObjectId>16651</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>app_label
 model</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="212" parent="55" name="django_content_type_pkey">
+    <key id="215" parent="55" name="django_content_type_pkey">
       <ObjectId>16650</ObjectId>
       <StateNumber>1023</StateNumber>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>django_content_type_pkey</UnderlyingIndexName>
     </key>
-    <key id="213" parent="55" name="django_content_type_app_label_model_76bd3d3b_uniq">
+    <key id="216" parent="55" name="django_content_type_app_label_model_76bd3d3b_uniq">
       <ObjectId>16652</ObjectId>
       <StateNumber>1023</StateNumber>
       <ColNames>app_label
 model</ColNames>
       <UnderlyingIndexName>django_content_type_app_label_model_76bd3d3b_uniq</UnderlyingIndexName>
     </key>
-    <column id="214" parent="56" name="id">
+    <column id="217" parent="56" name="id">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
@@ -1486,87 +1512,87 @@ model</ColNames>
       <DefaultExpression>nextval(&apos;django_migrations_id_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
     </column>
-    <column id="215" parent="56" name="app">
+    <column id="218" parent="56" name="app">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1022</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="216" parent="56" name="name">
+    <column id="219" parent="56" name="name">
       <Position>3</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1022</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="217" parent="56" name="applied">
+    <column id="220" parent="56" name="applied">
       <Position>4</Position>
       <DataType>timestamp with time zone|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1022</StateNumber>
       <TypeId>1184</TypeId>
     </column>
-    <index id="218" parent="56" name="django_migrations_pkey">
+    <index id="221" parent="56" name="django_migrations_pkey">
       <ObjectId>16641</ObjectId>
       <StateNumber>1022</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
-    <key id="219" parent="56" name="django_migrations_pkey">
+    <key id="222" parent="56" name="django_migrations_pkey">
       <ObjectId>16642</ObjectId>
       <StateNumber>1022</StateNumber>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>django_migrations_pkey</UnderlyingIndexName>
     </key>
-    <column id="220" parent="57" name="session_key">
+    <column id="223" parent="57" name="session_key">
       <Position>1</Position>
       <DataType>varchar(40)|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1040</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="221" parent="57" name="session_data">
+    <column id="224" parent="57" name="session_data">
       <Position>2</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1040</StateNumber>
       <TypeId>25</TypeId>
     </column>
-    <column id="222" parent="57" name="expire_date">
+    <column id="225" parent="57" name="expire_date">
       <Position>3</Position>
       <DataType>timestamp with time zone|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1040</StateNumber>
       <TypeId>1184</TypeId>
     </column>
-    <index id="223" parent="57" name="django_session_pkey">
+    <index id="226" parent="57" name="django_session_pkey">
       <ObjectId>16871</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>session_key</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
-    <index id="224" parent="57" name="django_session_session_key_c0390e0f_like">
+    <index id="227" parent="57" name="django_session_session_key_c0390e0f_like">
       <ObjectId>16873</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>session_key</ColNames>
     </index>
-    <index id="225" parent="57" name="django_session_expire_date_a5c62663">
+    <index id="228" parent="57" name="django_session_expire_date_a5c62663">
       <ObjectId>16874</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>expire_date</ColNames>
     </index>
-    <key id="226" parent="57" name="django_session_pkey">
+    <key id="229" parent="57" name="django_session_pkey">
       <ObjectId>16872</ObjectId>
       <StateNumber>1040</StateNumber>
       <ColNames>session_key</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>django_session_pkey</UnderlyingIndexName>
     </key>
-    <column id="227" parent="58" name="id">
+    <column id="230" parent="58" name="id">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
@@ -1574,38 +1600,55 @@ model</ColNames>
       <DefaultExpression>nextval(&apos;format_uris_id_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
     </column>
-    <column id="228" parent="58" name="url">
+    <column id="231" parent="58" name="url">
       <Position>2</Position>
       <DataType>varchar(200)|0s</DataType>
       <StateNumber>1067</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="229" parent="58" name="book_id">
+    <column id="232" parent="58" name="book_id">
       <Position>3</Position>
       <DataType>integer|0s</DataType>
       <StateNumber>1194</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <index id="230" parent="58" name="format_uris_pkey">
+    <index id="233" parent="58" name="format_uris_pkey">
       <ObjectId>16906</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
-    <index id="231" parent="58" name="format_uris_book_id_id_9545231c">
+    <index id="234" parent="58" name="format_uri_url_178a7a2b_uniq">
+      <ObjectId>17502</ObjectId>
+      <StateNumber>7210</StateNumber>
+      <ColNames>url</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="235" parent="58" name="format_uri_url_178a7a2b_like">
+      <ObjectId>17504</ObjectId>
+      <StateNumber>7210</StateNumber>
+      <ColNames>url</ColNames>
+    </index>
+    <index id="236" parent="58" name="format_uris_book_id_id_9545231c">
       <ObjectId>16913</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>book_id</ColNames>
     </index>
-    <key id="232" parent="58" name="format_uris_pkey">
+    <key id="237" parent="58" name="format_uris_pkey">
       <ObjectId>16907</ObjectId>
       <StateNumber>1064</StateNumber>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>format_uris_pkey</UnderlyingIndexName>
     </key>
-    <foreign-key id="233" parent="58" name="format_uri_book_id_4ad473f2_fk_book_id">
+    <key id="238" parent="58" name="format_uri_url_178a7a2b_uniq">
+      <ObjectId>17503</ObjectId>
+      <StateNumber>1379</StateNumber>
+      <ColNames>url</ColNames>
+      <UnderlyingIndexName>format_uri_url_178a7a2b_uniq</UnderlyingIndexName>
+    </key>
+    <foreign-key id="239" parent="58" name="format_uri_book_id_4ad473f2_fk_book_id">
       <ObjectId>17060</ObjectId>
       <Deferrable>1</Deferrable>
       <InitiallyDeferred>1</InitiallyDeferred>
@@ -1617,7 +1660,7 @@ model</ColNames>
       <RefKeyName>book_pkey</RefKeyName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="234" parent="59" name="id">
+    <column id="240" parent="59" name="id">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
@@ -1625,27 +1668,44 @@ model</ColNames>
       <DefaultExpression>nextval(&apos;backend_subject_id_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
     </column>
-    <column id="235" parent="59" name="description">
+    <column id="241" parent="59" name="description">
       <Position>3</Position>
       <DataType>text|0s</DataType>
       <StateNumber>1063</StateNumber>
       <TypeId>25</TypeId>
     </column>
-    <index id="236" parent="59" name="backend_subject_pkey">
+    <index id="242" parent="59" name="backend_subject_pkey">
       <ObjectId>16889</ObjectId>
-      <StateNumber>1322</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
-    <key id="237" parent="59" name="backend_subject_pkey">
+    <index id="243" parent="59" name="subject_description_114dd44a_uniq">
+      <ObjectId>17489</ObjectId>
+      <StateNumber>7210</StateNumber>
+      <ColNames>description</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="244" parent="59" name="subject_description_114dd44a_like">
+      <ObjectId>17491</ObjectId>
+      <StateNumber>7210</StateNumber>
+      <ColNames>description</ColNames>
+    </index>
+    <key id="245" parent="59" name="backend_subject_pkey">
       <ObjectId>16890</ObjectId>
       <StateNumber>1060</StateNumber>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>backend_subject_pkey</UnderlyingIndexName>
     </key>
-    <column id="238" parent="60" name="id">
+    <key id="246" parent="59" name="subject_description_114dd44a_uniq">
+      <ObjectId>17490</ObjectId>
+      <StateNumber>1378</StateNumber>
+      <ColNames>description</ColNames>
+      <UnderlyingIndexName>subject_description_114dd44a_uniq</UnderlyingIndexName>
+    </key>
+    <column id="247" parent="60" name="id">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
@@ -1653,63 +1713,63 @@ model</ColNames>
       <DefaultExpression>nextval(&apos;subject_book_id_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
     </column>
-    <column id="239" parent="60" name="subject_id">
+    <column id="248" parent="60" name="subject_id">
       <Position>2</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1372</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="240" parent="60" name="book_id">
+    <column id="249" parent="60" name="book_id">
       <Position>3</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1372</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <index id="241" parent="60" name="subject_book_pkey">
+    <index id="250" parent="60" name="subject_book_pkey">
       <ObjectId>17473</ObjectId>
-      <StateNumber>1372</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
-    <index id="242" parent="60" name="subject_book_subject_id_book_id_cb9f1328_uniq">
+    <index id="251" parent="60" name="subject_book_subject_id_book_id_cb9f1328_uniq">
       <ObjectId>17485</ObjectId>
-      <StateNumber>1372</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>subject_id
 book_id</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="243" parent="60" name="subject_book_subject_id_3ba9b9a4">
+    <index id="252" parent="60" name="subject_book_subject_id_3ba9b9a4">
       <ObjectId>17487</ObjectId>
-      <StateNumber>1372</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>subject_id</ColNames>
     </index>
-    <index id="244" parent="60" name="subject_book_book_id_68367794">
+    <index id="253" parent="60" name="subject_book_book_id_68367794">
       <ObjectId>17488</ObjectId>
-      <StateNumber>1372</StateNumber>
+      <StateNumber>7210</StateNumber>
       <ColNames>book_id</ColNames>
     </index>
-    <key id="245" parent="60" name="subject_book_pkey">
+    <key id="254" parent="60" name="subject_book_pkey">
       <ObjectId>17474</ObjectId>
       <StateNumber>1372</StateNumber>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>subject_book_pkey</UnderlyingIndexName>
     </key>
-    <key id="246" parent="60" name="subject_book_subject_id_book_id_cb9f1328_uniq">
+    <key id="255" parent="60" name="subject_book_subject_id_book_id_cb9f1328_uniq">
       <ObjectId>17486</ObjectId>
       <StateNumber>1372</StateNumber>
       <ColNames>subject_id
 book_id</ColNames>
       <UnderlyingIndexName>subject_book_subject_id_book_id_cb9f1328_uniq</UnderlyingIndexName>
     </key>
-    <foreign-key id="247" parent="60" name="subject_book_subject_id_3ba9b9a4_fk_subject_id">
-      <ObjectId>17475</ObjectId>
+    <foreign-key id="256" parent="60" name="subject_books_subject_id_09e10f33_fk_subject_id">
+      <ObjectId>17497</ObjectId>
       <Deferrable>1</Deferrable>
       <InitiallyDeferred>1</InitiallyDeferred>
-      <StateNumber>1372</StateNumber>
+      <StateNumber>1379</StateNumber>
       <ColNames>subject_id</ColNames>
       <RefTableId>16885</RefTableId>
       <RefColPositions>1</RefColPositions>
@@ -1717,11 +1777,11 @@ book_id</ColNames>
       <RefKeyName>backend_subject_pkey</RefKeyName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="248" parent="60" name="subject_book_book_id_68367794_fk_book_id">
-      <ObjectId>17480</ObjectId>
+    <foreign-key id="257" parent="60" name="subject_books_book_id_4a0fbccb_fk_book_id">
+      <ObjectId>17492</ObjectId>
       <Deferrable>1</Deferrable>
       <InitiallyDeferred>1</InitiallyDeferred>
-      <StateNumber>1372</StateNumber>
+      <StateNumber>1379</StateNumber>
       <ColNames>book_id</ColNames>
       <RefTableId>16792</RefTableId>
       <RefColPositions>1</RefColPositions>

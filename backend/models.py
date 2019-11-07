@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Book(models.Model):
-    gutenberg_id = models.CharField(max_length=16, null=True, unique=True)
+    gutenberg_id = models.CharField(max_length=16, unique=True)
     title = models.CharField(max_length=1024, null=True)
     description = models.TextField(null=True)
     album_art_url = models.URLField(null=True)
@@ -23,7 +23,7 @@ class Book(models.Model):
 
 
 class GoodreadsBook(models.Model):
-    gutenberg_id = models.CharField(max_length=16, null=True)
+    book = models.ForeignKey(Book, on_delete=models.SET_NULL, null=True)
     id = models.CharField(max_length=64, null=False, primary_key=True)
     title = models.TextField(null=True)
     author = models.CharField(max_length=256, null=True)
@@ -61,21 +61,26 @@ class FormatURI(models.Model):
 class Author(models.Model):
     first_name = models.CharField(max_length=256, null=True)
     last_name = models.CharField(max_length=256, null=True)
+
     books = models.ManyToManyField(Book)
     description = models.TextField(null=True)
-    wikipedia_url = models.URLField(null=True)
 
     class Meta:
         db_table = "author"
+        unique_together = ['first_name', 'last_name']
 
     def __repr__(self):
-        return "{0} {1}".format(self.first_name, self.last_name)
+        return '{0} {1}'.format(self.first_name, self.last_name)
 
     def __str__(self):
         return repr(self)
 
     def full_name(self):
         return repr(self)
+
+    @staticmethod
+    def find_by_full_name(first_name, last_name):
+        return Author.objects.filter(first_name__exact=first_name, last_name__exact=last_name)
 
 
 class Chapter(models.Model):
