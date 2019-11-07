@@ -112,7 +112,7 @@ def process_gutenberg_csv(gutenberg_csv):
 
 def process_goodreads_csv(goodreads_csv):
     goodreads_csv_file = open(goodreads_csv)
-    goodreads_csv = csv.DictReader(goodreads_csv_file, fieldnames=utils.gutenberg_field_names())
+    goodreads_csv = csv.DictReader(goodreads_csv_file, fieldnames=utils.goodreads_field_names())
 
     headers = next(goodreads_csv)
 
@@ -120,10 +120,32 @@ def process_goodreads_csv(goodreads_csv):
     for idx, row in enumerate(goodreads_csv):
         print(idx)
 
+        gutenberg_id = row['gutenberg_id']
+        gutenberg_book = Book.objects.get(gutenberg_id=gutenberg_id)
+
+        GoodreadsBook.objects.create(
+            book=gutenberg_book,
+            goodreads_id=row['goodreads_id'],
+            title=row['title'],
+            author=row['author'],
+            description=row['description'],
+            average_rating=row['average_rating'],
+            rating_dist=row['rating_dist'],
+            ratings_count=row['ratings_count'],
+            text_reviews_count=row['text_reviews_count'],
+            num_pages=row['num_pages'],
+            publisher=row['publisher'],
+            language_code=row['language_code'],
+            image_url=row['image_url'],
+            small_image_url = row['small_image_url'],
+            isbn = row['isbn'],
+            isbn13 = row['isbn13'],
+            link = row['link']
+        )
 
 
 @click.command()
-@click.option('--gutenberg_csv', type=str, required=True)
+@click.option('--gutenberg_csv', type=str, required=False)
 @click.option('--goodreads_csv', type=str, required=False)
 def main(gutenberg_csv, goodreads_csv):
     if gutenberg_csv is not None and gutenberg_csv != '':

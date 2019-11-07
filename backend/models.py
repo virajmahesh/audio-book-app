@@ -24,7 +24,7 @@ class Book(models.Model):
 
 class GoodreadsBook(models.Model):
     book = models.ForeignKey(Book, on_delete=models.SET_NULL, null=True)
-    id = models.CharField(max_length=64, null=False, primary_key=True)
+    goodreads_id = models.CharField(max_length=64, null=False, primary_key=True)
     title = models.TextField(null=True)
     author = models.CharField(max_length=256, null=True)
     description = models.TextField(null=True)
@@ -40,6 +40,9 @@ class GoodreadsBook(models.Model):
     isbn = models.CharField(max_length=10, null=True)
     isbn13 = models.CharField(max_length=13, null=True)
     link = models.URLField(null=True)
+
+    class Meta:
+        db_table = 'goodreads_book'
 
 
 class Subject(models.Model):
