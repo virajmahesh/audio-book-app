@@ -93,7 +93,8 @@ def main(gutenberg_csv, goodreads_csv):
     headers = next(gutenberg_csv)
 
     # Populate Gutenberg data
-    for row in gutenberg_csv:
+    for idx, row in enumerate(gutenberg_csv):
+        print(idx)
         title = row['title']
 
         if title == '' or title is None:
