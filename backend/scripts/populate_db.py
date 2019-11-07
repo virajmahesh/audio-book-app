@@ -83,10 +83,7 @@ def populate_format_URIs(book, row):
         format_uri.save()
 
 
-@click.command()
-@click.option('--gutenberg_csv', type=str, required=True)
-@click.option('--goodreads_csv', type=str, required=False)
-def main(gutenberg_csv, goodreads_csv):
+def process_gutenberg_csv(gutenberg_csv):
     gutenberg_csv_file = open(gutenberg_csv)
     gutenberg_csv = csv.DictReader(gutenberg_csv_file, fieldnames=utils.gutenberg_field_names())
 
@@ -112,7 +109,30 @@ def main(gutenberg_csv, goodreads_csv):
         populate_subjects(book, row)
         populate_format_URIs(book, row)
 
-    # Populate Goodreads data
+
+def process_goodreads_csv(goodreads_csv):
+    goodreads_csv_file = open(goodreads_csv)
+    goodreads_csv = csv.DictReader(goodreads_csv_file, fieldnames=utils.gutenberg_field_names())
+
+    headers = next(goodreads_csv)
+
+    # Populate Gutenberg data
+    for idx, row in enumerate(goodreads_csv):
+        print(idx)
+
+
+
+@click.command()
+@click.option('--gutenberg_csv', type=str, required=True)
+@click.option('--goodreads_csv', type=str, required=False)
+def main(gutenberg_csv, goodreads_csv):
+    if gutenberg_csv is not None and gutenberg_csv != '':
+        print('Processing Gutenberg CSV file')
+        process_gutenberg_csv(gutenberg_csv)
+
+    if goodreads_csv is not None and goodreads_csv != '':
+        print('Processing Goodreads CVS file')
+        process_goodreads_csv(goodreads_csv)
 
 
 if __name__ == '__main__':

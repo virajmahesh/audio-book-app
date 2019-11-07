@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="72a94fc8-d358-4617-87f4-76231a164392" name="Default Changelist" comment="" />
+    <list default="true" id="72a94fc8-d358-4617-87f4-76231a164392" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/scripts/populate_db.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/scripts/populate_db.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -188,7 +191,7 @@
       <workItem from="1572147108322" duration="2757000" />
       <workItem from="1572155117299" duration="81302000" />
       <workItem from="1572807044552" duration="14261000" />
-      <workItem from="1572926254632" duration="11615000" />
+      <workItem from="1572926254632" duration="12237000" />
     </task>
     <servers />
   </component>
