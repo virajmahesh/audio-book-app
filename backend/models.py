@@ -35,11 +35,11 @@ class GoodreadsBook(models.Model):
     num_pages = models.IntegerField(null=True)
     publisher = models.CharField(max_length=256, null=True)
     language_code = models.CharField(max_length=16, null=True)
-    image_url = models.URLField(null=True)
-    small_image_url = models.URLField(null=True)
+    image_url = models.URLField(null=True, max_length=1024)
+    small_image_url = models.URLField(null=True, max_length=1024)
     isbn = models.CharField(max_length=32, null=True)
     isbn13 = models.CharField(max_length=32, null=True)
-    link = models.URLField(null=True)
+    link = models.URLField(null=True, max_length=1024)
 
     class Meta:
         db_table = 'goodreads_book'
@@ -55,7 +55,7 @@ class Subject(models.Model):
 
 class FormatURI(models.Model):
     book = models.ForeignKey(Book, on_delete=models.SET_NULL, null=True)
-    url = models.URLField(null=True, unique=True)
+    url = models.URLField(null=True, unique=True, max_length=1024)
 
     class Meta:
         db_table = "format_uri"
@@ -90,7 +90,7 @@ class Chapter(models.Model):
     number = models.IntegerField(null=True)
     title = models.CharField(max_length=1024, null=True)
     book = models.ForeignKey(Book, on_delete=models.SET_NULL, null=True)
-    url = models.URLField(null=True)
+    url = models.URLField(null=True, max_length=1024)
 
     class Meta:
         db_table = "chapter"
@@ -99,7 +99,7 @@ class Chapter(models.Model):
 class AudioRecording(models.Model):
     chapter = models.ForeignKey(Chapter, on_delete=models.SET_NULL, null=True)
     length_seconds = models.IntegerField(null=True)
-    url = models.URLField(null=True)
+    url = models.URLField(null=True, max_length=1024)
 
     class Meta:
         db_table = "audio_recording"

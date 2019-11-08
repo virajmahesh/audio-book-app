@@ -83,7 +83,7 @@ def populate_format_URIs(book, row):
         format_uri.save()
 
 
-def process_gutenberg_csv(gutenberg_csv):
+def process_gutenberg_csv(gutenberg_csv, start):
     gutenberg_csv_file = open(gutenberg_csv)
     gutenberg_csv = csv.DictReader(gutenberg_csv_file, fieldnames=utils.gutenberg_field_names())
 
@@ -91,6 +91,9 @@ def process_gutenberg_csv(gutenberg_csv):
 
     # Populate Gutenberg data
     for idx, row in enumerate(gutenberg_csv):
+        if idx <= start:
+            continue
+
         print(idx)
         title = row['title']
 
@@ -110,15 +113,19 @@ def process_gutenberg_csv(gutenberg_csv):
         populate_format_URIs(book, row)
 
 
-def process_goodreads_csv(goodreads_csv):
+def process_goodreads_csv(goodreads_csv, start):
     goodreads_csv_file = open(goodreads_csv)
     goodreads_csv = csv.DictReader(goodreads_csv_file, fieldnames=utils.goodreads_field_names())
 
     headers = next(goodreads_csv)
 
-    # Populate Gutenberg data
+    # Populate Goodreads data
     for idx, row in enumerate(goodreads_csv):
+        if idx <= start:
+            continue
+
         print(idx)
+        print(row)
 
         gutenberg_id = row['gutenberg_id']
         gutenberg_book = Book.objects.get(gutenberg_id=gutenberg_id)
@@ -147,14 +154,15 @@ def process_goodreads_csv(goodreads_csv):
 @click.command()
 @click.option('--gutenberg_csv', type=str, required=False)
 @click.option('--goodreads_csv', type=str, required=False)
-def main(gutenberg_csv, goodreads_csv):
+@click.option('--start', type=int, required=False, default=0)
+def main(gutenberg_csv, goodreads_csv, start):
+
     if gutenberg_csv is not None and gutenberg_csv != '':
         print('Processing Gutenberg CSV file')
-        process_gutenberg_csv(gutenberg_csv)
-
-    if goodreads_csv is not None and goodreads_csv != '':
+        process_gutenberg_csv(gutenberg_csv, start)
+    elif goodreads_csv is not None and goodreads_csv != '':
         print('Processing Goodreads CVS file')
-        process_goodreads_csv(goodreads_csv)
+        process_goodreads_csv(goodreads_csv, start)
 
 
 if __name__ == '__main__':
