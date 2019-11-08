@@ -24,7 +24,7 @@ class Book(models.Model):
 
 class GoodreadsBook(models.Model):
     book = models.ForeignKey(Book, on_delete=models.SET_NULL, null=True)
-    goodreads_id = models.CharField(max_length=64, null=False, primary_key=True)
+    goodreads_id = models.CharField(max_length=64, null=False)
     title = models.TextField(null=True)
     author = models.CharField(max_length=256, null=True)
     description = models.TextField(null=True)
@@ -37,8 +37,8 @@ class GoodreadsBook(models.Model):
     language_code = models.CharField(max_length=16, null=True)
     image_url = models.URLField(null=True)
     small_image_url = models.URLField(null=True)
-    isbn = models.CharField(max_length=10, null=True)
-    isbn13 = models.CharField(max_length=13, null=True)
+    isbn = models.CharField(max_length=32, null=True)
+    isbn13 = models.CharField(max_length=32, null=True)
     link = models.URLField(null=True)
 
     class Meta:

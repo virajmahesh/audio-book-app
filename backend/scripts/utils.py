@@ -16,6 +16,14 @@ def goodreads_field_names():
             'image_url', 'small_image_url', 'isbn', 'isbn13', 'link']
 
 
+def str_to_int(x):
+    return int(float(x)) if x != '' and x is not None else None
+
+
+def str_to_float(x):
+    return float(x) if x != '' and x is not None else None
+
+
 def gutenberg_meta_json_to_csv(input_file_path, output_file_path):
     input_file = open(input_file_path, 'r')
     gutenberg_json = json.loads(input_file.read())

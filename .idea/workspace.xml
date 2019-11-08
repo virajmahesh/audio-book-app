@@ -2,11 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="72a94fc8-d358-4617-87f4-76231a164392" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/3fdf738b-8f92-414a-951c-18b01d7b04c7.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/3fdf738b-8f92-414a-951c-18b01d7b04c7.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/scripts/populate_db.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/scripts/populate_db.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/scripts/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/scripts/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticfiles/data/goodreads_data/goodreads_data_combined.csv" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/data/goodreads_data/goodreads_data_combined.csv" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -182,7 +182,17 @@
             <path>
               <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
               <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@5ff2bbe6" type="7427dc5b:ServiceModel$ServiceGroupNode" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@325a52ac" type="9fbbdea:ServiceModel$ServiceNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@44263117" type="9fbbdea:ServiceModel$ServiceNode" />
+            </path>
+            <path>
+              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@5ff2bbe6" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@3727a373" type="9fbbdea:ServiceModel$ServiceNode" />
+            </path>
+            <path>
+              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@5ff2bbe6" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@468c3822" type="9fbbdea:ServiceModel$ServiceNode" />
             </path>
           </expand>
           <select />
@@ -204,7 +214,7 @@
       <workItem from="1572147108322" duration="2757000" />
       <workItem from="1572155117299" duration="81302000" />
       <workItem from="1572807044552" duration="14261000" />
-      <workItem from="1572926254632" duration="14303000" />
+      <workItem from="1572926254632" duration="16815000" />
     </task>
     <servers />
   </component>

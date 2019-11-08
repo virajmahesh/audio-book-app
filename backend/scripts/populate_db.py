@@ -52,7 +52,7 @@ def populate_authors(book, row):
         # Check if an author already exists
         if ',' in author_name:
             sub_names = author_name.split(',')
-            last_name, first_name = sub_names[1], sub_names[0]
+            last_name, first_name = sub_names[0], sub_names[1]
         else:
             last_name, first_name = '', author_name
 
@@ -129,18 +129,18 @@ def process_goodreads_csv(goodreads_csv):
             title=row['title'],
             author=row['author'],
             description=row['description'],
-            average_rating=row['average_rating'],
+            average_rating=utils.str_to_float(row['average_rating']),
             rating_dist=row['rating_dist'],
-            ratings_count=row['ratings_count'],
-            text_reviews_count=row['text_reviews_count'],
-            num_pages=row['num_pages'],
+            ratings_count=utils.str_to_int(row['ratings_count']),
+            text_reviews_count=utils.str_to_int(row['text_reviews_count']),
+            num_pages=utils.str_to_int(row['num_pages']),
             publisher=row['publisher'],
             language_code=row['language_code'],
             image_url=row['image_url'],
-            small_image_url = row['small_image_url'],
-            isbn = row['isbn'],
-            isbn13 = row['isbn13'],
-            link = row['link']
+            small_image_url=row['small_image_url'],
+            isbn=row['isbn'],
+            isbn13=row['isbn13'],
+            link=row['link']
         )
 
 
