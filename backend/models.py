@@ -23,7 +23,7 @@ class Book(models.Model):
 
 
 class GoodreadsBook(models.Model):
-    book = models.ForeignKey(Book, on_delete=models.SET_NULL, null=True)
+    book = models.OneToOneField(Book, on_delete=models.SET_NULL, null=True, unique=True)
     goodreads_id = models.CharField(max_length=64, null=False)
     title = models.TextField(null=True)
     author = models.CharField(max_length=256, null=True)

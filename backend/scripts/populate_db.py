@@ -91,7 +91,7 @@ def process_gutenberg_csv(gutenberg_csv, start):
 
     # Populate Gutenberg data
     for idx, row in enumerate(gutenberg_csv):
-        if idx <= start:
+        if idx < start:
             continue
 
         print(idx)
@@ -121,12 +121,11 @@ def process_goodreads_csv(goodreads_csv, start):
 
     # Populate Goodreads data
     for idx, row in enumerate(goodreads_csv):
-        if idx <= start:
+        # Skip processing this row if it's before the row we want to start at
+        if idx + 1 < start:  # Adding one since the enumaration starts at 0
             continue
 
         print(idx)
-        print(row)
-
         gutenberg_id = row['gutenberg_id']
         gutenberg_book = Book.objects.get(gutenberg_id=gutenberg_id)
 
