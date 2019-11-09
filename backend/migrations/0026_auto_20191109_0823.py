@@ -4,8 +4,9 @@ from django.db import migrations
 
 
 def clean_isbn(apps, schema_editor):
-    GoodreadsBook = apps.get_model('GoodreadsBook', 'Post')
-    for book in GoodreadsBook.objects.all():
+    GoodreadsBook = apps.get_model('backend', 'GoodreadsBook')
+    for idx, book in enumerate(GoodreadsBook.objects.all()):
+        print(idx)
         if '.0' in book.isbn or '.0' in book.isbn13:
             book.isbn = book.isbn.replace('.0', '')
             book.isbn13 = book.isbn13.replace('.0', '')

@@ -36,7 +36,7 @@ def home(request):
                     break
 
         # Only return 150 books
-        if len(homepage_books) >= 150:
+        if len(homepage_books) >= 32:
             break
 
     return HttpResponse(serializers.serialize('json', homepage_books),
