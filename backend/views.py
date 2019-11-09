@@ -27,11 +27,15 @@ def home(request):
         for gutenberg_author in gutenberg_book.author_set.all():
 
             # Check if Goodreads and Gutenberg book are correctly matched
-            if goodreads_book.is_authored_by(gutenberg_author) and goodreads_book.goodreads_id not in goodreads_book_ids:
-                goodreads_book_ids.add(goodreads_book.goodreads_id)
-                homepage_books.append(goodreads_book)
-                break
+            if goodreads_book.is_authored_by(gutenberg_author):
 
+                # Check if we've
+                if goodreads_book.goodreads_id not in goodreads_book_ids:
+                    goodreads_book_ids.add(goodreads_book.goodreads_id)
+                    homepage_books.append(goodreads_book)
+                    break
+
+        # Only return 150 books
         if len(homepage_books) >= 150:
             break
 

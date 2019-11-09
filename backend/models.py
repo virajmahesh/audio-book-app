@@ -46,15 +46,26 @@ class GoodreadsBook(models.Model):
     isbn = models.CharField(max_length=32, null=True)
     isbn13 = models.CharField(max_length=32, null=True)
 
+    class Meta:
+        db_table = 'goodreads_book'
+
     @staticmethod
     def top_books():
+        '''
+        Returns the books with the most ratings.
+        '''
         return GoodreadsBook.objects.order_by('-ratings_count')
 
     def is_authored_by(self, author):
         return author.full_name() == self.author
 
-    class Meta:
-        db_table = 'goodreads_book'
+
+class BookJSONResponse:
+    def __init__(self, id, title, author, description):
+        self.id = id
+        self.title = title
+        self.author = author
+        self.description = description
 
 
 class Subject(models.Model):
