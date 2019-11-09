@@ -25,24 +25,47 @@ class Book(models.Model):
 class GoodreadsBook(models.Model):
     book = models.OneToOneField(Book, on_delete=models.SET_NULL, null=True, unique=True)
     goodreads_id = models.CharField(max_length=64, null=False)
+
     title = models.TextField(null=True)
     author = models.CharField(max_length=256, null=True)
     description = models.TextField(null=True)
+
     average_rating = models.DecimalField(null=True, decimal_places=2, max_digits=3)
     rating_dist = models.CharField(max_length=128, null=True)
     ratings_count = models.IntegerField(null=True)
     text_reviews_count = models.IntegerField(null=True)
+
     num_pages = models.IntegerField(null=True)
     publisher = models.CharField(max_length=256, null=True)
     language_code = models.CharField(max_length=16, null=True)
+
+    link = models.URLField(null=True, max_length=1024)
     image_url = models.URLField(null=True, max_length=1024)
     small_image_url = models.URLField(null=True, max_length=1024)
+
     isbn = models.CharField(max_length=32, null=True)
     isbn13 = models.CharField(max_length=32, null=True)
-    link = models.URLField(null=True, max_length=1024)
 
     class Meta:
         db_table = 'goodreads_book'
+
+    @staticmethod
+    def top_books():
+        '''
+        Returns the books with the most ratings.
+        '''
+        return GoodreadsBook.objects.order_by('-ratings_count')
+
+    def is_authored_by(self, author):
+        return author.full_name() == self.author
+
+
+class BookJSONResponse:
+    def __init__(self, id, title, author, description):
+        self.id = id
+        self.title = title
+        self.author = author
+        self.description = description
 
 
 class Subject(models.Model):
@@ -73,7 +96,7 @@ class Author(models.Model):
         unique_together = ['first_name', 'last_name']
 
     def __repr__(self):
-        return '{0} {1}'.format(self.first_name, self.last_name)
+        return '{0} {1}'.format(self.first_name.lstrip(), self.last_name.rstrip())
 
     def __str__(self):
         return repr(self)
