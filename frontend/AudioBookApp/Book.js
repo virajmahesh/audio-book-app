@@ -101,14 +101,16 @@ function chapterStyle(isLastChapter) {
 
 const styles = StyleSheet.create({
     book: {
-        width: '28%',
+        width: '30%',
         height: 200,
+        marginLeft: '1.666%',
+        marginRight: '1.666%',
+        marginBottom: 15,
         borderRadius: 5,
-        margin: 10,
     },
     albumArt: {
         height: '80%',
-        marginBottom: 2,
+        marginBottom: 5,
     },
     bookMetadata: {
         height: '20%',
@@ -117,6 +119,8 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontFamily: 'product-sans',
     },
+
+    //TODO: Clean up Chapter styles and rendereding logic
     chapterTitle: {
         flex: 0.9
     },
