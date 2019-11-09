@@ -129,6 +129,10 @@ def process_goodreads_csv(goodreads_csv, start):
         gutenberg_id = row['gutenberg_id']
         gutenberg_book = Book.objects.get(gutenberg_id=gutenberg_id)
 
+        if GoodreadsBook.objects.filter(book=gutenberg_book).exists():
+            print('Goodreads book already exists for Gutenberg book: {0}'.format(gutenberg_book))
+            continue
+
         GoodreadsBook.objects.create(
             book=gutenberg_book,
             goodreads_id=row['goodreads_id'],

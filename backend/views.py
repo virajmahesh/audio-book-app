@@ -1,4 +1,5 @@
 import json
+from django.core import serializers
 from django.http import HttpResponse
 from django.db.models import F
 from backend.models import *
@@ -16,11 +17,26 @@ def get_books(request, book_id):
     return HttpResponse(json.dumps(response), content_type='application/json')
 
 
-def get_books_home(request):
-    #TODO: Return top 1000 goodreads books
-    homepage_books = GoodreadsBook.objects.filter(book__title=F('title')) \
-                                  .order_by(rati)
-    return HttpResponse(json.dumps(homepage_books), content_type='application/json')
+def home(request):
+    homepage_books = []
+    goodreads_book_ids = set()
+
+    for goodreads_book in GoodreadsBook.top_books():
+        gutenberg_book = goodreads_book.book
+
+        for gutenberg_author in gutenberg_book.author_set.all():
+
+            # Check if Goodreads and Gutenberg book are correctly matched
+            if goodreads_book.is_authored_by(gutenberg_author) and goodreads_book.goodreads_id not in goodreads_book_ids:
+                goodreads_book_ids.add(goodreads_book.goodreads_id)
+                homepage_books.append(goodreads_book)
+                break
+
+        if len(homepage_books) >= 150:
+            break
+
+    return HttpResponse(serializers.serialize('json', homepage_books),
+                        content_type='application/json')
 
 
 def get_chapters(request, book_id):
