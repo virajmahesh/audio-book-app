@@ -1,6 +1,6 @@
 import React from "react";
 import {Audio} from 'expo-av';
-import {Slider, StyleSheet, Text, View} from "react-native";
+import {Slider, StyleSheet, Text, View, Image} from "react-native";
 import {Icon} from "react-native-elements";
 
 
@@ -61,12 +61,11 @@ class ChapterPlayerPage extends React.Component {
             <View>
                 <View style={styles.chapterPlayer}>
                     <View style={styles.bookDetails}>
-                        <View style={styles.albumArt}>
-                        </View>
+                        <Image style={styles.albumArt} source={{uri: this.state.book.getImageURL()}} resizeMode='contain'/>
                     </View>
                     <View style={styles.audioPlayer}>
-                        <Text style={styles.chapterName}>Chapter 1</Text>
-                        <Text style={styles.bookTitleAndAuthor}>Frankenstein · Mary Shelly</Text>
+                        <Text style={styles.chapterName}>{this.state.chapter.state.title}</Text>
+                        <Text style={styles.bookTitleAndAuthor}>{this.state.book.state.title} · {this.state.book.state.author}</Text>
                         <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 20}}>
                             <View><Text>00:00</Text></View>
                             <View style={{alignItems: 'center'}}>
@@ -137,9 +136,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     albumArt: {
-        height: 200,
-        width: 150,
-        backgroundColor: 'red',
+        width: '75%',
+        height: '75%',
         marginBottom: 25
     },
     chapterName: {

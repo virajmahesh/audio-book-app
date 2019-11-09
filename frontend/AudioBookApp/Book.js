@@ -30,11 +30,13 @@ class Book extends React.Component {
     getImageURL() {
         if (this.state.isbn !== '' || this.state.isbn13 !== '') {
             let isbn = (this.state.isbn !== '')? this.state.isbn : this.state.isbn13;
-            console.log(OPEN_LIBRARY_IMAGE_URL + isbn + '-M.jpg');
-            return OPEN_LIBRARY_IMAGE_URL + isbn + '-M.jpg';
+            return OPEN_LIBRARY_IMAGE_URL + isbn + '-L.jpg';
         }
-        console.log(this.state.imageURL.replace(GOODREADS_REGEX_MATCH, '.'));
         return this.state.imageURL.replace(GOODREADS_REGEX_MATCH, '.');
+    }
+
+    loadChapters() {
+      //TODO: Fetch chapter data from Chapters Endpoint
     }
 
     render() {
@@ -58,18 +60,20 @@ class Book extends React.Component {
 class Chapter extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
-        this.state.title = props.title;
+        this.state = {
+          title: props.title,
+          book: props.book
+        };
     }
 
     render() {
-        console.log(this.props.isLastChapter);
         return (
             <TouchableHighlight
                 onPress={() => this.props.navigation.navigate('ChapterPlayer', {
-                    'book': null,
+                    'book': this.state.book,
                     'chapter': this
                 })}>
+
                 <View style={chapterStyle(this.props.isLastChapter)}>
                     <View style={styles.chapterTitle}>
                         <Text style={{fontFamily: 'product-sans-bold', fontSize: 15}}>{this.state.title}</Text>

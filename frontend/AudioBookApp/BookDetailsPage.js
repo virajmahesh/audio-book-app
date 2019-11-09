@@ -31,13 +31,23 @@ class BookDetailsPage extends React.Component {
             return null;
         }
 
+        //TODO: Replace this logic with book.loadChapters()
+        //TODO: Wait for chapters? Or re-render page when they load
         let chapters = [];
         for (let i = 0; i < 25; i++) {
             let c = null;
             if (i < 24) {
-                c = <Chapter title={'Chapter ' + (i + 1)} isLastChapter={false}/>;
+                c = React.createElement(Chapter, {
+                  title: 'Chapter ' + (i + 1),
+                  book: this.state.book,
+                  isLastChapter: false
+                })
             } else {
-               c = <Chapter title={'Chapter ' + (i + 1)} isLastChapter={true}/>;
+               c = React.createElement(Chapter, {
+                 title: 'Chapter '+ (i + 1),
+                 book: this.state.book,
+                 isLastChapter: true
+               });
             }
             chapters.push(c);
         }
