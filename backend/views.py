@@ -1,7 +1,6 @@
 import json
 from django.core import serializers
 from django.http import HttpResponse
-from django.db.models import F
 from backend.models import *
 
 
