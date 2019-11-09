@@ -9,13 +9,16 @@ class Book extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            book_id: props.book,
+            title: props.title,
+            author: props.author,
+            image_url: props.image_url
+        };
+        props.key = this.state.book_id;
     }
 
     render() {
-        this.state.title = this.props.title;
-        this.state.author = this.props.author;
-
         return (
             <TouchableHighlight
                 onPress={() => this.props.navigation.navigate('BookDetails', {'book': this})}
@@ -23,8 +26,8 @@ class Book extends React.Component {
                 <View>
                     <View style={styles.albumArt}/>
                     <View style={styles.bookMetadata}>
-                        <Text style={styles.bookMetadataText}>{this.props.title}</Text>
-                        <Text style={styles.bookMetadataText}>{this.props.author}</Text>
+                        <Text style={styles.bookMetadataText}>{this.state.title}</Text>
+                        <Text style={styles.bookMetadataText}>{this.state.author}</Text>
                     </View>
                 </View>
             </TouchableHighlight>

@@ -8,17 +8,27 @@ import {Book} from "./Book";
 const width = Dimensions.get('window').width;
 const bookMargin = width * 0.02;
 
+const API_URL = 'http://35.197.75.209:8001';
+const HOME_API_ENDPOINT = API_URL + '/home';
+
 class HomeScreen extends React.Component {
 
-     static navigationOptions = {
-         header: null
-     };
+    static navigationOptions = {
+        header: null
+    };
 
     constructor(props) {
         super(props);
         this.state = {
-            fontsLoaded: false
+            fontsLoaded: false,
+            booksLoaded: false,
+            bookList: []
         };
+    }
+
+    componentDidMount() {
+        this.loadFonts();
+        this.loadHomePageBooks();
     }
 
     async loadFonts() {
@@ -30,6 +40,25 @@ class HomeScreen extends React.Component {
         });
     }
 
+    async loadHomePageBooks() {
+        await fetch(HOME_API_ENDPOINT)
+            .then((response => response.json()))
+            .then((responseJSON) => {
+                let bookList = [];
+
+                // Parse the JSON response and create Book objects
+                responseJSON.forEach((b => {
+                    bookList.push(React.createElement(Book, b.fields));
+                }));
+
+                // Update the app state with the new book list
+                this.setState({
+                    bookList: bookList,
+                    booksLoaded: true
+                });
+            });
+    }
+
     render() {
         //TODO: Log Home Activity startup time
         if (!this.state.fontsLoaded) {
@@ -39,16 +68,7 @@ class HomeScreen extends React.Component {
             />;
         }
 
-        let bookShelves = [];
-        for (let i = 0; i < 10; i++) {
-            bookShelves.push(
-                <View style={styles.bookShelfHome} key={(i * 10) + 4}>
-                    <Book title='Frankenstein' author='Mary Shelly' key={(i * 10) + 1} navigation={this.props.navigation}/>
-                    <Book title='Frankenstein' author='Mary Shelly' key={(i * 10) + 2} navigation={this.props.navigation}/>
-                    <Book title='Frankenstein' author='Mary Shelly' key={(i * 10) + 3} navigation={this.props.navigation}/>
-                </View>
-            )
-        }
+        console.log(this.state.bookList);
 
         return (
             <View style={{flex: 1}}>
@@ -56,7 +76,9 @@ class HomeScreen extends React.Component {
                 <View style={styles.homePage}>
                     <ScrollView>
                         <Text style={styles.homePageTitle} key={99}>Classic Audiobooks</Text>
-                        {bookShelves}
+                        <View>
+                            {this.state.bookList}
+                        </View>
                     </ScrollView>
                 </View>
             </View>
@@ -68,9 +90,6 @@ const styles = StyleSheet.create({
     homePage: {
         flex: 1,
         backgroundColor: '#fff',
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start',
         paddingLeft: bookMargin,
         paddingRight: bookMargin,
         marginLeft: 0,
@@ -78,8 +97,8 @@ const styles = StyleSheet.create({
     },
     homePageTitle: {
         fontSize: 32,
-        fontFamily: 'product-sans-bold',
         padding: 20,
+        fontFamily: 'product-sans-bold',
         textAlign: 'center',
     },
     bookShelfHome: {
