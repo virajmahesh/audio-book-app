@@ -68,15 +68,13 @@ class HomeScreen extends React.Component {
             />;
         }
 
-        console.log(this.state.bookList);
-
         return (
             <View style={{flex: 1}}>
                 <StatusBar barStyle="dark-content"/>
                 <View style={styles.homePage}>
                     <ScrollView>
                         <Text style={styles.homePageTitle} key={99}>Classic Audiobooks</Text>
-                        <View>
+                        <View style={styles.bookShelfHome}>
                             {this.state.bookList}
                         </View>
                     </ScrollView>
@@ -88,25 +86,24 @@ class HomeScreen extends React.Component {
 
 const styles = StyleSheet.create({
     homePage: {
-        flex: 1,
-        backgroundColor: '#fff',
-        paddingLeft: bookMargin,
-        paddingRight: bookMargin,
         marginLeft: 0,
         marginRight: 0,
+        paddingLeft: bookMargin,
+        paddingRight: bookMargin,
+        backgroundColor: '#fff',
     },
     homePageTitle: {
         fontSize: 32,
-        padding: 20,
-        fontFamily: 'product-sans-bold',
+        padding: 25,
         textAlign: 'center',
+        fontFamily: 'product-sans-bold',
     },
     bookShelfHome: {
         flex: 1,
         flexDirection: 'row',
-        marginRight: 0,
-        marginLeft: 0,
-        marginBottom: 20
+        flexWrap: 'wrap',
+        justifyContent: 'flex-start',
+        alignItems: 'stretch'
     },
 });
 

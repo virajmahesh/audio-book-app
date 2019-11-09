@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="72a94fc8-d358-4617-87f4-76231a164392" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/3fdf738b-8f92-414a-951c-18b01d7b04c7.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/3fdf738b-8f92-414a-951c-18b01d7b04c7.xml" afterDir="false" />
+    <list default="true" id="72a94fc8-d358-4617-87f4-76231a164392" name="Default Changelist" comment="Update App UI to load books from Home Page API">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/AudioBookApp/Book.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/AudioBookApp/Book.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/AudioBookApp/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/AudioBookApp/Home.js" afterDir="false" />
@@ -216,8 +215,16 @@
       <workItem from="1572807044552" duration="14261000" />
       <workItem from="1572926254632" duration="21257000" />
       <workItem from="1573195003806" duration="515000" />
-      <workItem from="1573272798735" duration="6257000" />
+      <workItem from="1573272798735" duration="9018000" />
     </task>
+    <task id="LOCAL-00001" summary="Update App UI to load books from Home Page API">
+      <created>1573284336544</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1573284336544</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -235,6 +242,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Update App UI to load books from Home Page API" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update App UI to load books from Home Page API" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

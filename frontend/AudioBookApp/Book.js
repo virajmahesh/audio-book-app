@@ -1,5 +1,5 @@
 import React from "react";
-import {Dimensions, StyleSheet, Text, TouchableHighlight, View} from "react-native";
+import {Dimensions, StyleSheet, Text, TouchableHighlight, View, Image} from "react-native";
 import {Icon} from "react-native-elements";
 
 const width = Dimensions.get('window').width;
@@ -13,9 +13,16 @@ class Book extends React.Component {
             book_id: props.book,
             title: props.title,
             author: props.author,
-            image_url: props.image_url
+            image_url: props.image_url,
+            isbn: props.isbn,
+            isbn13: props.isbn13
         };
         props.key = this.state.book_id;
+    }
+
+    getImageURL() {
+        console.log('http://covers.openlibrary.org/b/isbn/' + this.state.isbn13 + '-M.jpg');
+        return 'http://covers.openlibrary.org/b/isbn/' + this.state.isbn13 + '-M.jpg';
     }
 
     render() {
@@ -24,10 +31,10 @@ class Book extends React.Component {
                 onPress={() => this.props.navigation.navigate('BookDetails', {'book': this})}
                 style={styles.book}>
                 <View>
-                    <View style={styles.albumArt}/>
+                    <Image style={styles.albumArt} source={{uri: this.getImageURL()}}/>
                     <View style={styles.bookMetadata}>
-                        <Text style={styles.bookMetadataText}>{this.state.title}</Text>
-                        <Text style={styles.bookMetadataText}>{this.state.author}</Text>
+                        <Text style={styles.bookMetadataText} numberOfLines={1}>{this.state.title}</Text>
+                        <Text style={styles.bookMetadataText} numberOfLines={1}>{this.state.author}</Text>
                     </View>
                 </View>
             </TouchableHighlight>
@@ -80,27 +87,21 @@ function chapterStyle(isLastChapter) {
 }
 
 const styles = StyleSheet.create({
-    bookMetadataText: {
-        fontFamily: 'product-sans',
-    },
     book: {
-        width: width * 0.28,
+        width: '28%',
         height: 200,
-        marginLeft: bookMargin,
-        marginRight: bookMargin,
         borderRadius: 5,
+        margin: 10,
     },
     albumArt: {
-        borderColor: 'red',
         height: '80%',
-        backgroundColor: 'blue',
-        borderWidth: 2,
     },
     bookMetadata: {
-        borderColor: 'green',
-        borderWidth: 2,
         height: '20%',
-        backgroundColor: 'orange',
+    },
+    bookMetadataText: {
+        fontSize: 14,
+        fontFamily: 'product-sans',
     },
     chapterTitle: {
         flex: 0.9
