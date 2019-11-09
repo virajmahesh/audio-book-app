@@ -43,7 +43,7 @@ class Book extends React.Component {
                 onPress={() => this.props.navigation.navigate('BookDetails', {'book': this})}
                 style={styles.book}>
                 <View>
-                    <Image style={styles.albumArt} source={{uri: this.getImageURL()}}/>
+                    <Image style={styles.albumArt} source={{uri: this.getImageURL()}} resizeMode='contain'/>
                     <View style={styles.bookMetadata}>
                         <Text style={styles.bookMetadataText} numberOfLines={1}>{this.state.title}</Text>
                         <Text style={styles.bookMetadataText} numberOfLines={1}>{this.state.author}</Text>

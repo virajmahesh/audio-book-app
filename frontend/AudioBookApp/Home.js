@@ -39,6 +39,10 @@ class HomeScreen extends React.Component {
             'product-sans-italic': require('./assets/fonts/ProductSansItalic.ttf'),
             'product-sans-bold-italic': require('./assets/fonts/ProductSansBoldItalic.ttf'),
         });
+
+        this.setState({
+          fontsLoaded: true
+        });
     }
 
     async loadHomePageBooks() {
@@ -62,11 +66,8 @@ class HomeScreen extends React.Component {
 
     render() {
         //TODO: Log Home Activity startup time
-        if (!this.state.fontsLoaded) {
-            return <AppLoading
-                startAsync={this.loadFonts}
-                onFinish={() => this.setState({fontsLoaded: true})}
-            />;
+        if (!this.state.fontsLoaded || !this.state.booksLoaded) {
+            return <AppLoading/>;
         }
 
         return (
