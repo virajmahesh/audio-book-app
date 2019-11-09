@@ -61,8 +61,10 @@ class BookDetailsPage extends React.Component {
                 </View>
 
                 <View style={styles.bookDescriptionPanel}>
-                    <Text style={{fontSize: 20, fontFamily: 'product-sans-bold'}}>Description</Text>
-                    <Text style={styles.bookDescription}> {this.state.book.state.description} </Text>
+                    <Text style={{fontSize: 20, fontFamily: 'product-sans-bold'}}>About the book</Text>
+                    <Text style={styles.bookDescription} numberOfLines={5}>
+                        {this.state.book.state.description}
+                    </Text>
                 </View>
                 <View style={styles.playButton}>
                     <Button
