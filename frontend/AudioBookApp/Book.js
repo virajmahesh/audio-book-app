@@ -1,28 +1,40 @@
 import React from "react";
 import {Dimensions, StyleSheet, Text, TouchableHighlight, View, Image} from "react-native";
 import {Icon} from "react-native-elements";
+import { withNavigation } from 'react-navigation';
 
 const width = Dimensions.get('window').width;
 const bookMargin = width * 0.02;
 
+const OPEN_LIBRARY_IMAGE_URL =  'http://covers.openlibrary.org/b/isbn/';
+const GOODREADS_REGEX_MATCH = /\._(SY|SX)(\d+)_\./gm;
+
+@withNavigation
 class Book extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
             book_id: props.book,
+            goodreads_id: props.goodreads_id,
             title: props.title,
             author: props.author,
-            image_url: props.image_url,
+            description: props.description,
             isbn: props.isbn,
-            isbn13: props.isbn13
+            isbn13: props.isbn13,
+            imageURL: props.image_url,
         };
         props.key = this.state.book_id;
     }
 
     getImageURL() {
-        console.log('http://covers.openlibrary.org/b/isbn/' + this.state.isbn13 + '-M.jpg');
-        return 'http://covers.openlibrary.org/b/isbn/' + this.state.isbn13 + '-M.jpg';
+        if (this.state.isbn !== '' || this.state.isbn13 !== '') {
+            let isbn = (this.state.isbn !== '')? this.state.isbn : this.state.isbn13;
+            console.log(OPEN_LIBRARY_IMAGE_URL + isbn + '-M.jpg');
+            return OPEN_LIBRARY_IMAGE_URL + isbn + '-M.jpg';
+        }
+        console.log(this.state.imageURL.replace(GOODREADS_REGEX_MATCH, '.'));
+        return this.state.imageURL.replace(GOODREADS_REGEX_MATCH, '.');
     }
 
     render() {
@@ -42,6 +54,7 @@ class Book extends React.Component {
     }
 }
 
+@withNavigation
 class Chapter extends React.Component {
     constructor(props) {
         super(props);
@@ -95,6 +108,7 @@ const styles = StyleSheet.create({
     },
     albumArt: {
         height: '80%',
+        marginBottom: 2,
     },
     bookMetadata: {
         height: '20%',

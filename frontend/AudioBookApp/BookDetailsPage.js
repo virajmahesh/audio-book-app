@@ -1,5 +1,5 @@
 import React from "react";
-import {Dimensions, StyleSheet, Text, View, ScrollView} from "react-native";
+import {Dimensions, StyleSheet, Text, View, ScrollView, Image, WebView} from "react-native";
 import {Button, Icon} from 'react-native-elements'
 import {Book, Chapter} from './Book'
 import loremIpsum from "lorem-ipsum-react-native"
@@ -35,18 +35,20 @@ class BookDetailsPage extends React.Component {
         for (let i = 0; i < 25; i++) {
             let c = null;
             if (i < 24) {
-                c = <Chapter title={'Chapter ' + (i + 1)} navigation={this.props.navigation} isLastChapter={false}/>;
+                c = <Chapter title={'Chapter ' + (i + 1)} isLastChapter={false}/>;
             } else {
-               c = <Chapter title={'Chapter ' + (i + 1)} navigation={this.props.navigation} isLastChapter={true}/>;
+               c = <Chapter title={'Chapter ' + (i + 1)} isLastChapter={true}/>;
             }
             chapters.push(c);
         }
+
+        console.log(this.state.book);
 
         return (
             <ScrollView>
             <View style={styles.bookDetailsPage}>
                 <View style={styles.detailsPanel}>
-                    <View style={styles.albumArt}/>
+                    <Image style={styles.albumArt} source={{uri: this.state.book.getImageURL()}} />
                     <View styles={styles.bookMetadata}>
                         <Text style={styles.bookTitle}>{this.state.book.state.title}</Text>
                         <Text style={styles.bookAuthor}>{this.state.book.state.author}</Text>
@@ -54,11 +56,7 @@ class BookDetailsPage extends React.Component {
                 </View>
                 <View style={styles.bookDescriptionPanel}>
                     <Text style={{fontSize: 20, fontFamily: 'product-sans-bold'}}>Description</Text>
-                    <Text style={styles.bookDescription}
-                          numberOfLines={3}
-                          ellipsizeMode="tail">
-                        {loremIpsum({count: 100})}
-                    </Text>
+                    <Text style={styles.bookDescription}> {this.state.book.state.description} </Text>
                 </View>
                 <View style={styles.playButton}>
                     <Button
@@ -95,8 +93,6 @@ const styles = StyleSheet.create({
     albumArt: {
         width: width * 0.28,
         height: 150,
-        borderColor: 'red',
-        backgroundColor: 'red',
         borderWidth: 2,
         marginRight: 15,
         marginBottom: 20

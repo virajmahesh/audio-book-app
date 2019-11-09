@@ -1,5 +1,6 @@
 import React from "react";
 import {Dimensions, ScrollView, StatusBar, StyleSheet, Text, View} from "react-native";
+import { withNavigation } from 'react-navigation';
 
 import * as Font from "expo-font";
 import {AppLoading} from "expo";
@@ -107,4 +108,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default HomeScreen;
+export default withNavigation(HomeScreen);
