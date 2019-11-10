@@ -60,12 +60,36 @@ class GoodreadsBook(models.Model):
         return author.full_name() == self.author
 
 
-class BookJSONResponse:
-    def __init__(self, id, title, author, description):
-        self.id = id
-        self.title = title
-        self.author = author
-        self.description = description
+class LibriVoxBook(models.Model):
+        librivox_id = models.CharField(null=True, max_length=32, unique=True)
+        gutenberg_id = models.CharField(null=True, max_length=32)
+
+        title = models.CharField(null=True, max_length=1024)
+        description = models.TextField()
+
+        language = models.CharField(null=True, max_length=32)
+        copyright_year = models.CharField(null=True, max_length=4)
+        num_sections = models.IntegerField(null=True)
+
+        url_text_source = models.URLField(max_length=4096)
+        url_rss =  models.URLField(null=True, max_length=4096)
+        url_zip_file = models.URLField(null=True, max_length=4096)
+
+        totaltime = models.CharField(null=True, max_length=32)
+        totaltimesecs = models.IntegerField()
+
+        class Meta:
+            db_table = 'librivox_book'
+
+
+class LibriVoxRecordings(models.Model):
+    librivox_book = models.ForeignKey(LibriVoxBook, on_delete=models.SET_NULL, null=True)
+    title = models.TextField(null=True)
+    duration = models.CharField(null=True, max_length=32)
+    url = models.URLField(null=True, max_length=4096)
+
+    class Meta:
+        db_table = 'librivox_recording'
 
 
 class Subject(models.Model):

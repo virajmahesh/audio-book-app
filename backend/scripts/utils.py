@@ -37,16 +37,16 @@ def grequests_feedback_function():
     """
 
     class FeedbackCounter:
-    """
-    Object to provide a feedback callback keeping track of total calls.
-    """
-    def __init__(self):
-        self.counter = 0
+        """
+        Object to provide a feedback callback keeping track of total calls.
+        """
+        def __init__(self):
+            self.counter = 0
 
-    def feedback(self, r, **kwargs):
-        self.counter += 1
-        print("{0} fetched, {1} total.".format(r.url, self.counter))
-        return r
+        def feedback(self, r, **kwargs):
+            self.counter += 1
+            print("{0} fetched, {1} total.".format(r.url, self.counter))
+            return r
 
     return FeedbackCounter().feedback
 
