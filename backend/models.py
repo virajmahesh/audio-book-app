@@ -7,10 +7,7 @@ class Book:
         return ', '.join(map(str, author_set))
 
     def __repr__(self):
-        string = '{0}\n----\n' \
-                 'Title: {1}\n' \
-                 'Author(s): {2}\n'
-        return string.format(self.book_type(), self.title, self.authors())
+        return ''
 
     def __str__(self):
         return repr(self)
@@ -19,16 +16,16 @@ class Book:
 class GutenbergBook(Book, models.Model):
     gutenberg_id = models.CharField(max_length=16, unique=True)
     title = models.CharField(max_length=1024, null=True)
-
-    @staticmethod
-    def book_type():
-        return 'Gutenberg Book'
-
+    
     def get_text_url(self):
         for uri in self.formaturi_set:
             if uri.is_text_url():
                 return uri.url
         return None
+    
+    @staticmethod
+    def book_type():
+        return 'Gutenberg Book'
 
     class Meta:
         db_table = 'gutenberg_book'
