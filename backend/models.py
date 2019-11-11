@@ -108,7 +108,8 @@ class LibriVoxBook(Book, models.Model):
     class Meta:
         db_table = 'librivox_book'
 
-    def book_type(self):
+    @staticmethod
+    def book_type():
         return 'Librivox Book'
 
     def get_text_url(self):
