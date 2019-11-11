@@ -3,9 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="72a94fc8-d358-4617-87f4-76231a164392" name="Default Changelist" comment="Add migration to clean up isbn in Goodreads Data">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/AudioBookApp/Book.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/AudioBookApp/Book.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/AudioBookApp/BookDetailsPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/AudioBookApp/BookDetailsPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/AudioBookApp/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/AudioBookApp/Home.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/migrations/0015_auto_20191111_0016.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/migrations/0015_auto_20191111_0016.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/models.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -207,6 +206,7 @@
       <workItem from="1572926254632" duration="21257000" />
       <workItem from="1573195003806" duration="515000" />
       <workItem from="1573272798735" duration="13340000" />
+      <workItem from="1573434826182" duration="199000" />
     </task>
     <task id="LOCAL-00001" summary="Update App UI to load books from Home Page API">
       <created>1573284336544</created>

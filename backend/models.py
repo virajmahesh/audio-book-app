@@ -1,14 +1,15 @@
 from django.db import models
 
+
 class Book:
     def authors(self):
         author_set = self.author_set.all()
-        authors = ', '.join(map(str, author_set))
+        return ', '.join(map(str, author_set))
 
     def __repr__(self):
         string = '{0}\n----\n' \
-        'Title: {1}\n' \
-        'Author(s): {2}\n'
+                 'Title: {1}\n' \
+                 'Author(s): {2}\n'
         return string.format(self.book_type(), self.title, self.authors())
 
     def __str__(self):
@@ -19,7 +20,8 @@ class GutenbergBook(Book, models.Model):
     gutenberg_id = models.CharField(max_length=16, unique=True)
     title = models.CharField(max_length=1024, null=True)
 
-    def book_type(self):
+    @staticmethod
+    def book_type():
         return 'Gutenberg Book'
 
     def get_text_url(self):
@@ -73,9 +75,9 @@ class GoodreadsBook(Book, models.Model):
 
     @staticmethod
     def top_books():
-        '''
+        """
         Returns the books with the most ratings.
-        '''
+        """
         return GoodreadsBook.objects.order_by('-ratings_count')
 
     def authors(self):
@@ -86,34 +88,34 @@ class GoodreadsBook(Book, models.Model):
 
 
 class LibriVoxBook(Book, models.Model):
-        librivox_id = models.CharField(null=True, max_length=32, unique=True)
-        gutenberg_id = models.CharField(null=True, max_length=32)
+    librivox_id = models.CharField(null=True, max_length=32, unique=True)
+    gutenberg_id = models.CharField(null=True, max_length=32)
 
-        title = models.CharField(null=True, max_length=1024)
-        description = models.TextField()
+    title = models.CharField(null=True, max_length=1024)
+    description = models.TextField()
 
-        language = models.CharField(null=True, max_length=32)
-        copyright_year = models.CharField(null=True, max_length=4)
-        num_sections = models.IntegerField(null=True)
+    language = models.CharField(null=True, max_length=32)
+    copyright_year = models.CharField(null=True, max_length=4)
+    num_sections = models.IntegerField(null=True)
 
-        url_text_source = models.URLField(max_length=4096)
-        url_rss =  models.URLField(null=True, max_length=4096)
-        url_zip_file = models.URLField(null=True, max_length=4096)
+    url_text_source = models.URLField(max_length=4096)
+    url_rss = models.URLField(null=True, max_length=4096)
+    url_zip_file = models.URLField(null=True, max_length=4096)
 
-        totaltime = models.CharField(null=True, max_length=32)
-        totaltimesecs = models.IntegerField()
+    totaltime = models.CharField(null=True, max_length=32)
+    totaltimesecs = models.IntegerField()
 
-        class Meta:
-            db_table = 'librivox_book'
+    class Meta:
+        db_table = 'librivox_book'
 
-        def book_type(self):
-            return 'Librivox Book'
+    def book_type(self):
+        return 'Librivox Book'
 
-        def get_text_url(self):
-            return self.url_text_source
+    def get_text_url(self):
+        return self.url_text_source
 
-        def get_audio_url(self):
-            return self.url_zip_file
+    def get_audio_url(self):
+        return self.url_zip_file
 
 
 class LibriVoxRecording(models.Model):
@@ -149,7 +151,6 @@ class Audiobook(Book, models.Model):
                  'secondary_image_url: {3}' \
                  'goodreads_ratings_count: {4}'
         return Book.__repr__(self)
-
 
     class Meta:
         db_table = 'audiobook'

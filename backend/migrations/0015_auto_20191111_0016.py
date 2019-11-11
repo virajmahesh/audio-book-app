@@ -34,14 +34,12 @@ def create_audiobooks(apps, schema_editor):
 
         audiobook.audio_url = librivox_book.get_audio_url()
 
-
         # Set Goodreads ratings count if there's a match between rating and author
         if goodreads_book is not None:
             # Check if authors match and set ratings count from Goodreads
             for author in librivox_book.author_set.union(gutenberg_book.author_set):
                 if goodreads_book.is_authored_by(author):
                     audiobook.goodreads_ratings_count = goodreads_book.ratings_count
-
 
         print(librivox_book)
         print(gutenberg_book)
@@ -52,7 +50,6 @@ def create_audiobooks(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('backend', '0015_auto_20191111_0036'),
     ]
