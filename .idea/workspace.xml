@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SCOPE_TYPE" value="3" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="72a94fc8-d358-4617-87f4-76231a164392" name="Default Changelist" comment="Add migration to clean up isbn in Goodreads Data">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/models.py" afterDir="false" />
-    </list>
+    <list default="true" id="72a94fc8-d358-4617-87f4-76231a164392" name="Default Changelist" comment="Add migration to clean up isbn in Goodreads Data" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -205,7 +205,7 @@
       <workItem from="1572926254632" duration="21257000" />
       <workItem from="1573195003806" duration="515000" />
       <workItem from="1573272798735" duration="13340000" />
-      <workItem from="1573434826182" duration="886000" />
+      <workItem from="1573434826182" duration="981000" />
     </task>
     <task id="LOCAL-00001" summary="Update App UI to load books from Home Page API">
       <created>1573284336544</created>

@@ -9,8 +9,8 @@ import {Book} from "./Book";
 const width = Dimensions.get('window').width;
 const bookMargin = width * 0.02;
 
-const API_URL = 'http://35.197.75.209:8001';
-const HOME_API_ENDPOINT = API_URL + '/home';
+const API_URL = 'http://35.197.75.209:8089/';
+const HOME_API_ENDPOINT = API_URL + 'home/';
 
 class HomeScreen extends React.Component {
 
@@ -46,27 +46,29 @@ class HomeScreen extends React.Component {
     }
 
     async loadHomePageBooks() {
-        await fetch(HOME_API_ENDPOINT)
-            .then((response => response.json()))
-            .then((responseJSON) => {
-                let bookList = [];
+      await fetch(HOME_API_ENDPOINT)
+          .then((response => response.json()))
+          .then((responseJSON) => {
+              let bookList = [];
 
-                // Parse the JSON response and create Book objects
-                responseJSON.forEach((b => {
-                    bookList.push(React.createElement(Book, b.fields));
-                }));
+              // Parse the JSON response and create Book objects
+              responseJSON.forEach((b => {
+                  bookList.push(React.createElement(Book, b.fields));
+              }));
 
-                // Update the app state with the new book list
-                this.setState({
-                    bookList: bookList,
-                    booksLoaded: true
-                });
-            });
+              console.log(responseJSON);
+
+              // Update the app state with the new book list
+              this.setState({
+                  bookList: bookList,
+                  booksLoaded: true
+              });
+          });
     }
 
     render() {
         //TODO: Log Home Activity startup time
-        if (!this.state.fontsLoaded || !this.state.booksLoaded) {
+        if (!this.state.fontsLoaded) {
             return <AppLoading/>;
         }
 

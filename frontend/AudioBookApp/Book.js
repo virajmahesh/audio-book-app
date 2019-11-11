@@ -22,17 +22,17 @@ class Book extends React.Component {
             description: props.description,
             isbn: props.isbn,
             isbn13: props.isbn13,
-            imageURL: props.image_url,
+            imageURL: props.primary_image_url,
         };
         props.key = this.state.book_id;
     }
 
     getImageURL() {
-        if (this.state.isbn !== '' || this.state.isbn13 !== '') {
+        /*if (this.state.isbn !== '' || this.state.isbn13 !== '') {
             let isbn = (this.state.isbn !== '')? this.state.isbn : this.state.isbn13;
             return OPEN_LIBRARY_IMAGE_URL + isbn + '-L.jpg';
-        }
-        return this.state.imageURL.replace(GOODREADS_REGEX_MATCH, '.');
+        }*/
+        return this.state.imageURL;
     }
 
     loadChapters() {
@@ -44,8 +44,8 @@ class Book extends React.Component {
             <TouchableHighlight
                 onPress={() => this.props.navigation.navigate('BookDetails', {'book': this})}
                 style={styles.book}>
-                <View>
-                    <Image style={styles.albumArt} source={{uri: this.getImageURL()}} resizeMode='contain'/>
+                <View style={{backgroundColor: 'white'}}>
+                    <Image style={styles.albumArt} source={{uri: this.getImageURL()}} resizeMode='stretch'/>
                     <View style={styles.bookMetadata}>
                         <Text style={styles.bookMetadataText} numberOfLines={1}>{this.state.title}</Text>
                         <Text style={styles.bookMetadataText} numberOfLines={1}>{this.state.author}</Text>
@@ -111,17 +111,21 @@ const styles = StyleSheet.create({
         marginRight: '1.666%',
         marginBottom: 15,
         borderRadius: 5,
+        backgroundColor: 'white'
     },
     albumArt: {
         height: '80%',
         marginBottom: 5,
+        backgroundColor: 'white'
     },
     bookMetadata: {
         height: '20%',
+        backgroundColor: 'white'
     },
     bookMetadataText: {
         fontSize: 14,
         fontFamily: 'product-sans',
+        backgroundColor: 'white'
     },
 
     //TODO: Clean up Chapter styles and rendereding logic
@@ -131,7 +135,9 @@ const styles = StyleSheet.create({
     playIcon: {
         flex: 0.1,
     },
-    chapterTouch: {}
+    chapterTouch: {
+
+    }
 });
 
 export {Book, Chapter};
