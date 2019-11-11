@@ -9,52 +9,7 @@ from django.db import migrations
 
 
 def populate_recordings(apps, schema_editor):
-    LibriVoxBook = apps.get_model('backend', 'LibriVoxBook')
-    LibriVoxRecordings = apps.get_model('backend', 'LibriVoxRecordings')
-
-    print('Creating URLs')
-
-    books = LibriVoxBook.objects.all()
-    urls =  [b.url_rss for b in books]
-
-    print('Fetching RSS Feeds')
-
-    #requests = [grequests.get(u, callback=utils.grequests_feedback_function()) for u in urls]
-    #responses = grequests.map(requests)
-
-    print('Iterating through books')
-
-    for idx, b in enumerate(books):
-        print(idx, urls[idx])
-
-        r = requests.get(urls[idx])
-
-        try:
-            rss_dict = xmltodict.parse(r.content.decode())
-        except xml.parsers.expat.ExpatError as e:
-            print('Error, skipping row ' + str(b.id))
-            continue
-
-        items = rss_dict['rss']['channel']['item']
-
-        if not isinstance(items, list):
-            item_list = [items]
-        else:
-            item_list = items
-
-        for item in item_list:
-            title = item['title']
-            duration = item['itunes:duration']
-            url = item['media:content']['@url']
-
-        LibriVoxRecordings.objects.create(
-            librivox_book=b,
-            title=title,
-            duration=duration,
-            url=url
-        )
-
-
+    pass  # This migration was moved to a script
 
 
 

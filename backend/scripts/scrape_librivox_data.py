@@ -65,10 +65,10 @@ def populate_recordings():
 
 def populate_books():
     books = {}
-    fbc = util.FeedbackCounter()
+    fbc = utils.grequests_feedback_function()
 
     requests = [grequests.get(LIBRIVOX_URL.format(REQUEST_SIZE, i), callback=utils.grequests_feedback_function()) for i in range(0, MAX_BOOKS, REQUEST_SIZE)]
-    responses = grequests.map(requests, exception_handler=exception_handler)
+    responses = grequests.map(requests)
 
     f = open(LIBRIVOX_CSV_PATH, 'w+')
 
@@ -84,5 +84,41 @@ def populate_books():
             csv_writer.writerow(row)
 
 
+def populate_authors():
+    books = {}
+    fbc = utils.grequests_feedback_function()
+
+    requests = [grequests.get(LIBRIVOX_URL.format(REQUEST_SIZE, i), callback=utils.grequests_feedback_function()) for i in range(0, MAX_BOOKS, REQUEST_SIZE)]
+    responses = grequests.map(requests)
+
+    for i, r in enumerate(responses):
+        librivox_response = r.json()
+        for j, row in enumerate(librivox_response['books']):
+            print('Proceessing Response {0} Book {1}'.format(i, j))
+
+            authors = row['authors']
+            book_search = LibriVoxBook.objects.filter(librivox_id=row['id'])
+
+            if book_search.exists():
+                book = book_search.get()
+            else:
+                continue
+
+            for a in authors:
+                first_name = a['first_name'].lstrip().rstrip()
+                last_name = a['last_name'].lstrip().rstrip()
+
+                author, created = Author.objects.get_or_create(
+                    first_name=first_name,
+                    last_name=last_name
+                )
+
+                if created:
+                    print('Created new author: First Name:[{0}], Last Name: [{1}]'.format(first_name, last_name))
+
+                author.librivox_books.add(book)
+                author.save()
+
+
 if __name__ == '__main__':
-        populate_recordings()
+        populate_authors()
