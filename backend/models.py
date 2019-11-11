@@ -158,6 +158,9 @@ class Audiobook(PrintableObject, models.Model):
     primary_image_url = models.URLField(max_length=4096, null=True)
     secondary_image_url = models.URLField(max_length=4096, null=True)
 
+    language = models.CharField(max_length=32, null=True)
+    has_audio = models.BooleanField(null=True)
+
     goodreads_ratings_count = models.IntegerField(null=True)
 
     @staticmethod
