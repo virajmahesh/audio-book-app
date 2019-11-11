@@ -153,6 +153,9 @@ class Audiobook(PrintableObject, models.Model):
     title = models.CharField(max_length=1024, null=True)
     description = models.TextField(null=True)
 
+    isbn = models.CharField(null=True, max_length=32)
+    isbn13 = models.CharField(null=True, max_length=32)
+
     text_url = models.URLField(max_length=4096, null=True)
     audio_url = models.URLField(max_length=4096, null=True)
     primary_image_url = models.URLField(max_length=4096, null=True)

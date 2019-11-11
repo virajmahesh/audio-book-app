@@ -5,8 +5,12 @@ from backend.models import *
 
 
 def home(request):
-    books = Audiobook.objects.order()
-    return HttpResponse(serializers.serialize('json', homepage_books), content_type='application/json')
+    books = Audiobook.objects.filter(has_audio=True, language='English')
+    books = books.filter(goodreads_ratings_count__isnull=False)
+    books = books.exclude(title__icontains='version').exclude(title__icontains='lippincott')
+
+    books = books.order_by('-goodreads_ratings_count')
+    return HttpResponse(serializers.serialize('json', books.all()[:200]), content_type='application/json')
 
 
 def get_chapters(request, book_id):
