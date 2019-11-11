@@ -1,11 +1,8 @@
+import re
 from django.db import models
 
 
-class Book:
-    def authors(self):
-        author_set = self.author_set.all()
-        return ', '.join(map(str, author_set))
-
+class PrintableObject:
     def __repr__(self):
         return ''
 
@@ -13,16 +10,24 @@ class Book:
         return repr(self)
 
 
-class GutenbergBook(Book, models.Model):
+class GutenbergBook(PrintableObject, models.Model):
     gutenberg_id = models.CharField(max_length=16, unique=True)
     title = models.CharField(max_length=1024, null=True)
-    
-    def get_text_url(self):
-        for uri in self.formaturi_set:
+
+    def text_url(self):
+        for uri in self.formaturi_set.all():
             if uri.is_text_url():
                 return uri.url
         return None
-    
+
+    def __repr__(self):
+        string = 'Text URL: {0}\n'.format(self.text_url())
+        return Book.__repr__(self) + string
+
+    def authors(self):
+        author_set = self.author_set.all()
+        return ', '.join(map(str, author_set))
+
     @staticmethod
     def book_type():
         return 'Gutenberg Book'
@@ -42,7 +47,7 @@ class FormatURI(models.Model):
         return '.txt' in self.url
 
 
-class GoodreadsBook(Book, models.Model):
+class GoodreadsBook(models.Model):
     gutenberg_book = models.OneToOneField(GutenbergBook, on_delete=models.SET_NULL, null=True)
     goodreads_id = models.CharField(max_length=64, null=False)
     gutenberg_id = models.CharField(max_length=16, null=True)
@@ -83,8 +88,17 @@ class GoodreadsBook(Book, models.Model):
     def is_authored_by(self, author):
         return author.full_name().lower() == self.author.lower()
 
+    def get_image_URL(self):
+        return re.sub('._(SX|SY)(\d+)_.', '.', self.image_url)
 
-class LibriVoxBook(Book, models.Model):
+    def get_ISBN_URL(self):
+        isbn = self.isbn13
+        if self.isbn13 is None:
+            isbn = self.isbn
+        return 'http://covers.openlibrary.org/b/isbn/{0}-L.jpg'.format(isbn)
+
+
+class LibriVoxBook(PrintableObject, models.Model):
     librivox_id = models.CharField(null=True, max_length=32, unique=True)
     gutenberg_id = models.CharField(null=True, max_length=32)
 
@@ -109,11 +123,15 @@ class LibriVoxBook(Book, models.Model):
     def book_type():
         return 'Librivox Book'
 
-    def get_text_url(self):
+    def text_url(self):
         return self.url_text_source
 
-    def get_audio_url(self):
+    def audio_url(self):
         return self.url_zip_file
+
+    def authors(self):
+        author_set = self.author_set.all()
+        return ', '.join(map(str, author_set))
 
 
 class LibriVoxRecording(models.Model):
@@ -128,9 +146,9 @@ class LibriVoxRecording(models.Model):
         db_table = 'librivox_recording'
 
 
-class Audiobook(Book, models.Model):
-    gutenberg_book = models.OneToOneField(GutenbergBook, unique=True, null=True, on_delete=models.SET_NULL)
-    librivox_book = models.OneToOneField(LibriVoxBook, unique=True, null=True, on_delete=models.SET_NULL)
+class Audiobook(PrintableObject, models.Model):
+    gutenberg_book = models.ForeignKey(GutenbergBook, null=True, on_delete=models.SET_NULL)
+    librivox_book = models.OneToOneField(LibriVoxBook, null=True, on_delete=models.SET_NULL)
 
     title = models.CharField(max_length=1024, null=True)
     description = models.TextField(null=True)
@@ -140,18 +158,20 @@ class Audiobook(Book, models.Model):
     primary_image_url = models.URLField(max_length=4096, null=True)
     secondary_image_url = models.URLField(max_length=4096, null=True)
 
-    goodreads_ratings_count = models.IntegerField()
+    goodreads_ratings_count = models.IntegerField(null=True)
 
-    def __repr__(self):
-        string = 'text_url: {0}' \
-                 'audio_url: {1}' \
-                 'primary_image_url: {2}' \
-                 'secondary_image_url: {3}' \
-                 'goodreads_ratings_count: {4}'
-        return Book.__repr__(self)
+    @staticmethod
+    def book_type():
+        return 'Audiobook'
+
+    def authors(self):
+        print('Audiobook author called')
+        author_set = self.author_set.all()
+        return ', '.join(map(str, author_set))
 
     class Meta:
         db_table = 'audiobook'
+        unique_together = ['gutenberg_book', 'librivox_book']
 
 
 class AudiobookChapter(models.Model):
@@ -185,14 +205,8 @@ class Author(models.Model):
         db_table = "author"
         unique_together = ['first_name', 'last_name']
 
-    def __repr__(self):
-        return '{0} {1}'.format(self.first_name.lstrip(), self.last_name.rstrip())
-
-    def __str__(self):
-        return repr(self)
-
     def full_name(self):
-        return repr(self)
+        return self.first_name + ' ' + self.last_name
 
     @staticmethod
     def find_by_full_name(first_name, last_name):

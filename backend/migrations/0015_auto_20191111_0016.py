@@ -2,15 +2,18 @@
 
 from django.db import migrations
 from django.utils.html import strip_tags
+from backend.models import *
 
 
 def create_audiobooks(apps, schema_editor):
-    LibriVoxBook = apps.get_model('backend', 'LibriVoxBook')
-    GutenbergBook = apps.get_model('backend', 'GutenbergBook')
-    GoodreadsBook = apps.get_model('backend', 'GoodreadsBook')
-    Audiobook = apps.get_model('backend', 'Audiobook')
+    #LibriVoxBook = apps.get_model('backend', 'LibriVoxBook')
+    #GutenbergBook = apps.get_model('backend', 'GutenbergBook')
+    #GoodreadsBook = apps.get_model('backend', 'GoodreadsBook')
+    #Audiobook = apps.get_model('backend', 'Audiobook')
 
-    for librivox_book in LibriVoxBook.objects.all():
+    for i, librivox_book in enumerate(LibriVoxBook.objects.all()):
+        print(i)
+
         gutenberg_book = GutenbergBook.objects.filter(gutenberg_id=librivox_book.gutenberg_id).first()
 
         if gutenberg_book is not None:
@@ -28,30 +31,39 @@ def create_audiobooks(apps, schema_editor):
 
         # Set Audio and Text URLs
         if gutenberg_book is not None:
-            audiobook.text_url = gutenberg_book.get_text_url()
+            audiobook.text_url = gutenberg_book.text_url()
         else:
-            audiobook.text_url = librivox_book.get_text_url()
+            audiobook.text_url = librivox_book.text_url()
 
-        audiobook.audio_url = librivox_book.get_audio_url()
+        audiobook.audio_url = librivox_book.audio_url()
+
+        combined_authors = librivox_book.author_set.all()
+        if gutenberg_book is not None:
+            combined_authors = combined_authors.union(gutenberg_book.author_set.all())
 
         # Set Goodreads ratings count if there's a match between rating and author
         if goodreads_book is not None:
             # Check if authors match and set ratings count from Goodreads
-            for author in librivox_book.author_set.union(gutenberg_book.author_set):
+            for author in combined_authors:
                 if goodreads_book.is_authored_by(author):
+                    print('Author match for goodreads')
                     audiobook.goodreads_ratings_count = goodreads_book.ratings_count
+                    break
 
-        print(librivox_book)
-        print(gutenberg_book)
-        print(goodreads_book)
-        print(audiobook)
+            # Set image URLs
+            audiobook.primary_image_url = goodreads_book.get_image_URL()
+            audiobook.primary_image_url = goodreads_book.get_ISBN_URL()
+
+        # Save audiobook and authors
+        audiobook.save()
+        audiobook.author_set.add(*list(combined_authors))
 
         audiobook.save()
 
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('backend', '0015_auto_20191111_0036'),
+        ('backend', '0016_auto_20191111_0313'),
     ]
 
     operations = [
