@@ -1,6 +1,6 @@
 import json
-from django.core import serializers
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+from backend.serializers import *
 from backend.models import *
 
 
@@ -9,8 +9,14 @@ def home(request):
     books = books.filter(goodreads_ratings_count__isnull=False)
     books = books.exclude(title__icontains='version').exclude(title__icontains='lippincott')
 
-    books = books.order_by('-goodreads_ratings_count')
-    return HttpResponse(serializers.serialize('json', books.all()[:200]), content_type='application/json')
+    books = books.order_by('-goodreads_ratings_count', 'id')
+    books = books.all()[:20]
+
+    serialized_books = AudiobookSerializer(books, many=True)
+    print(serialized_books.data)
+    print(books)
+
+    return JsonResponse(serialized_books.data, status=201, safe=False)
 
 
 def get_chapters(request, book_id):

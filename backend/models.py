@@ -2,15 +2,7 @@ import re
 from django.db import models
 
 
-class PrintableObject:
-    def __repr__(self):
-        return ''
-
-    def __str__(self):
-        return repr(self)
-
-
-class GutenbergBook(PrintableObject, models.Model):
+class GutenbergBook(models.Model):
     gutenberg_id = models.CharField(max_length=16, unique=True)
     title = models.CharField(max_length=1024, null=True)
 
@@ -19,10 +11,6 @@ class GutenbergBook(PrintableObject, models.Model):
             if uri.is_text_url():
                 return uri.url
         return None
-
-    def __repr__(self):
-        string = 'Text URL: {0}\n'.format(self.text_url())
-        return Book.__repr__(self) + string
 
     def authors(self):
         author_set = self.author_set.all()
@@ -98,7 +86,7 @@ class GoodreadsBook(models.Model):
         return 'http://covers.openlibrary.org/b/isbn/{0}-L.jpg'.format(isbn)
 
 
-class LibriVoxBook(PrintableObject, models.Model):
+class LibriVoxBook(models.Model):
     librivox_id = models.CharField(null=True, max_length=32, unique=True)
     gutenberg_id = models.CharField(null=True, max_length=32)
 
@@ -146,7 +134,7 @@ class LibriVoxRecording(models.Model):
         db_table = 'librivox_recording'
 
 
-class Audiobook(PrintableObject, models.Model):
+class Audiobook(models.Model):
     gutenberg_book = models.ForeignKey(GutenbergBook, null=True, on_delete=models.SET_NULL)
     librivox_book = models.OneToOneField(LibriVoxBook, null=True, on_delete=models.SET_NULL)
 
@@ -171,7 +159,6 @@ class Audiobook(PrintableObject, models.Model):
         return 'Audiobook'
 
     def authors(self):
-        print('Audiobook author called')
         author_set = self.author_set.all()
         return ', '.join(map(str, author_set))
 
@@ -213,6 +200,9 @@ class Author(models.Model):
 
     def full_name(self):
         return self.first_name + ' ' + self.last_name
+
+    def __repr__(self):
+        return self.full_name()
 
     @staticmethod
     def find_by_full_name(first_name, last_name):
