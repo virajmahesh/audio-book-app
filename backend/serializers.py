@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from backend.models import Audiobook
+from backend.models import Audiobook, AudiobookChapter
 
 
 class AudiobookSerializer(serializers.ModelSerializer):
@@ -9,3 +9,9 @@ class AudiobookSerializer(serializers.ModelSerializer):
         model = Audiobook
         fields = ['id', 'title', 'description', 'primary_image_url',
                   'secondary_image_url', 'author']
+
+
+class ChapterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AudiobookChapter
+        fields = ['id', 'title', 'audio_url']

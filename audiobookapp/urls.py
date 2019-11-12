@@ -6,5 +6,5 @@ urlpatterns = [
     path('admin', admin.site.urls),
     path('home', backend_views.home),
     path('home/', backend_views.home),
-    path('books/<int:book_id>/chapters', backend_views.get_chapters),
+    path('book/<int:book_id>/chapters', backend_views.get_chapters),
 ]

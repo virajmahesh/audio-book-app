@@ -13,9 +13,6 @@ def home(request):
     books = books.all()[:20]
 
     serialized_books = AudiobookSerializer(books, many=True)
-    print(serialized_books.data)
-    print(books)
-
     return JsonResponse(serialized_books.data, status=201, safe=False)
 
 
@@ -24,7 +21,7 @@ def get_chapters(request, book_id):
 
     if not audiobook_query.exists():
         # TODO: Return a valid error, and log that we received a request for an audiobook that doesn't exist
-        return 404
+        return HttpResponse(status=404)
     elif audiobook_query.count() > 1:
         # TODO: Return a valid error and log that we received a request that matched more than one audiobook
         return 404
@@ -32,4 +29,5 @@ def get_chapters(request, book_id):
     audiobook = audiobook_query.get()  # There's only one object that matches this audiobook
     chapters = audiobook.audiobookchapter_set.all().order_by('id')  # Chapter sorting order is important
 
-    return HttpResponse(serializers.serialize('json'), chapters, content_type='application/json')
+    serialized_chapters = ChapterSerializer(chapters, many=True)
+    return JsonResponse(serialized_chapters.data, status=201, safe=False)
