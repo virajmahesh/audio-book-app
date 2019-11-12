@@ -2,13 +2,12 @@ import React from "react";
 import {Dimensions, StyleSheet, Text, TouchableHighlight, View, Image} from "react-native";
 import {Icon} from "react-native-elements";
 import { withNavigation } from 'react-navigation';
-import {CHAPTER_API_ENDPOINT} from '.'
+import {CHAPTER_API_ENDPOINT} from './Settings';
 
+const format = require('string-format');
 const width = Dimensions.get('window').width;
 const bookMargin = width * 0.02;
 
-const OPEN_LIBRARY_IMAGE_URL =  'http://covers.openlibrary.org/b/isbn/';
-const GOODREADS_REGEX_MATCH = /\._(SY|SX)(\d+)_\./gm;
 
 @withNavigation
 class Book extends React.Component {
@@ -31,22 +30,21 @@ class Book extends React.Component {
     }
 
     async loadChapters() {
-      //TODO: Fetch chapter data from Chapters Endpoint
-      await fetch(CHAPTER_API_ENDPOINT)
+      await fetch(format(CHAPTER_API_ENDPOINT, this.state.id))
         .then((response => response.json()))
         .then((responseJSON) => {
             let chapterList = []
 
             responseJSON.forEach((c => {
+              c.book = this; // Insert a reference to the book in the Chapter object
               chapterList.push(React.createElement(Chapter, c))
             }));
-        });
-        console.log(responseJSON);
 
-        // Update the book state with the new book list
-        this.setState({
-            chapterList: chapterList,
-            chaptersLoaded: true
+            // Update the book state with the new book list
+            this.setState({
+                chapterList: chapterList,
+                chaptersLoaded: true
+            });
         });
     }
 
@@ -71,8 +69,11 @@ class Book extends React.Component {
 class Chapter extends React.Component {
     constructor(props) {
         super(props);
+
         this.state = {
+          id: props.id,
           title: props.title,
+          audioURL: props.audio_url,
           book: props.book
         };
     }
@@ -81,8 +82,8 @@ class Chapter extends React.Component {
         return (
             <TouchableHighlight
                 onPress={() => this.props.navigation.navigate('ChapterPlayer', {
-                    'book': this.state.book,
-                    'chapter': this
+                    book: this.state.book,
+                    chapter: this
                 })}>
 
                 <View style={chapterStyle(this.props.isLastChapter)}>
@@ -90,10 +91,7 @@ class Chapter extends React.Component {
                         <Text style={{fontFamily: 'product-sans-bold', fontSize: 15}}>{this.state.title}</Text>
                     </View>
                     <View style={styles.playIcon}>
-                        <Icon
-                            type="material"
-                            name="play-circle-outline"
-                            color="#000000"/>
+                        <Icon type="material" name="play-circle-outline" color="#000000"/>
                     </View>
                 </View>
             </TouchableHighlight>
@@ -104,13 +102,13 @@ class Chapter extends React.Component {
 function chapterStyle(isLastChapter) {
     return {
         borderBottomWidth: (isLastChapter) ? 0 : 1,
+        height: 55,
+        width: '100%',
         borderColor: '#eaeaea',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        height: 55,
-        width: '100%',
-        backgroundColor: 'white'
+        backgroundColor: 'white',
     }
 }
 

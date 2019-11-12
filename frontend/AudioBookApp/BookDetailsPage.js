@@ -19,9 +19,15 @@ class BookDetailsPage extends React.Component {
         this.state = {}
     }
 
-    componentDidMount() {
+    async componentDidMount() {
+        console.log('Loading book chapters');
+        let book = this.props.navigation.getParam('book');
+        console.log(book);
+        await book.loadChapters()
+        console.log('Book loaded');
+
         this.setState({
-            book: this.props.navigation.getParam('book')
+          book: book
         });
     }
 
@@ -33,24 +39,6 @@ class BookDetailsPage extends React.Component {
 
         //TODO: Replace this logic with book.loadChapters()
         //TODO: Wait for chapters? Or re-render page when they load
-        let chapters = [];
-        for (let i = 0; i < 25; i++) {
-            let c = null;
-            if (i < 24) {
-                c = React.createElement(Chapter, {
-                  title: 'Chapter ' + (i + 1),
-                  book: this.state.book,
-                  isLastChapter: false
-                })
-            } else {
-               c = React.createElement(Chapter, {
-                 title: 'Chapter '+ (i + 1),
-                 book: this.state.book,
-                 isLastChapter: true
-               });
-            }
-            chapters.push(c);
-        }
 
         return (
             <ScrollView>
@@ -58,7 +46,7 @@ class BookDetailsPage extends React.Component {
 
                 <View style={styles.detailsPanel}>
                     <View style={styles.albumArt}>
-                      <Image style={{width: '100%', height: '100%'}} source={{uri: this.state.book.getImageURL()}} resizeMode='contain'/>
+                      <Image style={{width: '100%', height: '100%'}} source={{uri: this.state.book.getImageURL()}} resizeMode='stretch'/>
                     </View>
                     <View style={styles.bookMetadata}>
                         <Text style={styles.bookTitle} numberOfLines={3}>
@@ -88,7 +76,7 @@ class BookDetailsPage extends React.Component {
                         title="Play"
                     />
                 </View>
-                {chapters}
+                {this.state.book.state.chapterList}
             </View>
                 </ScrollView>
         )
