@@ -5,12 +5,10 @@ import { withNavigation } from 'react-navigation';
 import * as Font from "expo-font";
 import {AppLoading} from "expo";
 import {Book} from "./Book";
+import {HOME_API_ENDPOINT} from './Settings'
 
 const width = Dimensions.get('window').width;
 const bookMargin = width * 0.02;
-
-const API_URL = 'http://35.197.75.209:8089/';
-const HOME_API_ENDPOINT = API_URL + 'home/';
 
 class HomeScreen extends React.Component {
 
@@ -46,6 +44,7 @@ class HomeScreen extends React.Component {
     }
 
     async loadHomePageBooks() {
+      // TODO: Log errors from fetching home data
       await fetch(HOME_API_ENDPOINT)
           .then((response => response.json()))
           .then((responseJSON) => {
@@ -53,7 +52,7 @@ class HomeScreen extends React.Component {
 
               // Parse the JSON response and create Book objects
               responseJSON.forEach((b => {
-                  bookList.push(React.createElement(Book, b.fields));
+                  bookList.push(React.createElement(Book, b));
               }));
 
               console.log(responseJSON);
@@ -68,7 +67,7 @@ class HomeScreen extends React.Component {
 
     render() {
         //TODO: Log Home Activity startup time
-        if (!this.state.fontsLoaded) {
+        if (!this.state.fontsLoaded || !this.state.booksLoaded) {
             return <AppLoading/>;
         }
 
@@ -77,7 +76,7 @@ class HomeScreen extends React.Component {
                 <StatusBar barStyle="dark-content"/>
                 <View style={styles.homePage}>
                     <ScrollView>
-                        <Text style={styles.homePageTitle} key={99}>Classic Audiobooks</Text>
+                        <Text style={styles.homePageTitle}>Classic Audiobooks</Text>
                         <View style={styles.bookShelfHome}>
                             {this.state.bookList}
                         </View>

@@ -2,6 +2,7 @@ import React from "react";
 import {Dimensions, StyleSheet, Text, TouchableHighlight, View, Image} from "react-native";
 import {Icon} from "react-native-elements";
 import { withNavigation } from 'react-navigation';
+import {CHAPTER_API_ENDPOINT} from '.'
 
 const width = Dimensions.get('window').width;
 const bookMargin = width * 0.02;
@@ -15,28 +16,38 @@ class Book extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            book_id: props.book,
-            goodreads_id: props.goodreads_id,
+            id: props.id,
             title: props.title,
             author: props.author,
             description: props.description,
-            isbn: props.isbn,
-            isbn13: props.isbn13,
             imageURL: props.primary_image_url,
+            secondaryImageURL: props.secondary_image_url
         };
-        props.key = this.state.book_id;
+        props.key = props.id;
     }
 
     getImageURL() {
-        /*if (this.state.isbn !== '' || this.state.isbn13 !== '') {
-            let isbn = (this.state.isbn !== '')? this.state.isbn : this.state.isbn13;
-            return OPEN_LIBRARY_IMAGE_URL + isbn + '-L.jpg';
-        }*/
         return this.state.imageURL;
     }
 
-    loadChapters() {
+    async loadChapters() {
       //TODO: Fetch chapter data from Chapters Endpoint
+      await fetch(CHAPTER_API_ENDPOINT)
+        .then((response => response.json()))
+        .then((responseJSON) => {
+            let chapterList = []
+
+            responseJSON.forEach((c => {
+              chapterList.push(React.createElement(Chapter, c))
+            }));
+        });
+        console.log(responseJSON);
+
+        // Update the book state with the new book list
+        this.setState({
+            chapterList: chapterList,
+            chaptersLoaded: true
+        });
     }
 
     render() {
