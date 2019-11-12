@@ -158,7 +158,7 @@ class Audiobook(models.Model):
     def book_type():
         return 'Audiobook'
 
-    def authors(self):
+    def get_author(self):
         author_set = self.author_set.all()
         return ', '.join(map(str, author_set))
 
@@ -203,6 +203,9 @@ class Author(models.Model):
 
     def __repr__(self):
         return self.full_name()
+
+    def __str__(self):
+        return repr(self)
 
     @staticmethod
     def find_by_full_name(first_name, last_name):
