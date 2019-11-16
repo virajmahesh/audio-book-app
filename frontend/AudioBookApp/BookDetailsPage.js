@@ -20,11 +20,8 @@ class BookDetailsPage extends React.Component {
     }
 
     async componentDidMount() {
-        console.log('Loading book chapters');
         let book = this.props.navigation.getParam('book');
-        console.log(book);
         await book.loadChapters()
-        console.log('Book loaded');
 
         this.setState({
           book: book

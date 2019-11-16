@@ -5,7 +5,7 @@ import { withNavigation } from 'react-navigation';
 import * as Font from "expo-font";
 import {AppLoading} from "expo";
 import {Book} from "./Book";
-import {HOME_API_ENDPOINT} from './Settings'
+import {HOME_API_ENDPOINT} from './Settings';
 
 const width = Dimensions.get('window').width;
 const bookMargin = width * 0.02;
@@ -54,8 +54,6 @@ class HomeScreen extends React.Component {
               responseJSON.forEach((b => {
                   bookList.push(React.createElement(Book, b));
               }));
-
-              console.log(responseJSON);
 
               // Update the app state with the new book list
               this.setState({
