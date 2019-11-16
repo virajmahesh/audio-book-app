@@ -5,7 +5,10 @@ import {Icon} from "react-native-elements";
 import * as Util from './Utils';
 
 const format = require('string-format');
+
 const BACKGROUND_COLOR = '#eeeeee';
+const BLUE_TINT = '#0074CD';
+const GREY_TINT = '#D7D7D7';
 
 class ChapterPlayerPage extends React.Component {
 
@@ -25,8 +28,9 @@ class ChapterPlayerPage extends React.Component {
               value={this.state.playbackPercent}
               minimumValue={0}
               maximumValue={1}
-              minimumTrackTintColor="#FFFFFF"
-              maximumTrackTintColor="#000000"
+              minimumTrackTintColor={BLUE_TINT}
+              thumbTintColor={BLUE_TINT}
+              maximumTrackTintColor={GREY_TINT}
               onSlidingComplete={this._onAudioBarSeekComplete}
               onValueChange={this._onAudioBarSeeking}
             />
@@ -78,11 +82,7 @@ class ChapterPlayerPage extends React.Component {
     }
 
     _getPlayButton() {
-        let playing = this.state.playing;
-        if (this.state.seeking) {
-            playing = this.state.seekPlayingStatus;
-        }
-        if (playing) {
+        if (this.state.shouldPlay) {
           return 'pause';
         }
         return 'play-arrow';
@@ -93,10 +93,10 @@ class ChapterPlayerPage extends React.Component {
         let position = status.positionMillis;
 
         this.state.seeking = true;
-        if (this.state.seekButtonTaps == 0) {
-            this.state.seekPlayingStatus = this.state.playing;
-        }
-        this.state.seekButtonTaps += 1;
+        //if (this.state.seekButtonTaps == 0) {
+        //    this.state.seekPlayingStatus = this.state.playing;
+        //}
+        //this.state.seekButtonTaps += 1;
 
         if (direction == 'replay') {
             position -= 30 * Util.SECOND_IN_MILLIS;
@@ -110,12 +110,12 @@ class ChapterPlayerPage extends React.Component {
         });
 
         await this.state.playbackInstance.setPositionAsync(position);
-        await this._waitForPreSeekStatus();
+        //await this._waitForPreSeekStatus();
 
-        this.state.seekButtonTaps -= 1;
-        if (this.state.seekButtonTaps == 0) {
-            this.state.seeking = false;
-        }
+        //this.state.seekButtonTaps -= 1;
+        //if (this.state.seekButtonTaps == 0) {
+        this.state.seeking = false;
+        //}
     }
 
     _onAudioBarSeeking = async (value) => {
@@ -141,7 +141,9 @@ class ChapterPlayerPage extends React.Component {
 
         console.log('Setting Position');
         await this.state.playbackInstance.setPositionAsync(position);
-        await this._waitForPreSeekStatus();
+
+        this.state.seeking = false;
+        //await this._waitForPreSeekStatus();
 
         // Wait for the player to resume playing before we set seeking to false
         console.log('Audio bar seek complete, seeking is now False');
@@ -171,11 +173,13 @@ class ChapterPlayerPage extends React.Component {
     }
 
     _playbackStatusUpdate = (playbackStatus) => {
+
         console.log('Playback status called');
         if (this.state.seeking) {
             console.log('\tSeeking, not updating state');
             return;
         }
+
         if (playbackStatus.isLoaded) {
             console.log('\tNot seeking, updating state. Playing: ' + playbackStatus.isPlaying);
             let playbackPercent = playbackStatus.positionMillis / playbackStatus.durationMillis;
@@ -185,8 +189,13 @@ class ChapterPlayerPage extends React.Component {
                 duration: playbackStatus.durationMillis,
                 playing: playbackStatus.isPlaying,
                 buffering: playbackStatus.isBuffering,
+                shouldPlay: playbackStatus.shouldPlay,
                 playbackPercent: playbackPercent
             });
+
+            console.log('Playing: ' + this.state.playing);
+            console.log('Buffering '+ this.state.buffering);
+            console.log('Should Play ' + this.state.shouldPlay);
           }
 
         if (playbackStatus.error) {
@@ -204,8 +213,9 @@ class ChapterPlayerPage extends React.Component {
             position: 0,
             duration: 0,
             playing: true,
-            buffering: true,
+            buffering: false,
             seeking: false,
+            shouldPlay: true
         });
 
         //TODO: Log that player setup was started
@@ -263,6 +273,10 @@ class ChapterPlayerPage extends React.Component {
 
     render() {
         console.log('rendering');
+        console.log('Playing: ' + this.state.playing);
+        console.log('Buffering '+ this.state.buffering);
+        //console.log('Play button shape ' + this._getPlayButton());
+
         if (this.state.chapter == null) {
             return null;
         }
@@ -328,7 +342,7 @@ const styles = StyleSheet.create({
     },
     audioSeekBar: {
         width: 250,
-        height: 10
+        height: 20,
     },
     playerControlIcon: {
       marginLeft: 10,
