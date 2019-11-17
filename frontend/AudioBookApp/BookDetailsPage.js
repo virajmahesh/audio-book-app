@@ -43,7 +43,9 @@ class BookDetailsPage extends React.Component {
 
                 <View style={styles.detailsPanel}>
                     <View style={styles.albumArt}>
-                      <Image style={{width: '100%', height: '100%'}} source={{uri: this.state.book.getImageURL()}} resizeMode='stretch'/>
+                      <Image style={{width: '100%', height: '100%'}}
+                             source={{uri: this.state.book.getImageURL()}}
+                             resizeMode='stretch'/>
                     </View>
                     <View style={styles.bookMetadata}>
                         <Text style={styles.bookTitle} numberOfLines={3}>
@@ -73,7 +75,7 @@ class BookDetailsPage extends React.Component {
                         title="Play"
                     />
                 </View>
-                {this.state.book.state.chapterList}
+                {this.state.book.state.chapterGroupList}
             </View>
                 </ScrollView>
         )
@@ -119,7 +121,7 @@ const styles = StyleSheet.create({
         fontSize: 15
     },
     playButton: {
-        marginBottom: 10
+        marginBottom: 0
     }
 });
 
