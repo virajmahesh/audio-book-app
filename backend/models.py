@@ -140,6 +140,7 @@ class Audiobook(models.Model):
 
     title = models.CharField(max_length=1024, null=True)
     description = models.TextField(null=True)
+    hidden = models.BooleanField(default=False, null=False)
 
     isbn = models.CharField(null=True, max_length=32)
     isbn13 = models.CharField(null=True, max_length=32)
@@ -174,7 +175,7 @@ class AudiobookChapterGroup(models.Model):
     class Meta:
         db_table = 'audiobook_chapter_group'
 
-        
+
 class AudiobookChapter(models.Model):
     title = models.TextField(null=True)
     duration = models.CharField(null=True, max_length=32)
