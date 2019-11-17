@@ -51,7 +51,7 @@ def get_chapters(request, book_id):
         return HttpResponse(status=404)
 
     audiobook = audiobook_query.get()  # There's only one object that matches this audiobook
-    chapters = audiobook.audiobookchapter_set.all().order_by('id')  # Chapter sorting order is important
+    chapter_groups = audiobook.audiobookchaptergroup_set.all().order_by('id')  # Chapter sorting order is important
 
-    serialized_chapters = ChapterSerializer(chapters, many=True)
+    serialized_chapters = ChapterGroupSerializer(chapter_groups, many=True)
     return JsonResponse(serialized_chapters.data, status=201, safe=False)

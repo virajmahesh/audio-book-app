@@ -181,7 +181,6 @@ class AudiobookChapter(models.Model):
     duration = models.CharField(null=True, max_length=32)
     audio_url = models.URLField(null=True, max_length=4096)
 
-    audiobook = models.ForeignKey(Audiobook, null=True, on_delete=models.SET_NULL)
     group = models.ForeignKey(AudiobookChapterGroup, null=True, on_delete=models.SET_NULL)
 
     class Meta:
