@@ -1,17 +1,16 @@
 import React from "react";
-import {Dimensions, ScrollView, StatusBar, StyleSheet, Text, View} from "react-native";
+import {Dimensions, ScrollView, StatusBar, StyleSheet, Text, View, RefreshControl} from "react-native";
 import { withNavigation } from 'react-navigation';
 
 import * as Font from "expo-font";
 import {AppLoading} from "expo";
 import {Book} from "./Book";
-import {HOME_API_ENDPOINT} from './Settings';
+import * as Settings from './Settings';
 
 const width = Dimensions.get('window').width;
 const bookMargin = width * 0.02;
 
 class HomeScreen extends React.Component {
-
     static navigationOptions = {
         header: null
     };
@@ -21,13 +20,20 @@ class HomeScreen extends React.Component {
         this.state = {
             fontsLoaded: false,
             booksLoaded: false,
-            bookList: []
+            bookList: [],
+            refreshing: false
         };
     }
 
     componentDidMount() {
         this.loadFonts();
         this.loadHomePageBooks();
+    }
+
+    onRefresh = async () => {
+        this.setState({ refreshing: true });
+        await this.loadHomePageBooks();
+        this.setState({ refreshing: false });
     }
 
     async loadFonts() {
@@ -45,7 +51,8 @@ class HomeScreen extends React.Component {
 
     async loadHomePageBooks() {
       // TODO: Log errors from fetching home data
-      await fetch(HOME_API_ENDPOINT)
+      console.log('fetch started');
+      await fetch(Settings.HOME_API_ENDPOINT)
           .then((response => response.json()))
           .then((responseJSON) => {
               let bookList = [];
@@ -54,6 +61,8 @@ class HomeScreen extends React.Component {
               responseJSON.forEach((b => {
                   bookList.push(React.createElement(Book, b));
               }));
+
+              console.log('fetch complete');
 
               // Update the app state with the new book list
               this.setState({
@@ -73,7 +82,11 @@ class HomeScreen extends React.Component {
             <View style={{flex: 1}}>
                 <StatusBar barStyle="dark-content"/>
                 <View style={styles.homePage}>
-                    <ScrollView>
+                    <ScrollView  refreshControl={
+                          <RefreshControl refreshing={this.state.refreshing}
+                                          onRefresh={this.onRefresh}
+                                          colors={[Settings.BLUE_TINT]}/>
+                        }>
                         <Text style={styles.homePageTitle}>Classic Audiobooks</Text>
                         <View style={styles.bookShelfHome}>
                             {this.state.bookList}
