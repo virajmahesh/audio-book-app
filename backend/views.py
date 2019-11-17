@@ -6,7 +6,7 @@ from backend.models import *
 from backend.forms import *
 
 
-def home(request):
+def home(request, offset=0, n_books=90):
     books = Audiobook.objects.filter(has_audio=True, language='English')
     books = books.filter(goodreads_ratings_count__isnull=False)
     books = books.exclude(title__icontains='version')
@@ -15,7 +15,7 @@ def home(request):
     books = books.exclude(hidden=True)
 
     books = books.order_by('-goodreads_ratings_count', 'id')
-    books = books.all()[:90]
+    books = books.all()[offset:offset + n_books]
 
     serialized_books = AudiobookSerializer(books, many=True)
     return JsonResponse(serialized_books.data, status=201, safe=False)

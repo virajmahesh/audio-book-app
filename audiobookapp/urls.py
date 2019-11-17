@@ -4,7 +4,8 @@ import backend.views as backend_views
 
 urlpatterns = [
     path('admin', admin.site.urls),
-    path('home', backend_views.home),
+    path('home/', backend_views.home),
+    path('home/<int:offset>', backend_views.home),
     path('book/<int:book_id>', backend_views.book),
     path('book/<int:book_id>/chapters', backend_views.get_chapters),
 ]
