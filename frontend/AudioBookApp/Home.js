@@ -51,7 +51,6 @@ class HomeScreen extends React.Component {
 
     async loadHomePageBooks() {
       // TODO: Log errors from fetching home data
-      console.log('fetch started');
       await fetch(Settings.HOME_API_ENDPOINT)
           .then((response => response.json()))
           .then((responseJSON) => {
@@ -61,8 +60,6 @@ class HomeScreen extends React.Component {
               responseJSON.forEach((b => {
                   bookList.push(React.createElement(Book, b));
               }));
-
-              console.log('fetch complete');
 
               // Update the app state with the new book list
               this.setState({

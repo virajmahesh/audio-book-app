@@ -1,8 +1,9 @@
 import React from "react";
-import {Dimensions, StyleSheet, Text, TouchableHighlight, View, Image} from "react-native";
+import {Animated, Dimensions, StyleSheet, Text, TouchableHighlight, View, Image} from "react-native";
 import {Icon} from "react-native-elements";
 import { withNavigation } from 'react-navigation';
 import {CHAPTER_API_ENDPOINT} from './Settings';
+import * as Utils from './Utils';
 
 const format = require('string-format');
 const width = Dimensions.get('window').width;
@@ -33,16 +34,23 @@ class Book extends React.Component {
       await fetch(format(CHAPTER_API_ENDPOINT, this.state.id))
         .then((response => response.json()))
         .then((responseJSON) => {
-            let chapterList = []
+            let chapterGroupList = []
 
-            responseJSON.forEach((c => {
+            responseJSON.forEach(((c, idx, array) => {
+              // Determine if chapters should be collapsed or expanded by default
+              if (array.length <= 1) {
+                c.isExpanded = true;
+              }
+              else {
+                c.isExpanded = false;
+              }
               c.book = this; // Insert a reference to the book in the Chapter object
-              chapterList.push(React.createElement(Chapter, c))
+              chapterGroupList.push(React.createElement(ChapterGroup, c))
             }));
 
             // Update the book state with the new book list
             this.setState({
-                chapterList: chapterList,
+                chapterGroupList: chapterGroupList,
                 chaptersLoaded: true
             });
         });
@@ -65,6 +73,67 @@ class Book extends React.Component {
     }
 }
 
+class ChapterGroup extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            id: props.id,
+            title: props.title,
+            book: props.book,
+            isExpanded: props.isExpanded
+        };
+
+        let chapterList = [];
+        props.chapters.forEach(((c, idx, array) => {
+              c.book = this.state.book;
+              if (idx == array.length - 1) {
+                  c.isLastChapter = true;
+              }
+              else {
+                  c.isLastChapter = false;
+              }
+              chapterList.push(React.createElement(Chapter, c));
+        }));
+
+        this.state.chapterList = chapterList;
+    }
+
+    _getCaretDirection() {
+        if (this.state.isExpanded) {
+            return 'keyboard-arrow-up';
+        }
+        return 'keyboard-arrow-down';
+    }
+
+    _renderChapters() {
+        if (this.state.isExpanded) {
+            return this.state.chapterList;
+        }
+        return null;
+    }
+
+    render() {
+        return (
+            <View>
+                <TouchableHighlight
+                    underlayColor={Utils.GREY}
+                    onPress={() => this.setState({isExpanded: !this.state.isExpanded})}>
+                    <View style={{flexDirection: 'row', alignItems: 'center', height: 55, backgroundColor: Utils.WHITE}}>
+                        <View style={styles.chapterGroupTitle}>
+                            <Text style={{fontFamily: 'product-sans-bold', fontSize: 15}}>{this.state.title}</Text>
+                        </View>
+                        <View style={styles.chapterCaret}>
+                            <Icon type="material" name={this._getCaretDirection()} color="#000000"/>
+                        </View>
+                    </View>
+                </TouchableHighlight>
+                {this._renderChapters()}
+            </View>
+        )
+    }
+}
+
 @withNavigation
 class Chapter extends React.Component {
     constructor(props) {
@@ -74,32 +143,58 @@ class Chapter extends React.Component {
           id: props.id,
           title: props.title,
           audioURL: props.audio_url,
-          book: props.book
+          book: props.book,
+          opacity: new Animated.Value(0),
+          isLastChapter: props.isLastChapter
         };
+    }
+
+    componentDidMount() {
+        Animated.timing(
+            this.state.opacity,
+            {
+                toValue: 1,
+                duration: 500,
+                useNativeDriver: true
+            }
+        ).start();
+    }
+
+    componentWillUnmount() {
+        Animated.timing(
+            this.state.opacity,
+            {
+                toValue: 0,
+                duration: 1000,
+                useNativeDriver: true
+            }
+        ).start();
     }
 
     render() {
         return (
             <TouchableHighlight
+                style={chapterHightlightStyle(this.state.isLastChapter)}
+                underlayColor={Utils.GREY}
                 onPress={() => this.props.navigation.navigate('ChapterPlayer', {
                     book: this.state.book,
-                    chapter: this
+                    chapter: this,
                 })}>
 
-                <View style={chapterStyle(this.props.isLastChapter)}>
+                <Animated.View style={chapterStyle(this.state.isLastChapter, this.state.opacity)}>
                     <View style={styles.chapterTitle}>
-                        <Text style={{fontFamily: 'product-sans-bold', fontSize: 15}}>{this.state.title}</Text>
+                        <Text style={{fontFamily: 'product-sans', fontSize: 15}}>{this.state.title}</Text>
                     </View>
                     <View style={styles.playIcon}>
                         <Icon type="material" name="play-circle-outline" color="#000000"/>
                     </View>
-                </View>
+                </Animated.View>
             </TouchableHighlight>
         )
     }
 }
 
-function chapterStyle(isLastChapter) {
+function chapterStyle(isLastChapter, opacity) {
     return {
         borderBottomWidth: (isLastChapter) ? 0 : 1,
         height: 55,
@@ -109,6 +204,13 @@ function chapterStyle(isLastChapter) {
         alignItems: 'center',
         justifyContent: 'flex-start',
         backgroundColor: 'white',
+        opacity: opacity
+    }
+}
+
+function chapterHightlightStyle(isLastChapter) {
+    return {
+        marginBottom: (isLastChapter) ? 5 : 0,
     }
 }
 
@@ -138,6 +240,12 @@ const styles = StyleSheet.create({
     },
 
     //TODO: Clean up Chapter styles and rendereding logic
+    chapterGroupTitle: {
+        flex: 0.9
+    },
+    chapterCaret: {
+        flex: 0.1
+    },
     chapterTitle: {
         flex: 0.9
     },
@@ -149,4 +257,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export {Book, Chapter};
+export {Book, ChapterGroup, Chapter};
