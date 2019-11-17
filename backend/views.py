@@ -1,6 +1,6 @@
 import json
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from backend.serializers import *
 from backend.models import *
 from backend.forms import *
@@ -12,6 +12,7 @@ def home(request):
     books = books.exclude(title__icontains='version')
     books = books.exclude(title__icontains='dramatic')
     books = books.exclude(title__icontains='abridged')
+    books = books.exclude(hidden=True)
 
     books = books.order_by('-goodreads_ratings_count', 'id')
     books = books.all()[:90]
