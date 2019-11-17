@@ -3,12 +3,13 @@ import {Audio} from 'expo-av';
 import {TouchableHighlight, StyleSheet, Text, View, Image, Slider} from "react-native";
 import {Icon} from "react-native-elements";
 import * as Util from './Utils';
+import * as Settings from './Settings';
 
 const format = require('string-format');
 
 const BACKGROUND_COLOR = '#FFFFFF';
-const BLUE_TINT = '#0074CD';
-const GREY_TINT = '#D7D7D7';
+const BLUE_TINT = Settings.BLUE_TINT;
+const GREY_TINT = Settings.GREY_TINT;
 
 class ChapterPlayerPage extends React.Component {
 
