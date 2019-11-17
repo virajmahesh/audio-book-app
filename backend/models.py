@@ -167,12 +167,21 @@ class Audiobook(models.Model):
         unique_together = ['gutenberg_book', 'librivox_book']
 
 
+class AudiobookChapterGroup(models.Model):
+    title = models.CharField(null=True, max_length=256)
+    audiobook = models.ForeignKey(Audiobook, null=True, on_delete=models.SET_NULL)
+
+    class Meta:
+        db_table = 'audiobook_chapter_group'
+
+        
 class AudiobookChapter(models.Model):
     title = models.TextField(null=True)
     duration = models.CharField(null=True, max_length=32)
     audio_url = models.URLField(null=True, max_length=4096)
 
     audiobook = models.ForeignKey(Audiobook, null=True, on_delete=models.SET_NULL)
+    group = models.ForeignKey(AudiobookChapterGroup, null=True, on_delete=models.SET_NULL)
 
     class Meta:
         db_table = 'audiobook_chapter'
