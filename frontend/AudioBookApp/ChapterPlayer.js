@@ -6,7 +6,7 @@ import * as Util from './Utils';
 
 const format = require('string-format');
 
-const BACKGROUND_COLOR = '#eeeeee';
+const BACKGROUND_COLOR = '#FFFFFF';
 const BLUE_TINT = '#0074CD';
 const GREY_TINT = '#D7D7D7';
 
@@ -315,20 +315,20 @@ const styles = StyleSheet.create({
         alignItems: 'stretch'
     },
     bookDetails: {
-        flex: 7,
+        flex: 6,
         justifyContent: 'center',
         alignItems: 'center'
     },
     audioPlayer: {
-        flex: 3.5,
-        backgroundColor: '#eeeeee',
+        flex: 4,
+        backgroundColor: BACKGROUND_COLOR,
         justifyContent: 'center',
         alignItems: 'center'
     },
     albumArt: {
         width: '75%',
         height: '75%',
-        marginBottom: 25
+        marginBottom: 10
     },
     chapterName: {
         fontFamily: 'product-sans-bold',
@@ -347,7 +347,7 @@ const styles = StyleSheet.create({
     playerControlIcon: {
       marginLeft: 10,
       marginRight: 10,
-      backgroundColor: '#eeeeee',
+      backgroundColor: BACKGROUND_COLOR,
     }
 });
 
