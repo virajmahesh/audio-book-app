@@ -1,6 +1,7 @@
 import React from "react";
-import {Dimensions, FlatList, Image, StyleSheet, Text, View} from "react-native";
+import {FlatList, Image, StyleSheet, Text, View} from "react-native";
 import {Button, Icon} from 'react-native-elements'
+import * as Utils from "./Utils";
 
 
 class BookDetailsPage extends React.Component {
@@ -67,7 +68,11 @@ class BookDetailsPage extends React.Component {
     render() {
         // No book to show details
         if (this.state.book == null) {
-            return null;
+            return (
+                <View style={{height: '100%', justifyContent: 'center'}}>
+                    {Utils.loadingIndicator()}
+                </View>
+            )
         }
 
         //TODO: Wait for chapters? Or re-render page when they load

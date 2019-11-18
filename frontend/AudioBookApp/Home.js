@@ -1,5 +1,5 @@
 import React from "react";
-import {Dimensions, FlatList, RefreshControl, StatusBar, StyleSheet, Text, View} from "react-native";
+import {ActivityIndicator, Dimensions, FlatList, StatusBar, StyleSheet, Text, View} from "react-native";
 import {withNavigation} from 'react-navigation';
 
 import * as Font from "expo-font";
@@ -60,7 +60,10 @@ class HomeScreen extends React.Component {
     async loadHomePageBooks() {
         // TODO: Log errors from fetching home data
         let offset = this.state.bookList.length;
-        console.log('Offset: ' + offset);
+        this.setState({
+            booksLoaded: false
+        });
+
         await fetch(format(Settings.HOME_API_ENDPOINT, offset))
             .then((response => response.json()))
             .then((responseJSON) => {
@@ -79,16 +82,17 @@ class HomeScreen extends React.Component {
             });
     }
 
-    _handleScroll = ({nativeEvent}) => {
-        if (Utils.isCloseToBottom(nativeEvent)) {
-            console.log('Hit bottom');
-            this.loadHomePageBooks();
-        }
-    };
+    static pageTitleComponent() {
+        return (
+            <Text style={styles.homePageTitle} key='titleText'>
+                Classic Audiobooks
+            </Text>
+        )
+    }
 
     render() {
         //TODO: Log Home Activity startup time
-        if (!this.state.fontsLoaded || !this.state.booksLoaded) {
+        if (!this.state.fontsLoaded) {
             return <AppLoading/>;
         }
 
@@ -102,17 +106,12 @@ class HomeScreen extends React.Component {
                                   numColumns={3}
                                   key='bookShelf'
                                   keyExtractor={(item, index) => index.toString()}
-                                  onEndReachedThreshold={0.5}
                                   onEndReached={() => this.loadHomePageBooks()}
-                                  ListHeaderComponent={<Text style={styles.homePageTitle} key='titleText'>Classic
-                                      Audiobooks</Text>}
-                                  refreshControl={
-                                      <RefreshControl refreshing={this.state.refreshing}
-                                                      onRefresh={this.onRefresh}
-                                                      colors={[Settings.BLUE_TINT]}
-                                                      title="Pull to refresh"
-                                                      titleColor="#fff"/>
-                                  }
+                                  showsVerticalScrollIndicator={false}
+                                  onEndReachedThreshold={0.25}
+                                  ListHeaderComponent={HomeScreen.pageTitleComponent()}
+                                  ListFooterComponent={Utils.loadingIndicator()}
+                                  refreshControl={Utils.createRefreshControl(this.state.refreshing, this.onRefresh)}
                         />
                     </View>
                 </View>
