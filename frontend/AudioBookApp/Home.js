@@ -1,11 +1,14 @@
 import React from "react";
-import {Dimensions, ScrollView, StatusBar, StyleSheet, Text, View, RefreshControl} from "react-native";
+import {Dimensions, ScrollView, StatusBar, StyleSheet, Text, View, RefreshControl, FlatList} from "react-native";
 import { withNavigation } from 'react-navigation';
 
 import * as Font from "expo-font";
 import {AppLoading} from "expo";
 import {Book} from "./Book";
 import * as Settings from './Settings';
+import * as Utils from './Utils';
+
+const format = require('string-format');
 
 const width = Dimensions.get('window').width;
 const bookMargin = width * 0.02;
@@ -31,9 +34,14 @@ class HomeScreen extends React.Component {
     }
 
     onRefresh = async () => {
-        this.setState({ refreshing: true });
+        await this.setState({
+          refreshing: true,
+          bookList: []
+        });
         await this.loadHomePageBooks();
-        this.setState({ refreshing: false });
+        this.setState({
+          refreshing: false
+        });
     }
 
     async loadFonts() {
@@ -51,10 +59,12 @@ class HomeScreen extends React.Component {
 
     async loadHomePageBooks() {
       // TODO: Log errors from fetching home data
-      await fetch(Settings.HOME_API_ENDPOINT)
+      let offset = this.state.bookList.length;
+      console.log('Offset: ' + offset);
+      await fetch(format(Settings.HOME_API_ENDPOINT, offset))
           .then((response => response.json()))
           .then((responseJSON) => {
-              let bookList = [];
+              let bookList = this.state.bookList;
 
               // Parse the JSON response and create Book objects
               responseJSON.forEach((b => {
@@ -63,10 +73,16 @@ class HomeScreen extends React.Component {
 
               // Update the app state with the new book list
               this.setState({
-                  bookList: bookList,
                   booksLoaded: true
               });
           });
+    }
+
+    _handleScroll = ({nativeEvent}) => {
+      if (Utils.isCloseToBottom(nativeEvent)) {
+          console.log('Hit bottom');
+          this.loadHomePageBooks();
+      }
     }
 
     render() {
@@ -78,18 +94,26 @@ class HomeScreen extends React.Component {
         return (
             <View style={{flex: 1}}>
                 <StatusBar barStyle="dark-content"/>
-                <View style={styles.homePage}>
-                    <ScrollView  refreshControl={
-                          <RefreshControl refreshing={this.state.refreshing}
-                                          onRefresh={this.onRefresh}
-                                          colors={[Settings.BLUE_TINT]}/>
-                        }>
-                        <Text style={styles.homePageTitle}>Classic Audiobooks</Text>
-                        <View style={styles.bookShelfHome}>
-                            {this.state.bookList}
+                    <View style={styles.homePage} key='titleView'>
+                        <View>
+                            <FlatList data={this.state.bookList}
+                                          renderItem={({item}) => item}
+                                          numColumns={3}
+                                          key='bookShelf'
+                                          keyExtractor={(item, index) => index.toString()}
+                                          onEndReachedThreshold={0.5}
+                                          onEndReached={(info) => this.loadHomePageBooks()}
+                                          ListHeaderComponent={<Text style={styles.homePageTitle} key='titleText'>Classic Audiobooks</Text>}
+                                          refreshControl={
+                                              <RefreshControl refreshing={this.state.refreshing}
+                                                              onRefresh={this.onRefresh}
+                                                              colors={[Settings.BLUE_TINT]}
+                                                              title="Pull to refresh"
+                                                              titleColor="#fff"/>
+                                          }
+                            />
                         </View>
-                    </ScrollView>
-                </View>
+                    </View>
             </View>
         );
     }

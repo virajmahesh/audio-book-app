@@ -23,7 +23,6 @@ class Book extends React.Component {
             imageURL: props.primary_image_url,
             secondaryImageURL: props.secondary_image_url
         };
-        props.key = props.id;
     }
 
     getImageURL() {
