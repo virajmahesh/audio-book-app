@@ -1,8 +1,8 @@
 import React from "react";
 import {Audio} from 'expo-av';
-import {TouchableHighlight, StyleSheet, Text, View, Image, Slider} from "react-native";
+import {Image, Slider, StyleSheet, Text, TouchableHighlight, View} from "react-native";
 import {Icon} from "react-native-elements";
-import * as Util from './Utils';
+import * as Utils from './Utils';
 import * as Settings from './Settings';
 
 const format = require('string-format');
@@ -25,48 +25,48 @@ class ChapterPlayerPage extends React.Component {
     _createAudioSeekBar = () => {
         return (
             <Slider
-              style={styles.audioSeekBar}
-              value={this.state.playbackPercent}
-              minimumValue={0}
-              maximumValue={1}
-              minimumTrackTintColor={BLUE_TINT}
-              thumbTintColor={BLUE_TINT}
-              maximumTrackTintColor={GREY_TINT}
-              onSlidingComplete={this._onAudioBarSeekComplete}
-              onValueChange={this._onAudioBarSeeking}
+                style={styles.audioSeekBar}
+                value={this.state.playbackPercent}
+                minimumValue={0}
+                maximumValue={1}
+                minimumTrackTintColor={Utils.BLUE}
+                thumbTintColor={Utils.BLUE}
+                maximumTrackTintColor={Utils.GREY}
+                onSlidingComplete={this._onAudioBarSeekComplete}
+                onValueChange={this._onAudioBarSeeking}
             />
         )
-    }
+    };
 
     _createPlayPauseButton = () => {
-      return (
-          <View style={styles.playerControlIcon}>
-              <TouchableHighlight onPress={this._onPlayPausePressed} underlayColor={BACKGROUND_COLOR}>
-              <Icon
-                  type="material"
-                  name={this._getPlayButton()}
-                  size={50}
-                  color="#000000"
-              />
-              </TouchableHighlight>
-          </View>
-      )
-    }
+        return (
+            <View style={styles.playerControlIcon}>
+                <TouchableHighlight onPress={this._onPlayPausePressed} underlayColor={BACKGROUND_COLOR}>
+                    <Icon
+                        type="material"
+                        name={this._getPlayButton()}
+                        size={50}
+                        color="#000000"
+                    />
+                </TouchableHighlight>
+            </View>
+        )
+    };
 
     _createSeekButton = (direction, duration) => {
         return (
-          <View style={styles.playerControlIcon}>
-          <Icon
-              type="material"
-              name={format("{0}-{1}", direction, '30')}
-              size={35}
-              color="#000000"
-              style={styles.playerControlIcon}
-              onPress={() => this._onSeekButtonPressed(direction)}
-          />
-          </View>
+            <View style={styles.playerControlIcon}>
+                <Icon
+                    type="material"
+                    name={format("{0}-{1}", direction, '30')}
+                    size={35}
+                    color="#000000"
+                    style={styles.playerControlIcon}
+                    onPress={() => this._onSeekButtonPressed(direction)}
+                />
+            </View>
         )
-    }
+    };
 
     _onPlayPausePressed = () => {
         if (this.state.playbackInstance == null) {
@@ -76,15 +76,14 @@ class ChapterPlayerPage extends React.Component {
 
         if (this.state.playing) {
             this.state.playbackInstance.pauseAsync();
-        }
-        else {
+        } else {
             this.state.playbackInstance.playAsync();
         }
-    }
+    };
 
     _getPlayButton() {
         if (this.state.shouldPlay) {
-          return 'pause';
+            return 'pause';
         }
         return 'play-arrow';
     }
@@ -99,11 +98,10 @@ class ChapterPlayerPage extends React.Component {
         //}
         //this.state.seekButtonTaps += 1;
 
-        if (direction == 'replay') {
-            position -= 30 * Util.SECOND_IN_MILLIS;
-        }
-        else if (direction == 'forward') {
-            position += 30 * Util.SECOND_IN_MILLIS;
+        if (direction === 'replay') {
+            position -= 30 * Utils.SECOND_IN_MILLIS;
+        } else if (direction === 'forward') {
+            position += 30 * Utils.SECOND_IN_MILLIS;
         }
 
         this.setState({
@@ -117,7 +115,7 @@ class ChapterPlayerPage extends React.Component {
         //if (this.state.seekButtonTaps == 0) {
         this.state.seeking = false;
         //}
-    }
+    };
 
     _onAudioBarSeeking = async (value) => {
         console.log('Updating audio bar seek value');
@@ -130,7 +128,7 @@ class ChapterPlayerPage extends React.Component {
         this.setState({
             position: position
         });
-    }
+    };
 
     _onAudioBarSeekComplete = async (value) => {
         console.log('Audio seek complete');
@@ -148,30 +146,29 @@ class ChapterPlayerPage extends React.Component {
 
         // Wait for the player to resume playing before we set seeking to false
         console.log('Audio bar seek complete, seeking is now False');
-    }
+    };
 
-    _waitForPreSeekStatus = async() => {
+    _waitForPreSeekStatus = async () => {
         if (this.state.seekPlayingStatus) {
             console.log('Resuming playback');
             // Don't mark seeking as false until the Playback has resumed
             await this.state.playbackInstance.playAsync();
             await this._waitForPlaybackStatus(true);
+        } else {
+            console.log('Pausing Playback');
+            await this.state.playbackInstance.pauseAsync();
+            await this._waitForPlaybackStatus(false);
         }
-        else {
-              console.log('Pausing Playback');
-              await this.state.playbackInstance.pauseAsync();
-              await this._waitForPlaybackStatus(false);
-        }
-    }
+    };
 
     _waitForPlaybackStatus = async (isPlaying) => {
         while (true) {
             let status = await this.state.playbackInstance.getStatusAsync();
-            if (status.isPlaying == isPlaying) {
+            if (status.isPlaying === isPlaying) {
                 break;
             }
         }
-    }
+    };
 
     _playbackStatusUpdate = (playbackStatus) => {
 
@@ -195,14 +192,14 @@ class ChapterPlayerPage extends React.Component {
             });
 
             console.log('Playing: ' + this.state.playing);
-            console.log('Buffering '+ this.state.buffering);
+            console.log('Buffering ' + this.state.buffering);
             console.log('Should Play ' + this.state.shouldPlay);
-          }
+        }
 
         if (playbackStatus.error) {
-          //TODO: Log that there was an error
+            //TODO: Log that there was an error
         }
-    }
+    };
 
     async componentDidMount() {
         // Create initial structure of Player
@@ -252,7 +249,7 @@ class ChapterPlayerPage extends React.Component {
 
             // Keep track of the playback instance
             this.setState({
-              playbackInstance: playbackInstance,
+                playbackInstance: playbackInstance,
             });
 
 
@@ -266,16 +263,15 @@ class ChapterPlayerPage extends React.Component {
         // Unload the playback instance
         if (this.state.playbackInstance != null) {
             this.state.playbackInstance.unloadAsync();
-        }
-        else {
-          //TODO Log why there isn't a playback instance here
+        } else {
+            //TODO Log why there isn't a playback instance here
         }
     }
 
     render() {
         console.log('rendering');
         console.log('Playing: ' + this.state.playing);
-        console.log('Buffering '+ this.state.buffering);
+        console.log('Buffering ' + this.state.buffering);
         //console.log('Play button shape ' + this._getPlayButton());
 
         if (this.state.chapter == null) {
@@ -285,17 +281,19 @@ class ChapterPlayerPage extends React.Component {
             <View>
                 <View style={styles.chapterPlayer}>
                     <View style={styles.bookDetails}>
-                        <Image style={styles.albumArt} source={{uri: this.state.book.getImageURL()}} resizeMode='contain'/>
+                        <Image style={styles.albumArt} source={{uri: this.state.book.getImageURL()}}
+                               resizeMode='contain'/>
                     </View>
                     <View style={styles.audioPlayer}>
                         <Text style={styles.chapterName}>{this.state.chapter.state.title}</Text>
-                        <Text style={styles.bookTitleAndAuthor}>{this.state.book.state.title} · {this.state.book.state.author}</Text>
+                        <Text
+                            style={styles.bookTitleAndAuthor}>{this.state.book.state.title} · {this.state.book.state.author}</Text>
                         <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 20}}>
-                            <View><Text>{Util.millisToString(this.state.position)}</Text></View>
+                            <View><Text>{Utils.millisToString(this.state.position)}</Text></View>
                             <View style={{alignItems: 'center'}}>
                                 {this._createAudioSeekBar()}
                             </View>
-                            <View><Text>{Util.millisToString(this.state.duration)}</Text></View>
+                            <View><Text>{Utils.millisToString(this.state.duration)}</Text></View>
                         </View>
                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
                             {this._createSeekButton('replay', 30)}
@@ -346,9 +344,9 @@ const styles = StyleSheet.create({
         height: 20,
     },
     playerControlIcon: {
-      marginLeft: 10,
-      marginRight: 10,
-      backgroundColor: BACKGROUND_COLOR,
+        marginLeft: 10,
+        marginRight: 10,
+        backgroundColor: BACKGROUND_COLOR,
     }
 });
 

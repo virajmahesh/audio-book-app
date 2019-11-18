@@ -3,7 +3,7 @@ import {Icon} from "react-native-elements";
 import Collapsible from 'react-native-collapsible';
 import {withNavigation} from 'react-navigation';
 import {CHAPTER_API_ENDPOINT} from './Settings';
-import {Dimensions, Image, StyleSheet, Text, TouchableHighlight, View} from "react-native";
+import {Image, StyleSheet, Text, TouchableHighlight, View} from "react-native";
 import * as Utils from './Utils';
 
 const format = require('string-format');
