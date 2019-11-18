@@ -1,6 +1,6 @@
 import React from "react";
-import {Dimensions, StatusBar, StyleSheet, Text, View, RefreshControl, FlatList} from "react-native";
-import { withNavigation } from 'react-navigation';
+import {Dimensions, FlatList, RefreshControl, StatusBar, StyleSheet, Text, View} from "react-native";
+import {withNavigation} from 'react-navigation';
 
 import * as Font from "expo-font";
 import {AppLoading} from "expo";
@@ -35,12 +35,12 @@ class HomeScreen extends React.Component {
 
     onRefresh = async () => {
         await this.setState({
-          refreshing: true,
-          bookList: []
+            refreshing: true,
+            bookList: []
         });
         await this.loadHomePageBooks();
         this.setState({
-          refreshing: false
+            refreshing: false
         });
     };
 
@@ -53,37 +53,37 @@ class HomeScreen extends React.Component {
         });
 
         this.setState({
-          fontsLoaded: true
+            fontsLoaded: true
         });
     }
 
     async loadHomePageBooks() {
-      // TODO: Log errors from fetching home data
-      let offset = this.state.bookList.length;
-      console.log('Offset: ' + offset);
-      await fetch(format(Settings.HOME_API_ENDPOINT, offset))
-          .then((response => response.json()))
-          .then((responseJSON) => {
-              let bookList = this.state.bookList;
+        // TODO: Log errors from fetching home data
+        let offset = this.state.bookList.length;
+        console.log('Offset: ' + offset);
+        await fetch(format(Settings.HOME_API_ENDPOINT, offset))
+            .then((response => response.json()))
+            .then((responseJSON) => {
+                let bookList = this.state.bookList;
 
-              // Parse the JSON response and create Book objects
-              responseJSON.forEach((b => {
-                  b.key = 'Book: ' +  b.id.toString();
-                  bookList.push(React.createElement(Book, b));
-              }));
+                // Parse the JSON response and create Book objects
+                responseJSON.forEach((b => {
+                    b.key = 'Book: ' + b.id.toString();
+                    bookList.push(React.createElement(Book, b));
+                }));
 
-              // Update the app state with the new book list
-              this.setState({
-                  booksLoaded: true
-              });
-          });
+                // Update the app state with the new book list
+                this.setState({
+                    booksLoaded: true
+                });
+            });
     }
 
     _handleScroll = ({nativeEvent}) => {
-      if (Utils.isCloseToBottom(nativeEvent)) {
-          console.log('Hit bottom');
-          this.loadHomePageBooks();
-      }
+        if (Utils.isCloseToBottom(nativeEvent)) {
+            console.log('Hit bottom');
+            this.loadHomePageBooks();
+        }
     };
 
     render() {
@@ -95,26 +95,27 @@ class HomeScreen extends React.Component {
         return (
             <View style={{flex: 1}}>
                 <StatusBar barStyle="dark-content"/>
-                    <View style={styles.homePage} key='titleView'>
-                        <View>
-                            <FlatList data={this.state.bookList}
-                                          renderItem={({item}) => item}
-                                          numColumns={3}
-                                          key='bookShelf'
-                                          keyExtractor={(item, index) => index.toString()}
-                                          onEndReachedThreshold={0.5}
-                                          onEndReached={() => this.loadHomePageBooks()}
-                                          ListHeaderComponent={<Text style={styles.homePageTitle} key='titleText'>Classic Audiobooks</Text>}
-                                          refreshControl={
-                                              <RefreshControl refreshing={this.state.refreshing}
-                                                              onRefresh={this.onRefresh}
-                                                              colors={[Settings.BLUE_TINT]}
-                                                              title="Pull to refresh"
-                                                              titleColor="#fff"/>
-                                          }
-                            />
-                        </View>
+                <View style={styles.homePage} key='titleView'>
+                    <View>
+                        <FlatList data={this.state.bookList}
+                                  renderItem={({item}) => item}
+                                  numColumns={3}
+                                  key='bookShelf'
+                                  keyExtractor={(item, index) => index.toString()}
+                                  onEndReachedThreshold={0.5}
+                                  onEndReached={() => this.loadHomePageBooks()}
+                                  ListHeaderComponent={<Text style={styles.homePageTitle} key='titleText'>Classic
+                                      Audiobooks</Text>}
+                                  refreshControl={
+                                      <RefreshControl refreshing={this.state.refreshing}
+                                                      onRefresh={this.onRefresh}
+                                                      colors={[Settings.BLUE_TINT]}
+                                                      title="Pull to refresh"
+                                                      titleColor="#fff"/>
+                                  }
+                        />
                     </View>
+                </View>
             </View>
         );
     }
