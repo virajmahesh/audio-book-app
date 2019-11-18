@@ -31,10 +31,10 @@ export function createRefreshControl(refreshing, onRefresh) {
     )
 }
 
-export function loadingIndicator() {
+export function loadingIndicator(animating=true) {
     return (
         <View style={{height: 40, padding: 30}}>
-            <ActivityIndicator size='large' animating={true} color={BLUE}/>
+            <ActivityIndicator size='large' animating={animating} color={BLUE}/>
         </View>
     )
 }

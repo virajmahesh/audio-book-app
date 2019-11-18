@@ -110,7 +110,7 @@ class HomeScreen extends React.Component {
                                   showsVerticalScrollIndicator={false}
                                   onEndReachedThreshold={0.25}
                                   ListHeaderComponent={HomeScreen.pageTitleComponent()}
-                                  ListFooterComponent={Utils.loadingIndicator()}
+                                  ListFooterComponent={Utils.loadingIndicator(!this.state.refreshing)}
                                   refreshControl={Utils.createRefreshControl(this.state.refreshing, this.onRefresh)}
                         />
                     </View>
