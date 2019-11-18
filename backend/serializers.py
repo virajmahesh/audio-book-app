@@ -8,7 +8,7 @@ class AudiobookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Audiobook
         fields = ['id', 'title', 'description', 'primary_image_url',
-                  'secondary_image_url', 'author']
+                  'secondary_image_url', 'author', 'isbn', 'isbn13']
 
 
 class ChapterSerializer(serializers.ModelSerializer):
