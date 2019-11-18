@@ -1,13 +1,12 @@
 import React from "react";
-import {Animated, Dimensions, StyleSheet, Text, TouchableHighlight, View, Image} from "react-native";
 import {Icon} from "react-native-elements";
-import { withNavigation } from 'react-navigation';
+import Collapsible from 'react-native-collapsible';
+import {withNavigation} from 'react-navigation';
 import {CHAPTER_API_ENDPOINT} from './Settings';
+import {Dimensions, Image, StyleSheet, Text, TouchableHighlight, View} from "react-native";
 import * as Utils from './Utils';
 
 const format = require('string-format');
-const width = Dimensions.get('window').width;
-const bookMargin = width * 0.02;
 
 
 @withNavigation
@@ -21,38 +20,43 @@ class Book extends React.Component {
             author: props.author,
             description: props.description,
             imageURL: props.primary_image_url,
-            secondaryImageURL: props.secondary_image_url
+            secondaryImageURL: props.secondary_image_url,
+            isbn: props.isbn,
+            isbn13: props.isbn13,
         };
     }
 
+    hasISBN() {
+        return (this.state.isbn !== '') || (this.state.isbn13 !== '');
+    }
+
     getImageURL() {
+        if (this.state.imageURL.includes('nophoto') && this.hasISBN()) {
+            return this.state.secondaryImageURL;
+        }
         return this.state.imageURL;
     }
 
     async loadChapters() {
-      await fetch(format(CHAPTER_API_ENDPOINT, this.state.id))
-        .then((response => response.json()))
-        .then((responseJSON) => {
-            let chapterGroupList = []
+        await fetch(format(CHAPTER_API_ENDPOINT, this.state.id))
+            .then((response => response.json()))
+            .then((responseJSON) => {
+                let chapterGroupList = [];
 
-            responseJSON.forEach(((c, idx, array) => {
-              // Determine if chapters should be collapsed or expanded by default
-              if (array.length <= 1) {
-                c.isExpanded = true;
-              }
-              else {
-                c.isExpanded = false;
-              }
-              c.book = this; // Insert a reference to the book in the Chapter object
-              chapterGroupList.push(React.createElement(ChapterGroup, c))
-            }));
+                responseJSON.forEach(((c, idx, array) => {
+                    // Determine if chapters should be collapsed or expanded by default
+                    c.isCollapsed = (array.length > 1);
+                    c.book = this; // Insert a reference to the book in the Chapter object
+                    c.key = 'ChapterGroup:' + c.id.toString();
+                    chapterGroupList.push(React.createElement(ChapterGroup, c))
+                }));
 
-            // Update the book state with the new book list
-            this.setState({
-                chapterGroupList: chapterGroupList,
-                chaptersLoaded: true
+                // Update the book state with the new book list
+                this.setState({
+                    chapterGroupList: chapterGroupList,
+                    chaptersLoaded: true
+                });
             });
-        });
     }
 
     render() {
@@ -72,6 +76,7 @@ class Book extends React.Component {
     }
 }
 
+@withNavigation
 class ChapterGroup extends React.Component {
     constructor(props) {
         super(props);
@@ -80,45 +85,38 @@ class ChapterGroup extends React.Component {
             id: props.id,
             title: props.title,
             book: props.book,
-            isExpanded: props.isExpanded
+            isCollapsed: props.isCollapsed,
+            chapterList: []
         };
 
         let chapterList = [];
         props.chapters.forEach(((c, idx, array) => {
-              c.book = this.state.book;
-              if (idx == array.length - 1) {
-                  c.isLastChapter = true;
-              }
-              else {
-                  c.isLastChapter = false;
-              }
-              chapterList.push(React.createElement(Chapter, c));
+            c.book = this.state.book;
+            c.isLastChapter = (idx === array.length - 1);
+            c.key = 'Chapter:' + c.id;
+            chapterList.push(React.createElement(Chapter, c));
         }));
 
         this.state.chapterList = chapterList;
     }
 
     _getCaretDirection() {
-        if (this.state.isExpanded) {
-            return 'keyboard-arrow-up';
+        if (this.state.isCollapsed) {
+            return 'keyboard-arrow-down';
         }
-        return 'keyboard-arrow-down';
-    }
-
-    _renderChapters() {
-        if (this.state.isExpanded) {
-            return this.state.chapterList;
-        }
-        return null;
+        return 'keyboard-arrow-up';
     }
 
     render() {
         return (
             <View>
+
+                {/* Render chapter group heading */}
                 <TouchableHighlight
                     underlayColor={Utils.GREY}
-                    onPress={() => this.setState({isExpanded: !this.state.isExpanded})}>
-                    <View style={{flexDirection: 'row', alignItems: 'center', height: 55, backgroundColor: Utils.WHITE}}>
+                    onPress={() => this.setState({isCollapsed: !this.state.isCollapsed})}>
+                    <View
+                        style={{flexDirection: 'row', alignItems: 'center', height: 55, backgroundColor: Utils.WHITE}}>
                         <View style={styles.chapterGroupTitle}>
                             <Text style={{fontFamily: 'product-sans-bold', fontSize: 15}}>{this.state.title}</Text>
                         </View>
@@ -127,7 +125,11 @@ class ChapterGroup extends React.Component {
                         </View>
                     </View>
                 </TouchableHighlight>
-                {this._renderChapters()}
+
+                {/* Render the chapters in this group */}
+                <Collapsible collapsed={this.state.isCollapsed}>
+                    {this.state.chapterList}
+                </Collapsible>
             </View>
         )
     }
@@ -139,35 +141,12 @@ class Chapter extends React.Component {
         super(props);
 
         this.state = {
-          id: props.id,
-          title: props.title,
-          audioURL: props.audio_url,
-          book: props.book,
-          opacity: new Animated.Value(0),
-          isLastChapter: props.isLastChapter
+            id: props.id,
+            title: props.title,
+            audioURL: props.audio_url,
+            book: props.book,
+            isLastChapter: props.isLastChapter
         };
-    }
-
-    componentDidMount() {
-        Animated.timing(
-            this.state.opacity,
-            {
-                toValue: 1,
-                duration: 500,
-                useNativeDriver: true
-            }
-        ).start();
-    }
-
-    componentWillUnmount() {
-        Animated.timing(
-            this.state.opacity,
-            {
-                toValue: 0,
-                duration: 1000,
-                useNativeDriver: true
-            }
-        ).start();
     }
 
     render() {
@@ -180,20 +159,20 @@ class Chapter extends React.Component {
                     chapter: this,
                 })}>
 
-                <Animated.View style={chapterStyle(this.state.isLastChapter, this.state.opacity)}>
+                <View style={chapterStyle(this.state.isLastChapter)}>
                     <View style={styles.chapterTitle}>
                         <Text style={{fontFamily: 'product-sans', fontSize: 15}}>{this.state.title}</Text>
                     </View>
                     <View style={styles.playIcon}>
                         <Icon type="material" name="play-circle-outline" color="#000000"/>
                     </View>
-                </Animated.View>
+                </View>
             </TouchableHighlight>
         )
     }
 }
 
-function chapterStyle(isLastChapter, opacity) {
+function chapterStyle(isLastChapter) {
     return {
         borderBottomWidth: (isLastChapter) ? 0 : 1,
         height: 55,
@@ -203,7 +182,6 @@ function chapterStyle(isLastChapter, opacity) {
         alignItems: 'center',
         justifyContent: 'flex-start',
         backgroundColor: 'white',
-        opacity: opacity
     }
 }
 
@@ -238,7 +216,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
 
-    //TODO: Clean up Chapter styles and rendereding logic
+    //TODO: Clean up Chapter styles and rendering logic
     chapterGroupTitle: {
         flex: 0.9
     },
@@ -251,9 +229,7 @@ const styles = StyleSheet.create({
     playIcon: {
         flex: 0.1,
     },
-    chapterTouch: {
-
-    }
+    chapterTouch: {}
 });
 
 export {Book, ChapterGroup, Chapter};

@@ -1,5 +1,5 @@
 import React from "react";
-import {Dimensions, ScrollView, StatusBar, StyleSheet, Text, View, RefreshControl, FlatList} from "react-native";
+import {Dimensions, StatusBar, StyleSheet, Text, View, RefreshControl, FlatList} from "react-native";
 import { withNavigation } from 'react-navigation';
 
 import * as Font from "expo-font";
@@ -42,7 +42,7 @@ class HomeScreen extends React.Component {
         this.setState({
           refreshing: false
         });
-    }
+    };
 
     async loadFonts() {
         await Font.loadAsync({
@@ -68,6 +68,7 @@ class HomeScreen extends React.Component {
 
               // Parse the JSON response and create Book objects
               responseJSON.forEach((b => {
+                  b.key = 'Book: ' +  b.id.toString();
                   bookList.push(React.createElement(Book, b));
               }));
 
@@ -83,7 +84,7 @@ class HomeScreen extends React.Component {
           console.log('Hit bottom');
           this.loadHomePageBooks();
       }
-    }
+    };
 
     render() {
         //TODO: Log Home Activity startup time
@@ -102,7 +103,7 @@ class HomeScreen extends React.Component {
                                           key='bookShelf'
                                           keyExtractor={(item, index) => index.toString()}
                                           onEndReachedThreshold={0.5}
-                                          onEndReached={(info) => this.loadHomePageBooks()}
+                                          onEndReached={() => this.loadHomePageBooks()}
                                           ListHeaderComponent={<Text style={styles.homePageTitle} key='titleText'>Classic Audiobooks</Text>}
                                           refreshControl={
                                               <RefreshControl refreshing={this.state.refreshing}

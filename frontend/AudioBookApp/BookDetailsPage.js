@@ -1,11 +1,6 @@
 import React from "react";
-import {Dimensions, StyleSheet, Text, View, ScrollView, Image, WebView} from "react-native";
+import {Dimensions, FlatList, Image, StyleSheet, Text, View} from "react-native";
 import {Button, Icon} from 'react-native-elements'
-import {Book, Chapter} from './Book'
-import loremIpsum from "lorem-ipsum-react-native"
-
-const width = Dimensions.get('window').width;
-const bookMargin = width * 0.02;
 
 
 class BookDetailsPage extends React.Component {
@@ -21,31 +16,21 @@ class BookDetailsPage extends React.Component {
 
     async componentDidMount() {
         let book = this.props.navigation.getParam('book');
-        await book.loadChapters()
+        await book.loadChapters();
 
         this.setState({
-          book: book
+            book: book
         });
     }
 
-    render() {
-        // No book to show details
-        if (this.state.book == null) {
-            return null;
-        }
-
-        //TODO: Replace this logic with book.loadChapters()
-        //TODO: Wait for chapters? Or re-render page when they load
-
+    bookDetailsHeader() {
         return (
-            <ScrollView>
-            <View style={styles.bookDetailsPage}>
-
-                <View style={styles.detailsPanel}>
+            <View key='bookDetailsHeader'>
+                <View style={styles.detailsPanel} key='bookDetailsPanel'>
                     <View style={styles.albumArt}>
-                      <Image style={{width: '100%', height: '100%'}}
-                             source={{uri: this.state.book.getImageURL()}}
-                             resizeMode='stretch'/>
+                        <Image style={{width: '100%', height: '100%'}}
+                               source={{uri: this.state.book.getImageURL()}}
+                               resizeMode='stretch'/>
                     </View>
                     <View style={styles.bookMetadata}>
                         <Text style={styles.bookTitle} numberOfLines={3}>
@@ -75,16 +60,35 @@ class BookDetailsPage extends React.Component {
                         title="Play"
                     />
                 </View>
-                {this.state.book.state.chapterGroupList}
             </View>
-                </ScrollView>
+        )
+    }
+
+    render() {
+        // No book to show details
+        if (this.state.book == null) {
+            return null;
+        }
+
+        //TODO: Wait for chapters? Or re-render page when they load
+        return (
+            <View style={styles.bookDetailsPage}>
+                <FlatList ListHeaderComponent={this.bookDetailsHeader()}
+                          data={this.state.book.state.chapterGroupList}
+                          renderItem={({item}) => item}
+                          showsVerticalScrollIndicator={false}
+                          keyExtractor={(item, index) => index.toString()}
+                />
+            </View>
         )
     }
 }
 
 const styles = StyleSheet.create({
     bookDetailsPage: {
-        padding: 30,
+        paddingTop: 30,
+        paddingRight: 30,
+        paddingLeft: 30,
     },
     detailsPanel: {
         flex: 1,
