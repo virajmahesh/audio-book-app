@@ -1,5 +1,6 @@
 import React from "react";
-import {ActivityIndicator, Dimensions, FlatList, StatusBar, StyleSheet, Text, View} from "react-native";
+
+import {Dimensions, FlatList, StatusBar, StyleSheet, Text, View} from "react-native";
 import {withNavigation} from 'react-navigation';
 
 import * as Font from "expo-font";
@@ -13,7 +14,7 @@ const format = require('string-format');
 const width = Dimensions.get('window').width;
 const bookMargin = width * 0.02;
 
-class HomeScreen extends React.Component {
+class HomePage extends React.Component {
     static navigationOptions = {
         header: null
     };
@@ -143,4 +144,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default withNavigation(HomeScreen);
+export default withNavigation(HomePage);
