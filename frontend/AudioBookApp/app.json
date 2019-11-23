@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Classic Audiobooks",
-    "slug": "AudioBookApp",
+    "name": "Aurelius",
+    "slug": "aurelius-app",
     "privacy": "public",
     "sdkVersion": "35.0.0",
     "platforms": [
@@ -24,8 +24,8 @@
       "**/*",
       "./assets/fonts/**"
     ],
-    "ios": {
-      "supportsTablet": true
+    "android": {
+      "package": "com.aurelius.app"
     },
     "description": "",
     "androidStatusBar": {
