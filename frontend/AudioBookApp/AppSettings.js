@@ -12,8 +12,11 @@ export const GOOGLE_USER_INFO_URL = 'https://www.googleapis.com/userinfo/v2/me';
 export const GOOGLE_WEB_CLIENT_ID = '41859677974-7967civvsf9ea05j7kbnlaur6b8i4bd9.apps.googleusercontent.com';
 export const GOOGLE_ANDROID_CLIENT_ID = '41859677974-olkepi5nsldshd211qomoftfemkn0ncn.apps.googleusercontent.com';
 
+// App Icon
+export const APP_ICON_PATH = './assets/icon.png';
 
 // Google Logo
+export const GOOGLE_LOGO_PATH = './assets/google-logo.png';
 export const GOOGLE_LOGO_URL = 'https://developers.google.com/identity/images/g-logo.png';
 
 export const BLUE_TINT = '#0074CD';

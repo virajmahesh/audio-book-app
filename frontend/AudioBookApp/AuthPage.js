@@ -2,7 +2,7 @@ import React from "react";
 import {withNavigation} from 'react-navigation';
 
 import AuthSessionManager from "./AuthSessionManager";
-import {Image, StyleSheet, Text, View, TouchableHighlight} from "react-native";
+import {Image, StyleSheet, Text, TouchableHighlight, View} from "react-native";
 
 import * as Settings from './AppSettings';
 import * as Utils from './Utils';
@@ -31,21 +31,40 @@ class AuthPage extends React.Component {
             console.log('rendering auth');
             return (
                 <View>
-                    <View>
-                        <Text style={styles.authPageTitle}>Aurelius</Text>
+                    <View style={styles.headingWrapper}>
+                        <View style={styles.titleWrapper}>
+                            <Image
+                                source={require('./assets/icon.png')}
+                                style={{height: 40, width: 40, marginRight: 10}}
+                            />
+                            <View>
+                                <Text style={styles.authPageTitle}>Aurelius</Text>
+                            </View>
+                        </View>
+                        <View>
+                            <Text style={styles.authPageSubtitle}>15,000+ Audiobooks</Text>
+                        </View>
+                        <View>
+                            <Text style={styles.authPageSubtitle}>Audio Fanfiction coming soon!</Text>
+                        </View>
                     </View>
-                    <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '70%'}}>
+                    <View style={{
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: '60%'
+                    }}>
                         <TouchableHighlight
                             onPress={() => this.logInWithGoogle()}
                             style={{borderRadius: 2}}>
-                        <View style={styles.logInButton}>
-                            <View style={styles.googleLogo}>
-                                <Image source={{uri: Settings.GOOGLE_LOGO_URL}} style={{height: 30, width: 30}}/>
+                            <View style={styles.logInButton}>
+                                <View style={styles.googleLogo}>
+                                    <Image source={require('./assets/google-logo.png')} style={{height: 30, width: 30}}/>
+                                </View>
+                                <View>
+                                    <Text style={styles.signInText}>Sign in with Google</Text>
+                                </View>
                             </View>
-                            <View>
-                                <Text style={styles.signInText}>Sign in with Google</Text>
-                            </View>
-                        </View>
                         </TouchableHighlight>
                     </View>
                 </View>
@@ -57,11 +76,28 @@ class AuthPage extends React.Component {
 }
 
 const styles = StyleSheet.create({
+    headingWrapper: {
+        height: '40%',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        paddingTop: 60,
+    },
+    titleWrapper: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 20
+    },
     authPageTitle: {
-        fontSize: 40,
-        padding: 25,
+        fontSize: 50,
         textAlign: 'center',
         fontFamily: 'product-sans-bold',
+    },
+    authPageSubtitle: {
+        fontFamily: 'product-sans',
+        fontSize: 19,
+        marginBottom: 10
     },
     googleLogo: {
         justifyContent: 'center',
