@@ -59,6 +59,10 @@ class BookDetailsPage extends React.Component {
                             />
                         }
                         title="Play"
+                        onPress={() => this.props.navigation.navigate('ChapterPlayer', {
+                            book: this.state.book,
+                            chapter: this.state.book.getFirstChapter()
+                        })}
                     />
                 </View>
             </View>

@@ -42,21 +42,34 @@ class Book extends React.Component {
             .then((response => response.json()))
             .then((responseJSON) => {
                 let chapterGroupList = [];
+                let chapterList = [];
 
+                // Callback to track the list of chapters created
+                let addChapter = (chapter) => {
+                    chapterList.push(chapter);
+                };
+
+                // Parse the JSON response
                 responseJSON.forEach(((c, idx, array) => {
                     // Determine if chapters should be collapsed or expanded by default
-                    c.isCollapsed = (array.length > 1);
+                    c.isCollapsed = false;
                     c.book = this; // Insert a reference to the book in the Chapter object
                     c.key = 'ChapterGroup:' + c.id.toString();
-                    chapterGroupList.push(React.createElement(ChapterGroup, c))
+                    c.addChapter = addChapter;
+                    chapterGroupList.push( React.createElement(ChapterGroup, c));
                 }));
 
                 // Update the book state with the new book list
                 this.setState({
                     chapterGroupList: chapterGroupList,
-                    chaptersLoaded: true
+                    chaptersLoaded: true,
+                    chapterList: chapterList
                 });
             });
+    }
+
+    getFirstChapter() {
+        return this.state.chapterList[0];
     }
 
     render() {
@@ -90,10 +103,13 @@ class ChapterGroup extends React.Component {
         };
 
         let chapterList = [];
+
         props.chapters.forEach(((c, idx, array) => {
             c.book = this.state.book;
             c.isLastChapter = (idx === array.length - 1);
             c.key = 'Chapter:' + c.id;
+            c.addChapter = props.addChapter;
+
             chapterList.push(React.createElement(Chapter, c));
         }));
 
@@ -147,12 +163,14 @@ class Chapter extends React.Component {
             book: props.book,
             isLastChapter: props.isLastChapter
         };
+
+        props.addChapter(this);
     }
 
     render() {
         return (
             <TouchableHighlight
-                style={chapterHightlightStyle(this.state.isLastChapter)}
+                style={chapterHighlightStyle(this.state.isLastChapter)}
                 underlayColor={Utils.GREY}
                 onPress={() => this.props.navigation.navigate('ChapterPlayer', {
                     book: this.state.book,
@@ -177,7 +195,7 @@ function chapterStyle(isLastChapter) {
         borderBottomWidth: (isLastChapter) ? 0 : 1,
         height: 55,
         width: '100%',
-        borderColor: '#eaeaea',
+        borderColor: '#EAEAEA',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-start',
@@ -185,7 +203,7 @@ function chapterStyle(isLastChapter) {
     }
 }
 
-function chapterHightlightStyle(isLastChapter) {
+function chapterHighlightStyle(isLastChapter) {
     return {
         marginBottom: (isLastChapter) ? 5 : 0,
     }

@@ -277,6 +277,9 @@ class ChapterPlayerPage extends React.Component {
         if (this.state.chapter == null) {
             return null;
         }
+
+        console.log(this.state.chapter.state);
+
         return (
             <View>
                 <View style={styles.chapterPlayer}>
