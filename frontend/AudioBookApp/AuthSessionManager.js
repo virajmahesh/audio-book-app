@@ -1,8 +1,9 @@
 import * as Google from "expo-google-app-auth";
-import * as Settings from "./Settings";
+import * as Settings from "./AppSettings";
 import * as Utils from './Utils';
 import * as SecureStore from "expo-secure-store";
 import {withNavigation} from 'react-navigation';
+
 
 @withNavigation
 export default class AuthSessionManager {
@@ -54,6 +55,35 @@ export default class AuthSessionManager {
         return AuthSessionManager.state && AuthSessionManager.state.isLoggedIn;
     }
 
+    static getState() {
+        return AuthSessionManager.state;
+    }
+
+    static getProfileImageURL() {
+        return AuthSessionManager.state.user.profileImageURL;
+    }
+
+    static getFirstName() {
+        return AuthSessionManager.state.user.firstName;
+    }
+
+    static getLastName() {
+        return AuthSessionManager.state.user.lastName;
+    }
+
+    static getFullName() {
+        return AuthSessionManager.getFirstName() + ' ' + AuthSessionManager.getLastName();
+    }
+
+    static getEmail() {
+        return AuthSessionManager.state.user.email;
+    }
+
+    static async logOut() {
+        AuthSessionManager.state = {};
+        await AuthSessionManager.saveLoginInfo();
+    }
+
     static async get1PTokens() {
         if (this.hasGoogleToken()) {
             let requestBody = Utils.queryString({
@@ -89,6 +119,7 @@ export default class AuthSessionManager {
         AuthSessionManager.state = JSON.parse(await SecureStore.getItemAsync('STATE'));
 
         if (AuthSessionManager.state === null) {
+            console.log('TEST');
             AuthSessionManager.state = {};
         }
 

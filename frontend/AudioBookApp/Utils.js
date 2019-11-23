@@ -3,8 +3,9 @@
 */
 
 import {ActivityIndicator, RefreshControl, View} from "react-native";
-import * as Settings from "./Settings";
+import * as Settings from "./AppSettings";
 import React from "react";
+import {NavigationActions, StackActions} from 'react-navigation'
 
 const format = require('string-format');
 
@@ -51,12 +52,10 @@ export function millisToString(millis) {
 }
 
 export function queryString(query = {}) {
-    const qs = Object.entries(query)
+    return Object.entries(query)
         .filter(pair => pair[1] !== undefined)
         .map(pair => pair.filter(i => i !== null).map(encodeURIComponent).join('='))
         .join('&');
-
-    return qs;
 }
 
 export const sleep = (milliseconds) => {
@@ -68,3 +67,10 @@ export const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize})
     return layoutMeasurement.height + contentOffset.y >=
         contentSize.height - paddingToBottom;
 };
+
+export function resetNavigation(route) {
+    return StackActions.reset({
+        index: 0,
+        actions: [NavigationActions.navigate({routeName: route})],
+    });
+}

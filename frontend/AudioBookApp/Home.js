@@ -2,13 +2,10 @@ import React from "react";
 
 import {Dimensions, FlatList, StatusBar, StyleSheet, Text, View} from "react-native";
 import {withNavigation} from 'react-navigation';
-
-import * as Font from "expo-font";
-import {AppLoading} from "expo";
 import {Book} from "./Book";
-import * as Settings from './Settings';
+import * as AppSettings from './AppSettings';
 import * as Utils from './Utils';
-import AuthSessionManager from "./AuthSessionManager";
+import {ProfileHeader} from "./SettingsPage";
 
 const format = require('string-format');
 
@@ -32,18 +29,9 @@ class HomePage extends React.Component {
         };
     }
 
-    async componentDidMount() {
-        await this.loadFonts();
-        await AuthSessionManager.loadLoginInfo();
-        this.setState({loadedAuthState: true});
-
-        // Redirect to the Auth Page if the user is not logged in
-        if (!AuthSessionManager.isLoggedIn()) {
-            this.props.navigation.navigate('Auth');
-        }
-        else {
-            this.loadHomePageBooks();
-        }
+    componentDidMount() {
+        console.log('Loading home');
+        this.loadHomePageBooks();
     }
 
     onRefresh = async () => {
@@ -57,23 +45,6 @@ class HomePage extends React.Component {
         });
     };
 
-    async loadFonts() {
-        if (this.state.fontsLoaded) {
-            return;
-        }
-
-        await Font.loadAsync({
-            'product-sans': require('./assets/fonts/ProductSansRegular.ttf'),
-            'product-sans-bold': require('./assets/fonts/ProductSansBold.ttf'),
-            'product-sans-italic': require('./assets/fonts/ProductSansItalic.ttf'),
-            'product-sans-bold-italic': require('./assets/fonts/ProductSansBoldItalic.ttf'),
-        });
-
-        this.setState({
-            fontsLoaded: true
-        });
-    }
-
     async loadHomePageBooks() {
         // TODO: Log errors from fetching home data
         let offset = this.state.bookList.length;
@@ -81,7 +52,7 @@ class HomePage extends React.Component {
             booksLoaded: false
         });
 
-        await fetch(format(Settings.HOME_API_ENDPOINT, offset))
+        await fetch(format(AppSettings.HOME_API_ENDPOINT, offset))
             .then((response => response.json()))
             .then((responseJSON) => {
                 let bookList = this.state.bookList;
@@ -101,18 +72,16 @@ class HomePage extends React.Component {
 
     static pageTitleComponent() {
         return (
-            <Text style={styles.homePageTitle} key='titleText'>
-                Classic Audiobooks
-            </Text>
+            <View>
+                <ProfileHeader />
+                <Text style={styles.homePageTitle} key='titleText'>
+                    Classic Audiobooks
+                </Text>
+            </View>
         )
     }
 
     render() {
-        //TODO: Log Home Activity startup time
-        if (!this.state.fontsLoaded || !this.state.loadedAuthState) {
-            return <AppLoading/>;
-        }
-
         return (
             <View style={{flex: 1}}>
                 <StatusBar barStyle="dark-content"/>

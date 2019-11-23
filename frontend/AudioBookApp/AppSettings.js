@@ -19,6 +19,8 @@ export const GOOGLE_LOGO_URL = 'https://developers.google.com/identity/images/g-
 export const BLUE_TINT = '#0074CD';
 export const GREY_TINT = '#D7D7D7';
 
+export const GREY = '#9C9C9C';
+
 // Deprecated
 const OPEN_LIBRARY_IMAGE_URL =  'http://covers.openlibrary.org/b/isbn/';
 const GOODREADS_REGEX_MATCH = /\._(SY|SX)(\d+)_\./gm;

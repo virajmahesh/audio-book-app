@@ -4,7 +4,7 @@ import {withNavigation} from 'react-navigation';
 import AuthSessionManager from "./AuthSessionManager";
 import {Image, StyleSheet, Text, View, TouchableHighlight} from "react-native";
 
-import * as Settings from './Settings';
+import * as Settings from './AppSettings';
 
 @withNavigation
 class AuthPage extends React.Component {
@@ -24,9 +24,10 @@ class AuthPage extends React.Component {
     }
 
     render() {
+        console.log('in auth');
         if (!AuthSessionManager.isLoggedIn()) {
             // Render login screen
-            console.log('test');
+            console.log('rendering auth');
             return (
                 <View>
                     <View>

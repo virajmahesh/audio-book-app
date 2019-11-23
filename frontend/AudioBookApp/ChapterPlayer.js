@@ -3,7 +3,7 @@ import {Audio} from 'expo-av';
 import {Image, Slider, StyleSheet, Text, TouchableHighlight, View} from "react-native";
 import {Icon} from "react-native-elements";
 import * as Utils from './Utils';
-import * as Settings from './Settings';
+import * as Settings from './AppSettings';
 
 const format = require('string-format');
 
@@ -233,7 +233,7 @@ class ChapterPlayerPage extends React.Component {
 
     async loadAudio() {
         try {
-            // Settings for the playback instance
+            // AppSettings for the playback instance
             let source = {
                 uri: this.state.chapter.state.audioURL
             };
