@@ -5,6 +5,7 @@ import AuthSessionManager from "./AuthSessionManager";
 import {Image, StyleSheet, Text, View, TouchableHighlight} from "react-native";
 
 import * as Settings from './AppSettings';
+import * as Utils from './Utils';
 
 @withNavigation
 class AuthPage extends React.Component {
@@ -19,7 +20,7 @@ class AuthPage extends React.Component {
     async logInWithGoogle() {
         await AuthSessionManager.loginWithGoogle();
         if (AuthSessionManager.isLoggedIn()) {
-            this.props.navigation.navigate('Home');
+            this.props.navigation.dispatch(Utils.resetNavigation('Home'));
         }
     }
 
