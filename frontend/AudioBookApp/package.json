@@ -14,6 +14,8 @@
     "expo-av": "~7.0.0",
     "expo-font": "latest",
     "expo-google-app-auth": "^7.0.0",
+    "expo-secure-store": "~7.0.0",
+    "html-to-react": "^1.4.2",
     "lorem-ipsum-react-native": "^1.0.3",
     "react": "16.8.3",
     "react-dom": "16.8.3",
@@ -26,8 +28,7 @@
     "react-native-web": "^0.11.7",
     "react-navigation": "^4.0.10",
     "react-navigation-stack": "^1.10.3",
-    "string-format": "^2.0.0",
-    "expo-secure-store": "~7.0.0"
+    "string-format": "^2.0.0"
   },
   "devDependencies": {
     "babel-preset-expo": "^7.1.0"

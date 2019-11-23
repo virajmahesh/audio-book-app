@@ -31,7 +31,7 @@ export function createRefreshControl(refreshing, onRefresh) {
     )
 }
 
-export function loadingIndicator(animating=true) {
+export function loadingIndicator(animating = true) {
     return (
         <View style={{height: 40, padding: 30}}>
             <ActivityIndicator size='large' animating={animating} color={BLUE}/>
@@ -48,6 +48,15 @@ export function millisToString(millis) {
         return format('{0}:{1}', pad(minutes, 2), pad(seconds % 60, 2));
     }
     return format('{0}:{1}:{2}', pad(hours, 2), pad(minutes % 60, 2), pad(seconds % 60, 2));
+}
+
+export function queryString(query = {}) {
+    const qs = Object.entries(query)
+        .filter(pair => pair[1] !== undefined)
+        .map(pair => pair.filter(i => i !== null).map(encodeURIComponent).join('='))
+        .join('&');
+
+    return qs;
 }
 
 export const sleep = (milliseconds) => {

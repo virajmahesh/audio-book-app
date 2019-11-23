@@ -8,12 +8,14 @@ import {AppLoading} from "expo";
 import {Book} from "./Book";
 import * as Settings from './Settings';
 import * as Utils from './Utils';
+import AuthSessionManager from "./AuthSessionManager";
 
 const format = require('string-format');
 
 const width = Dimensions.get('window').width;
 const bookMargin = width * 0.02;
 
+@withNavigation
 class HomePage extends React.Component {
     static navigationOptions = {
         header: null
@@ -25,13 +27,23 @@ class HomePage extends React.Component {
             fontsLoaded: false,
             booksLoaded: false,
             bookList: [],
-            refreshing: false
+            refreshing: false,
+            loadedAuthState: false
         };
     }
 
-    componentDidMount() {
-        this.loadFonts();
-        this.loadHomePageBooks();
+    async componentDidMount() {
+        await this.loadFonts();
+        await AuthSessionManager.loadLoginInfo();
+        this.setState({loadedAuthState: true});
+
+        // Redirect to the Auth Page if the user is not logged in
+        if (!AuthSessionManager.isLoggedIn()) {
+            this.props.navigation.navigate('Auth');
+        }
+        else {
+            this.loadHomePageBooks();
+        }
     }
 
     onRefresh = async () => {
@@ -46,6 +58,10 @@ class HomePage extends React.Component {
     };
 
     async loadFonts() {
+        if (this.state.fontsLoaded) {
+            return;
+        }
+
         await Font.loadAsync({
             'product-sans': require('./assets/fonts/ProductSansRegular.ttf'),
             'product-sans-bold': require('./assets/fonts/ProductSansBold.ttf'),
@@ -93,7 +109,7 @@ class HomePage extends React.Component {
 
     render() {
         //TODO: Log Home Activity startup time
-        if (!this.state.fontsLoaded) {
+        if (!this.state.fontsLoaded || !this.state.loadedAuthState) {
             return <AppLoading/>;
         }
 
@@ -110,7 +126,7 @@ class HomePage extends React.Component {
                                   onEndReached={() => this.loadHomePageBooks()}
                                   showsVerticalScrollIndicator={false}
                                   onEndReachedThreshold={0.25}
-                                  ListHeaderComponent={HomeScreen.pageTitleComponent()}
+                                  ListHeaderComponent={HomePage.pageTitleComponent()}
                                   ListFooterComponent={Utils.loadingIndicator(!this.state.refreshing)}
                                   refreshControl={Utils.createRefreshControl(this.state.refreshing, this.onRefresh)}
                         />
@@ -144,4 +160,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default withNavigation(HomePage);
+export default HomePage;

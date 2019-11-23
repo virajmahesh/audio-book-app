@@ -1,7 +1,10 @@
 import * as Google from "expo-google-app-auth";
 import * as Settings from "./Settings";
+import * as Utils from './Utils';
 import * as SecureStore from "expo-secure-store";
+import {withNavigation} from 'react-navigation';
 
+@withNavigation
 export default class AuthSessionManager {
 
     static config = {
@@ -11,7 +14,8 @@ export default class AuthSessionManager {
 
     static state = {};
 
-    static async fetchNewGoogleAccessToken() {
+    static async loginWithGoogle() {
+        //TODO: Log Google log in attempt
         const {type, accessToken, user} = await Google.logInAsync(AuthSessionManager.config);
 
         if (type === 'success') {
@@ -21,29 +25,76 @@ export default class AuthSessionManager {
                 lastName: user.familyName,
                 id: user.id,
                 profileImageURL: user.photoUrl,
-                email: user.email
+                email: user.email,
+                backend: 'google'
             };
             AuthSessionManager.state.backend = 'Google';
             AuthSessionManager.state.isLoggedIn = true;
-            return true;
+            console.log(AuthSessionManager.state);
+            await AuthSessionManager.get1PTokens();
+            await AuthSessionManager.saveLoginInfo();
+            //TODO: Log successful login
         }
-        return false;
+        //TODO: Log failed login
     }
 
-    static async saveGoogleLoginInfo() {
+    static hasGoogleToken() {
+        return AuthSessionManager.state.accessToken3P !== null || AuthSessionManager.state.backend === 'google'
     }
 
-    static async loadGoogleLoginInfo() {
-       AuthSessionManager.state.accessToken = await SecureStore.getItemAsync('ACCESS_TOKEN');
-       AuthSessionManager.state.user = await SecureStore.getItemAsync('USER');
-       AuthSessionManager.state.backend = await SecureStore.getItemAsync('BACKEND');
+    static hasFacebookToken() {
+
     }
 
-    static async logInWithGoogle() {
-        // Check the secure store to see if the access token is available
+    static has1PAccessToken() {
 
-        // If no access token exists, fetch a new access token
+    }
 
-        // Save the new access token to the database
+    static isLoggedIn() {
+        return AuthSessionManager.state && AuthSessionManager.state.isLoggedIn;
+    }
+
+    static async get1PTokens() {
+        if (this.hasGoogleToken()) {
+            let requestBody = Utils.queryString({
+                grant_type: 'convert_token',
+                client_id: Settings.AUTH_CLIENT_ID,
+                client_secret: Settings.AUTH_CLIENT_SECRET,
+                backend: 'google-oauth2',
+                token: AuthSessionManager.state.accessToken3P
+            });
+
+            await fetch(Settings.SOCIAL_AUTH_API_ENDPOINT, {
+                method: 'POST',
+                mode: 'cors',
+                credentials: 'same-origin',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: requestBody
+            })
+                .then((response => response.json()))
+                .then((responseJson) => {
+                    AuthSessionManager.state.accessToken1P = responseJson.access_token;
+                    AuthSessionManager.state.refreshToken1P = responseJson.refresh_token;
+                });
+        }
+    }
+
+    static async saveLoginInfo() {
+        await SecureStore.setItemAsync('STATE', JSON.stringify(AuthSessionManager.state));
+    }
+
+    static async loadLoginInfo() {
+        AuthSessionManager.state = JSON.parse(await SecureStore.getItemAsync('STATE'));
+
+        if (AuthSessionManager.state === null) {
+            AuthSessionManager.state = {};
+        }
+
+        // If isLoggedIn is null, then the user isn't logged in
+        if (AuthSessionManager.state.isLoggedIn === null) {
+            AuthSessionManager.state.isLoggedIn = false;
+        }
     }
 }
