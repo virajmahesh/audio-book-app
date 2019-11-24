@@ -6,6 +6,9 @@ import {ActivityIndicator, RefreshControl, View} from "react-native";
 import * as Settings from "./AppSettings";
 import React from "react";
 import {NavigationActions, StackActions} from 'react-navigation'
+import Constants from "expo-constants";
+import * as Segment from 'expo-analytics-segment';
+import AuthSessionManager from "./AuthSessionManager";
 
 const format = require('string-format');
 
@@ -15,7 +18,7 @@ export const GREY = '#D7D7D7';
 export const BLUE = '#0074CD';
 
 export function pad(number, size) {
-    var s = String(number);
+    let s = String(number);
     while (s.length < (size || 2)) {
         s = "0" + s;
     }
@@ -60,6 +63,17 @@ export function queryString(query = {}) {
 
 export const sleep = (milliseconds) => {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
+};
+
+export const identify = () => {
+    if (!AuthSessionManager.isLoggedIn()) {
+        Segment.identify(Constants.installationId);
+    } else {
+        Segment.identifyWithTraits(
+            AuthSessionManager.getEmail(),
+            AuthSessionManager.getUser()
+        );
+    }
 };
 
 export const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {

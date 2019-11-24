@@ -6,6 +6,8 @@ import AuthSessionManager from "./AuthSessionManager";
 import {Icon} from "react-native-elements";
 
 import * as AppSettings from './AppSettings';
+import * as Event from './Event';
+import * as Segment from "expo-analytics-segment";
 
 
 @withNavigation
@@ -19,7 +21,17 @@ class SettingsPage extends React.Component {
         super(props);
     }
 
+    screenName() {
+        return 'SETTINGS_PAGE';
+    }
+
+    componentDidMount() {
+        Segment.screen(this.screenName());
+    }
+
     async logOut() {
+        Segment.track(Event.SIGN_OUT_CLICKED);
+
         await AuthSessionManager.logOut();
         this.props.navigation.navigate('Auth');
     }

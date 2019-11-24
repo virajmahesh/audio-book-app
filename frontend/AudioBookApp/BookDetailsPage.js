@@ -2,6 +2,7 @@ import React from "react";
 import {FlatList, Image, StyleSheet, Text, View} from "react-native";
 import {Button, Icon} from 'react-native-elements'
 import * as Utils from "./Utils";
+import * as Segment from "expo-analytics-segment";
 
 
 class BookDetailsPage extends React.Component {
@@ -15,6 +16,10 @@ class BookDetailsPage extends React.Component {
         this.state = {}
     }
 
+    screenName() {
+        return 'BOOK_DETAILS_PAGE';
+    }
+
     async componentDidMount() {
         let book = this.props.navigation.getParam('book');
         await book.loadChapters();
@@ -22,6 +27,13 @@ class BookDetailsPage extends React.Component {
         this.setState({
             book: book
         });
+
+        // Initialize logging, and log that the user has seen this screen
+        Utils.identify();
+        Segment.screenWithProperties(
+            this.screenName(),
+            {bookID: book.getBookID(), bookTitle: book.getBookTitle()}
+        );
     }
 
     bookDetailsHeader() {

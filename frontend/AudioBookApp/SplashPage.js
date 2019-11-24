@@ -1,9 +1,10 @@
 import React from "react";
 import AuthSessionManager from "./AuthSessionManager";
 import {withNavigation} from 'react-navigation';
-import {Text, View} from "react-native";
+import * as Segment from 'expo-analytics-segment';
 import * as Font from "expo-font";
 import * as Utils from './Utils';
+import * as AppSettings from './AppSettings';
 import {SplashScreen} from "expo";
 
 @withNavigation
@@ -23,9 +24,14 @@ class SplashPage extends React.Component {
     }
 
     componentDidMount() {
-        console.log('Mounting');
         this.loadFonts();
         this.loadLoginInfo();
+
+        Segment.initialize({
+            androidWriteKey: AppSettings.ANDROID_WRITE_KEY,
+            iosWriteKey: AppSettings.IOS_WRITE_KEY
+        });
+        Utils.identify();
 
         if (this.state.authStateLoaded && this.state.fontsLoaded) {
             this.redirectToApp();
@@ -33,21 +39,17 @@ class SplashPage extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        console.log('Did update');
-        console.log(this.state);
         if (!this.state.authStateLoaded || !this.state.fontsLoaded) {
             return;
         }
 
-        console.log(AuthSessionManager.isLoggedIn());
-        console.log(AuthSessionManager.getState());
         SplashScreen.hide();
-
         this.redirectToApp();
     }
 
     redirectToApp() {
         if (AuthSessionManager.isLoggedIn()) {
+
             this.props.navigation.dispatch(
                 Utils.resetNavigation('Home')
             );
@@ -66,6 +68,7 @@ class SplashPage extends React.Component {
     }
 
     async loadFonts() {
+        //TODO: Log how long it takes to load fonts
         if (this.state.fontsLoaded) {
             return;
         }

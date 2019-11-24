@@ -37,7 +37,16 @@ class Book extends React.Component {
         return this.state.imageURL;
     }
 
+    getBookID() {
+        return this.state.id;
+    }
+
+    getBookTitle() {
+        return this.state.title;
+    }
+
     async loadChapters() {
+        //TODO Log how long it takes to load the chapters
         await fetch(format(CHAPTER_API_ENDPOINT, this.state.id))
             .then((response => response.json()))
             .then((responseJSON) => {

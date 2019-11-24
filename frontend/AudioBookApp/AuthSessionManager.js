@@ -1,8 +1,11 @@
 import * as Google from "expo-google-app-auth";
 import * as Settings from "./AppSettings";
 import * as Utils from './Utils';
+import * as Event from './Event';
 import * as SecureStore from "expo-secure-store";
 import {withNavigation} from 'react-navigation';
+import Constants from "expo-constants";
+import * as Segment from "expo-analytics-segment";
 
 
 @withNavigation
@@ -16,7 +19,6 @@ export default class AuthSessionManager {
     static state = {};
 
     static async loginWithGoogle() {
-        //TODO: Log Google log in attempt
         const {type, accessToken, user} = await Google.logInAsync(AuthSessionManager.config);
 
         if (type === 'success') {
@@ -24,19 +26,27 @@ export default class AuthSessionManager {
             AuthSessionManager.state.user = {
                 firstName: user.givenName,
                 lastName: user.familyName,
-                id: user.id,
+                googleID: user.id,
                 profileImageURL: user.photoUrl,
                 email: user.email,
-                backend: 'google'
+                backend: 'google',
+                installationID: Constants.installationId
             };
             AuthSessionManager.state.backend = 'Google';
             AuthSessionManager.state.isLoggedIn = true;
             console.log(AuthSessionManager.state);
             await AuthSessionManager.get1PTokens();
             await AuthSessionManager.saveLoginInfo();
+
             //TODO: Log successful login
+            Segment.track(Event.SIGN_IN_WITH_GOOGLE_SUCCESS);
         }
-        //TODO: Log failed login
+        else {
+            Segment.trackWithProperties(
+                Event.SIGN_IN_WITH_GOOGLE_FAILED,
+                {type: type}
+            );
+        }
     }
 
     static hasGoogleToken() {
@@ -71,12 +81,20 @@ export default class AuthSessionManager {
         return AuthSessionManager.state.user.lastName;
     }
 
+    static getUserID() {
+        return AuthSessionManager.state.user.userID;
+    }
+
     static getFullName() {
         return AuthSessionManager.getFirstName() + ' ' + AuthSessionManager.getLastName();
     }
 
     static getEmail() {
         return AuthSessionManager.state.user.email;
+    }
+
+    static getUser() {
+        return AuthSessionManager.state.user;
     }
 
     static async logOut() {
@@ -94,6 +112,7 @@ export default class AuthSessionManager {
                 token: AuthSessionManager.state.accessToken3P
             });
 
+            //TODO: Log how long this request takes
             await fetch(Settings.SOCIAL_AUTH_API_ENDPOINT, {
                 method: 'POST',
                 mode: 'cors',
@@ -107,7 +126,7 @@ export default class AuthSessionManager {
                 .then((responseJson) => {
                     AuthSessionManager.state.accessToken1P = responseJson.access_token;
                     AuthSessionManager.state.refreshToken1P = responseJson.refresh_token;
-                    AuthSessionManager.state.userID = responseJson.user_id;
+                    AuthSessionManager.state.user.userID = responseJson.user_id.toString();
                 });
         }
     }
@@ -120,7 +139,7 @@ export default class AuthSessionManager {
         AuthSessionManager.state = JSON.parse(await SecureStore.getItemAsync('STATE'));
 
         if (AuthSessionManager.state === null) {
-            console.log('TEST');
+            //TODO: Log that there was no state to load
             AuthSessionManager.state = {};
         }
 

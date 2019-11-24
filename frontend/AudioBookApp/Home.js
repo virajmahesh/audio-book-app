@@ -5,7 +5,9 @@ import {withNavigation} from 'react-navigation';
 import {Book} from "./Book";
 import * as AppSettings from './AppSettings';
 import * as Utils from './Utils';
+import * as Event from './Event';
 import {ProfileHeader} from "./SettingsPage";
+import * as Segment from 'expo-analytics-segment';
 
 const format = require('string-format');
 
@@ -29,17 +31,32 @@ class HomePage extends React.Component {
         };
     }
 
+    screenName() {
+        return 'HOME_PAGE';
+    }
+
     componentDidMount() {
-        console.log('Loading home');
         this.loadHomePageBooks();
+
+        Utils.identify();
+        Segment.screen(this.screenName());
     }
 
     onRefresh = async () => {
+        let refreshStartTime = Date.now();
         await this.setState({
             refreshing: true,
             bookList: []
         });
         await this.loadHomePageBooks();
+
+        let refreshEndTime = Date.now();
+        let refreshTime = refreshEndTime - refreshStartTime;
+
+        Segment.trackWithProperties(
+            Event.PULL_DOWN_TO_REFRESH,
+            {refreshTimeMillis: refreshTime});
+
         this.setState({
             refreshing: false
         });
@@ -55,6 +72,7 @@ class HomePage extends React.Component {
         await fetch(format(AppSettings.HOME_API_ENDPOINT, offset))
             .then((response => response.json()))
             .then((responseJSON) => {
+                // TODO: Log how long it takes to fetch the home page
                 let bookList = this.state.bookList;
 
                 // Parse the JSON response and create Book objects
@@ -73,7 +91,7 @@ class HomePage extends React.Component {
     static pageTitleComponent() {
         return (
             <View>
-                <ProfileHeader />
+                <ProfileHeader/>
                 <Text style={styles.homePageTitle} key='titleText'>
                     Classic Audiobooks
                 </Text>

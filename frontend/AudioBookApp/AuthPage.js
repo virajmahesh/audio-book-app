@@ -3,9 +3,9 @@ import {withNavigation} from 'react-navigation';
 
 import AuthSessionManager from "./AuthSessionManager";
 import {Image, StyleSheet, Text, TouchableHighlight, View} from "react-native";
-
-import * as Settings from './AppSettings';
 import * as Utils from './Utils';
+import * as Event from './Event';
+import * as Segment from "expo-analytics-segment";
 
 @withNavigation
 class AuthPage extends React.Component {
@@ -17,7 +17,18 @@ class AuthPage extends React.Component {
         super(props);
     }
 
+    screenName() {
+        return 'AUTH_PAGE';
+    }
+
+    componentDidMount() {
+        Utils.identify();
+    }
+
     async logInWithGoogle() {
+        Segment.track(Event.SIGN_IN_WITH_GOOGLE_CLICKED);
+
+        //TODO: Track how long the sign in with Google takes
         await AuthSessionManager.loginWithGoogle();
         if (AuthSessionManager.isLoggedIn()) {
             this.props.navigation.dispatch(Utils.resetNavigation('Home'));
@@ -25,10 +36,10 @@ class AuthPage extends React.Component {
     }
 
     render() {
-        console.log('in auth');
         if (!AuthSessionManager.isLoggedIn()) {
             // Render login screen
-            console.log('rendering auth');
+            Segment.screen(this.screenName());
+
             return (
                 <View>
                     <View style={styles.headingWrapper}>
@@ -59,7 +70,8 @@ class AuthPage extends React.Component {
                             style={{borderRadius: 2}}>
                             <View style={styles.logInButton}>
                                 <View style={styles.googleLogo}>
-                                    <Image source={require('./assets/google-logo.png')} style={{height: 30, width: 30}}/>
+                                    <Image source={require('./assets/google-logo.png')}
+                                           style={{height: 30, width: 30}}/>
                                 </View>
                                 <View>
                                     <Text style={styles.signInText}>Sign in with Google</Text>

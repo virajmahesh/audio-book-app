@@ -19,10 +19,14 @@ export const APP_ICON_PATH = './assets/icon.png';
 export const GOOGLE_LOGO_PATH = './assets/google-logo.png';
 export const GOOGLE_LOGO_URL = 'https://developers.google.com/identity/images/g-logo.png';
 
+// Colors
 export const BLUE_TINT = '#0074CD';
 export const GREY_TINT = '#D7D7D7';
-
 export const GREY = '#9C9C9C';
+
+// Segment API Keys
+export const ANDROID_WRITE_KEY = 'p48UvsnHs4E8D0QtTTdaehdhW2v9t3m1';
+export const IOS_WRITE_KEY = 'YE0AnTwlHdlMSAXLeYJSM4CvtT9KKLBE';
 
 // Deprecated
 const OPEN_LIBRARY_IMAGE_URL =  'http://covers.openlibrary.org/b/isbn/';
