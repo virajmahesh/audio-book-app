@@ -4,6 +4,19 @@ from django.shortcuts import render, redirect
 from backend.serializers import *
 from backend.models import *
 from backend.forms import *
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework_social_oauth2.views import ConvertTokenView
+from oauth2_provider.models import AccessToken
+
+@csrf_exempt
+def social_auth(request):
+    print('IUn social auth view')
+    convert_token_view = ConvertTokenView.as_view()
+    response = convert_token_view(request)
+    response_data = response.data
+    accesss_token = AccessToken.objects.get(token=response_data['access_token'])
+    response_data['user_id'] = accesss_token.user_id
+    return JsonResponse(response_data)
 
 
 def home(request, offset=0, n_books=90):
