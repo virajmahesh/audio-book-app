@@ -107,6 +107,7 @@ export default class AuthSessionManager {
                 .then((responseJson) => {
                     AuthSessionManager.state.accessToken1P = responseJson.access_token;
                     AuthSessionManager.state.refreshToken1P = responseJson.refresh_token;
+                    AuthSessionManager.state.userID = responseJson.user_id;
                 });
         }
     }
