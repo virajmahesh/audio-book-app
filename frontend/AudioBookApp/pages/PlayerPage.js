@@ -2,14 +2,13 @@ import React from "react";
 import {Audio} from 'expo-av';
 import {Image, Slider, StyleSheet, Text, TouchableHighlight, View} from "react-native";
 import {Icon} from "react-native-elements";
-import * as Utils from './Utils';
-import * as Settings from './AppSettings';
+import * as Utils from '../utils/Utils';
+import * as Segment from "expo-analytics-segment";
+import AuthSessionManager from "../utils/AuthSessionManager";
+import {SCREEN} from "../utils/Track";
 
 const format = require('string-format');
-
 const BACKGROUND_COLOR = '#FFFFFF';
-const BLUE_TINT = Settings.BLUE_TINT;
-const GREY_TINT = Settings.GREY_TINT;
 
 class ChapterPlayerPage extends React.Component {
 
@@ -202,10 +201,15 @@ class ChapterPlayerPage extends React.Component {
     };
 
     async componentDidMount() {
+        AuthSessionManager.setSegmentIdentity();
+        let setupStartTime = Date.now();
+        let book = this.props.navigation.getParam('book');
+        let chapter = this.props.navigation.getParam('chapter');
+
         // Create initial structure of Player
         this.setState({
-            book: this.props.navigation.getParam('book'),
-            chapter: this.props.navigation.getParam('chapter'),
+            book: book,
+            chapter: chapter,
             playbackPercent: 0,
             seekButtonTaps: 0,
             position: 0,
@@ -225,6 +229,17 @@ class ChapterPlayerPage extends React.Component {
             shouldDuckAndroid: true,
             interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
             playThroughEarpieceAndroid: false
+        });
+
+        let setupEndTime = Date.now();
+        let playerSetupTimeMillis = setupEndTime - setupStartTime;
+        // TODO: Log player setup time
+
+        Segment.screenWithProperties(SCREEN.PLAYER_PAGE, {
+            bookID: book.getID(),
+            bookTitle: book.getTitle(),
+            chapterID: chapter.getID(),
+            chapterTitle: chapter.getTitle()
         });
 
         // TODO: Log the amount of time it takes to start the playback
@@ -262,7 +277,7 @@ class ChapterPlayerPage extends React.Component {
     async componentWillUnmount() {
         // Unload the playback instance
         if (this.state.playbackInstance != null) {
-            this.state.playbackInstance.unloadAsync();
+            await this.state.playbackInstance.unloadAsync();
         } else {
             //TODO Log why there isn't a playback instance here
         }

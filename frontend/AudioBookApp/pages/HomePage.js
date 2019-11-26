@@ -2,12 +2,13 @@ import React from "react";
 
 import {Dimensions, FlatList, StatusBar, StyleSheet, Text, View} from "react-native";
 import {withNavigation} from 'react-navigation';
-import {Book} from "./Book";
-import * as AppSettings from './AppSettings';
-import * as Utils from './Utils';
-import * as Event from './Event';
+import {Book} from "../components/Book";
+import * as AppSettings from '../utils/AppSettings';
+import * as Utils from '../utils/Utils';
+import {EVENT, SCREEN} from '../utils/Track';
 import {ProfileHeader} from "./SettingsPage";
 import * as Segment from 'expo-analytics-segment';
+import AuthSessionManager from "../utils/AuthSessionManager";
 
 const format = require('string-format');
 
@@ -31,15 +32,11 @@ class HomePage extends React.Component {
         };
     }
 
-    screenName() {
-        return 'HOME_PAGE';
-    }
-
     componentDidMount() {
-        this.loadHomePageBooks();
+        AuthSessionManager.setSegmentIdentity();
+        Segment.screen(SCREEN.HOME_PAGE);
 
-        Utils.identify();
-        Segment.screen(this.screenName());
+        this.loadHomePageBooks();
     }
 
     onRefresh = async () => {
@@ -53,9 +50,9 @@ class HomePage extends React.Component {
         let refreshEndTime = Date.now();
         let refreshTime = refreshEndTime - refreshStartTime;
 
-        Segment.trackWithProperties(
-            Event.PULL_DOWN_TO_REFRESH,
-            {refreshTimeMillis: refreshTime});
+        Segment.trackWithProperties('EVENT', {
+            type: EVENT.PULL_DOWN_TO_REFRESH
+        });
 
         this.setState({
             refreshing: false

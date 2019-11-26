@@ -2,11 +2,11 @@ import React from "react";
 
 import {Image, StyleSheet, Text, TouchableHighlight, View} from "react-native";
 import {withNavigation} from 'react-navigation';
-import AuthSessionManager from "./AuthSessionManager";
+import AuthSessionManager from "../utils/AuthSessionManager";
 import {Icon} from "react-native-elements";
 
-import * as AppSettings from './AppSettings';
-import * as Event from './Event';
+import * as AppSettings from '../utils/AppSettings';
+import {BUTTON, EVENT, SCREEN} from '../utils/Track';
 import * as Segment from "expo-analytics-segment";
 
 
@@ -21,16 +21,16 @@ class SettingsPage extends React.Component {
         super(props);
     }
 
-    screenName() {
-        return 'SETTINGS_PAGE';
-    }
-
     componentDidMount() {
-        Segment.screen(this.screenName());
+        AuthSessionManager.setSegmentIdentity();
+        Segment.screen(SCREEN.SETTINGS_PAGE);
     }
 
     async logOut() {
-        Segment.track(Event.SIGN_OUT_CLICKED);
+        Segment.trackWithProperties('EVENT', {
+            type: EVENT.BUTTON_CLICKED,
+            button: BUTTON.SIGN_OUT
+        });
 
         await AuthSessionManager.logOut();
         this.props.navigation.navigate('Auth');
@@ -49,9 +49,15 @@ class SettingsPage extends React.Component {
                         </View>
                     </View>
                     <View>
+
                         <TouchableHighlight
                             onPress={() => this.logOut()}>
-                            <View style={{flexDirection: 'row', alignItems: 'center', backgroundColor: 'white', height: 50}}>
+                            <View style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                backgroundColor: 'white',
+                                height: 50
+                            }}>
                                 <View style={styles.settingsIcon}>
                                     <Icon
                                         type="material-community"
@@ -64,9 +70,15 @@ class SettingsPage extends React.Component {
                                 <Text style={styles.settingsText}>Sign out</Text>
                             </View>
                         </TouchableHighlight>
+
                         <TouchableHighlight
                             onPress={() => console.log('clicked')}>
-                            <View style={{flexDirection: 'row', alignItems: 'center', backgroundColor: 'white', height: 50}}>
+                            <View style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                backgroundColor: 'white',
+                                height: 50
+                            }}>
                                 <View style={styles.settingsIcon}>
                                     <Icon
                                         type="material"
@@ -79,6 +91,7 @@ class SettingsPage extends React.Component {
                                 <Text style={styles.settingsText}>Manage membership</Text>
                             </View>
                         </TouchableHighlight>
+
                     </View>
                 </View>
             </View>

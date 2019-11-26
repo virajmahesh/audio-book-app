@@ -1,8 +1,10 @@
 import React from "react";
 import {FlatList, Image, StyleSheet, Text, View} from "react-native";
 import {Button, Icon} from 'react-native-elements'
-import * as Utils from "./Utils";
+import * as Utils from "../utils/Utils";
 import * as Segment from "expo-analytics-segment";
+import AuthSessionManager from "../utils/AuthSessionManager";
+import {SCREEN} from "../utils/Track";
 
 
 class BookDetailsPage extends React.Component {
@@ -16,10 +18,6 @@ class BookDetailsPage extends React.Component {
         this.state = {}
     }
 
-    screenName() {
-        return 'BOOK_DETAILS_PAGE';
-    }
-
     async componentDidMount() {
         let book = this.props.navigation.getParam('book');
         await book.loadChapters();
@@ -29,11 +27,18 @@ class BookDetailsPage extends React.Component {
         });
 
         // Initialize logging, and log that the user has seen this screen
-        Utils.identify();
-        Segment.screenWithProperties(
-            this.screenName(),
-            {bookID: book.getBookID(), bookTitle: book.getBookTitle()}
-        );
+        AuthSessionManager.setSegmentIdentity();
+        Segment.screenWithProperties(SCREEN.BOOK_DETAILS_PAGE, {
+            bookID: book.getID(),
+            bookTitle: book.getTitle()
+        });
+    }
+
+    clickedChapter() {
+        this.props.navigation.navigate('ChapterPlayer', {
+            book: this.state.book,
+            chapter: this.state.book.getFirstChapter()
+        });
     }
 
     bookDetailsHeader() {
@@ -71,10 +76,7 @@ class BookDetailsPage extends React.Component {
                             />
                         }
                         title="Play"
-                        onPress={() => this.props.navigation.navigate('ChapterPlayer', {
-                            book: this.state.book,
-                            chapter: this.state.book.getFirstChapter()
-                        })}
+                        onPress={() => this.clickedChapter()}
                     />
                 </View>
             </View>

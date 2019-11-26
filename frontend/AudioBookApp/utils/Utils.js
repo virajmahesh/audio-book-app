@@ -6,9 +6,6 @@ import {ActivityIndicator, RefreshControl, View} from "react-native";
 import * as Settings from "./AppSettings";
 import React from "react";
 import {NavigationActions, StackActions} from 'react-navigation'
-import Constants from "expo-constants";
-import * as Segment from 'expo-analytics-segment';
-import AuthSessionManager from "./AuthSessionManager";
 
 const format = require('string-format');
 
@@ -63,17 +60,6 @@ export function queryString(query = {}) {
 
 export const sleep = (milliseconds) => {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
-};
-
-export const identify = () => {
-    if (!AuthSessionManager.isLoggedIn()) {
-        Segment.identify(Constants.installationId);
-    } else {
-        Segment.identifyWithTraits(
-            AuthSessionManager.getEmail(),
-            AuthSessionManager.getUser()
-        );
-    }
 };
 
 export const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {

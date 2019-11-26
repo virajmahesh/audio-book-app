@@ -1,10 +1,11 @@
 import React from "react";
-import AuthSessionManager from "./AuthSessionManager";
+import AuthSessionManager from "../utils/AuthSessionManager";
 import {withNavigation} from 'react-navigation';
 import * as Segment from 'expo-analytics-segment';
 import * as Font from "expo-font";
-import * as Utils from './Utils';
-import * as AppSettings from './AppSettings';
+import * as Utils from '../utils/Utils';
+import * as AppSettings from '../utils/AppSettings';
+import {SCREEN} from "../utils/Track";
 import {SplashScreen} from "expo";
 
 @withNavigation
@@ -20,6 +21,7 @@ class SplashPage extends React.Component {
             fontsLoaded: false,
             authStateLoaded: false
         };
+
         SplashScreen.preventAutoHide();
     }
 
@@ -31,7 +33,11 @@ class SplashPage extends React.Component {
             androidWriteKey: AppSettings.ANDROID_WRITE_KEY,
             iosWriteKey: AppSettings.IOS_WRITE_KEY
         });
-        Utils.identify();
+
+        AuthSessionManager.setSegmentIdentity();
+        Segment.screen(SCREEN.SPLASH_PAGE);
+
+        console.log('TEST');
 
         if (this.state.authStateLoaded && this.state.fontsLoaded) {
             this.redirectToApp();
@@ -74,10 +80,10 @@ class SplashPage extends React.Component {
         }
 
         await Font.loadAsync({
-            'product-sans': require('./assets/fonts/ProductSansRegular.ttf'),
-            'product-sans-bold': require('./assets/fonts/ProductSansBold.ttf'),
-            'product-sans-italic': require('./assets/fonts/ProductSansItalic.ttf'),
-            'product-sans-bold-italic': require('./assets/fonts/ProductSansBoldItalic.ttf'),
+            'product-sans': require('../assets/fonts/ProductSansRegular.ttf'),
+            'product-sans-bold': require('../assets/fonts/ProductSansBold.ttf'),
+            'product-sans-italic': require('../assets/fonts/ProductSansItalic.ttf'),
+            'product-sans-bold-italic': require('../assets/fonts/ProductSansBoldItalic.ttf'),
         });
 
         this.setState({

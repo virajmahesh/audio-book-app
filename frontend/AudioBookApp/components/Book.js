@@ -2,9 +2,9 @@ import React from "react";
 import {Icon} from "react-native-elements";
 import Collapsible from 'react-native-collapsible';
 import {withNavigation} from 'react-navigation';
-import {CHAPTER_API_ENDPOINT} from './AppSettings';
+import {CHAPTER_API_ENDPOINT} from '../utils/AppSettings';
 import {Image, StyleSheet, Text, TouchableHighlight, View} from "react-native";
-import * as Utils from './Utils';
+import * as Utils from '../utils/Utils';
 
 const format = require('string-format');
 
@@ -37,11 +37,11 @@ class Book extends React.Component {
         return this.state.imageURL;
     }
 
-    getBookID() {
+    getID() {
         return this.state.id;
     }
 
-    getBookTitle() {
+    getTitle() {
         return this.state.title;
     }
 
@@ -174,6 +174,14 @@ class Chapter extends React.Component {
         };
 
         props.addChapter(this);
+    }
+
+    getID() {
+        return this.state.id;
+    }
+
+    getTitle() {
+        return this.state.title;
     }
 
     render() {

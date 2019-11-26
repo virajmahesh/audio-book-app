@@ -1,7 +1,7 @@
 import * as Google from "expo-google-app-auth";
-import * as Settings from "./AppSettings";
+import * as AppSettings from "./AppSettings";
 import * as Utils from './Utils';
-import * as Event from './Event';
+import {EVENT, SIGN_IN_PROVIDERS} from './Track';
 import * as SecureStore from "expo-secure-store";
 import {withNavigation} from 'react-navigation';
 import Constants from "expo-constants";
@@ -12,14 +12,23 @@ import * as Segment from "expo-analytics-segment";
 export default class AuthSessionManager {
 
     static config = {
-        androidClientId: Settings.GOOGLE_ANDROID_CLIENT_ID,
+        androidClientId: AppSettings.GOOGLE_ANDROID_CLIENT_ID_DEV,
+        androidStandaloneAppClientId: AppSettings.GOOGLE_ANDROID_CLIENT_ID_PROD,
         scopes: ['profile', 'email']
     };
 
-    static state = {};
+    static state = {
+        isLoggedIn: false
+    };
 
     static async loginWithGoogle() {
         const {type, accessToken, user} = await Google.logInAsync(AuthSessionManager.config);
+
+        Segment.trackWithProperties('EVENT', {
+            type: EVENT.SIGN_IN_COMPLETE,
+            signInStatus: type,
+            signInProvider: SIGN_IN_PROVIDERS.GOOGLE
+        });
 
         if (type === 'success') {
             AuthSessionManager.state.accessToken3P = accessToken;
@@ -34,18 +43,9 @@ export default class AuthSessionManager {
             };
             AuthSessionManager.state.backend = 'Google';
             AuthSessionManager.state.isLoggedIn = true;
-            console.log(AuthSessionManager.state);
+
             await AuthSessionManager.get1PTokens();
             await AuthSessionManager.saveLoginInfo();
-
-            //TODO: Log successful login
-            Segment.track(Event.SIGN_IN_WITH_GOOGLE_SUCCESS);
-        }
-        else {
-            Segment.trackWithProperties(
-                Event.SIGN_IN_WITH_GOOGLE_FAILED,
-                {type: type}
-            );
         }
     }
 
@@ -62,7 +62,7 @@ export default class AuthSessionManager {
     }
 
     static isLoggedIn() {
-        return AuthSessionManager.state && AuthSessionManager.state.isLoggedIn;
+        return AuthSessionManager.state !== null && AuthSessionManager.state.isLoggedIn;
     }
 
     static getState() {
@@ -82,7 +82,7 @@ export default class AuthSessionManager {
     }
 
     static getUserID() {
-        return AuthSessionManager.state.user.userID;
+        return AuthSessionManager.state.user.userID1P;
     }
 
     static getFullName() {
@@ -102,18 +102,29 @@ export default class AuthSessionManager {
         await AuthSessionManager.saveLoginInfo();
     }
 
+    static setSegmentIdentity() {
+        if (!AuthSessionManager.isLoggedIn()) {
+            Segment.identify(Constants.installationId);
+        } else {
+            Segment.identifyWithTraits(
+                AuthSessionManager.getEmail(),
+                AuthSessionManager.getUser()
+            );
+        }
+    }
+
     static async get1PTokens() {
         if (this.hasGoogleToken()) {
             let requestBody = Utils.queryString({
                 grant_type: 'convert_token',
-                client_id: Settings.AUTH_CLIENT_ID,
-                client_secret: Settings.AUTH_CLIENT_SECRET,
+                client_id: AppSettings.AUTH_CLIENT_ID,
+                client_secret: AppSettings.AUTH_CLIENT_SECRET,
                 backend: 'google-oauth2',
                 token: AuthSessionManager.state.accessToken3P
             });
 
             //TODO: Log how long this request takes
-            await fetch(Settings.SOCIAL_AUTH_API_ENDPOINT, {
+            await fetch(AppSettings.SOCIAL_AUTH_API_ENDPOINT, {
                 method: 'POST',
                 mode: 'cors',
                 credentials: 'same-origin',
@@ -126,7 +137,7 @@ export default class AuthSessionManager {
                 .then((responseJson) => {
                     AuthSessionManager.state.accessToken1P = responseJson.access_token;
                     AuthSessionManager.state.refreshToken1P = responseJson.refresh_token;
-                    AuthSessionManager.state.user.userID = responseJson.user_id.toString();
+                    AuthSessionManager.state.user.userID1P = responseJson.user_id.toString();
                 });
         }
     }
@@ -138,14 +149,9 @@ export default class AuthSessionManager {
     static async loadLoginInfo() {
         AuthSessionManager.state = JSON.parse(await SecureStore.getItemAsync('STATE'));
 
-        if (AuthSessionManager.state === null) {
+        if (AuthSessionManager.state === {}) {
             //TODO: Log that there was no state to load
-            AuthSessionManager.state = {};
-        }
-
-        // If isLoggedIn is null, then the user isn't logged in
-        if (AuthSessionManager.state.isLoggedIn === null) {
-            AuthSessionManager.state.isLoggedIn = false;
+            AuthSessionManager.state = {isLoggedIn: false};
         }
     }
 }

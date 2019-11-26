@@ -10,7 +10,9 @@ export const AUTH_CLIENT_SECRET = 'MPYQAkzeCa2sHsEGTiocSKOn5nWiC2F0Vw85oajyJuouC
 
 export const GOOGLE_USER_INFO_URL = 'https://www.googleapis.com/userinfo/v2/me';
 export const GOOGLE_WEB_CLIENT_ID = '41859677974-7967civvsf9ea05j7kbnlaur6b8i4bd9.apps.googleusercontent.com';
-export const GOOGLE_ANDROID_CLIENT_ID = '41859677974-olkepi5nsldshd211qomoftfemkn0ncn.apps.googleusercontent.com';
+
+export const GOOGLE_ANDROID_CLIENT_ID_DEV = '41859677974-olkepi5nsldshd211qomoftfemkn0ncn.apps.googleusercontent.com';
+export const GOOGLE_ANDROID_CLIENT_ID_PROD = '41859677974-e63uqmukhu08aj7lb9egjd1np3icsail.apps.googleusercontent.com';
 
 // App Icon
 export const APP_ICON_PATH = './assets/icon.png';

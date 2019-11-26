@@ -1,10 +1,11 @@
 import React from "react";
 import {withNavigation} from 'react-navigation';
 
-import AuthSessionManager from "./AuthSessionManager";
+import AuthSessionManager from "../utils/AuthSessionManager";
 import {Image, StyleSheet, Text, TouchableHighlight, View} from "react-native";
-import * as Utils from './Utils';
-import * as Event from './Event';
+import * as Utils from '../utils/Utils';
+import {BUTTON, EVENT, SCREEN} from "../utils/Track";
+
 import * as Segment from "expo-analytics-segment";
 
 @withNavigation
@@ -17,16 +18,15 @@ class AuthPage extends React.Component {
         super(props);
     }
 
-    screenName() {
-        return 'AUTH_PAGE';
-    }
-
     componentDidMount() {
-        Utils.identify();
+        AuthSessionManager.setSegmentIdentity();
     }
 
     async logInWithGoogle() {
-        Segment.track(Event.SIGN_IN_WITH_GOOGLE_CLICKED);
+        Segment.trackWithProperties('EVENT', {
+            type: EVENT.BUTTON_CLICKED,
+            button: BUTTON.SIGN_IN_WITH_GOOGLE
+        });
 
         //TODO: Track how long the sign in with Google takes
         await AuthSessionManager.loginWithGoogle();
@@ -38,14 +38,14 @@ class AuthPage extends React.Component {
     render() {
         if (!AuthSessionManager.isLoggedIn()) {
             // Render login screen
-            Segment.screen(this.screenName());
+            Segment.screen(SCREEN.AUTH_PAGE);
 
             return (
                 <View>
                     <View style={styles.headingWrapper}>
                         <View style={styles.titleWrapper}>
                             <Image
-                                source={require('./assets/icon.png')}
+                                source={require('../assets/icon.png')}
                                 style={{height: 40, width: 40, marginRight: 10}}
                             />
                             <View>
@@ -70,7 +70,7 @@ class AuthPage extends React.Component {
                             style={{borderRadius: 2}}>
                             <View style={styles.logInButton}>
                                 <View style={styles.googleLogo}>
-                                    <Image source={require('./assets/google-logo.png')}
+                                    <Image source={require('../assets/google-logo.png')}
                                            style={{height: 30, width: 30}}/>
                                 </View>
                                 <View>
