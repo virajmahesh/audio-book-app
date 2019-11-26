@@ -5,7 +5,7 @@ import {Icon} from "react-native-elements";
 import * as Utils from '../utils/Utils';
 import * as Segment from "expo-analytics-segment";
 import AuthSessionManager from "../utils/AuthSessionManager";
-import {SCREEN} from "../utils/Track";
+import {BUTTON, EVENT, SCREEN} from "../utils/Track";
 
 const format = require('string-format');
 const BACKGROUND_COLOR = '#FFFFFF';
@@ -99,8 +99,16 @@ class ChapterPlayerPage extends React.Component {
 
         if (direction === 'replay') {
             position -= 30 * Utils.SECOND_IN_MILLIS;
+            Segment.trackWithProperties('EVENT', {
+                type: EVENT.BUTTON_CLICKED,
+                button: BUTTON.SEEK_BACKWARD
+            })
         } else if (direction === 'forward') {
             position += 30 * Utils.SECOND_IN_MILLIS;
+            Segment.trackWithProperties('EVENT', {
+               type: EVENT.BUTTON_CLICKED,
+               button: BUTTON.SEEK_FORWARD
+            });
         }
 
         this.setState({
@@ -189,6 +197,8 @@ class ChapterPlayerPage extends React.Component {
                 shouldPlay: playbackStatus.shouldPlay,
                 playbackPercent: playbackPercent
             });
+
+            Segment.trackWithProperties('PLAYBACK_STATUS', playbackStatus);
 
             console.log('Playing: ' + this.state.playing);
             console.log('Buffering ' + this.state.buffering);
