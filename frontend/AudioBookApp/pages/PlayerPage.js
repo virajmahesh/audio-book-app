@@ -74,8 +74,16 @@ class ChapterPlayerPage extends React.Component {
         }
 
         if (this.state.playing) {
+            Segment.trackWithProperties('EVENT', {
+                type: EVENT.BUTTON_CLICKED,
+                button: BUTTON.PAUSE
+            });
             this.state.playbackInstance.pauseAsync();
         } else {
+            Segment.trackWithProperties('EVENT', {
+               type: EVENT.BUTTON_CLICKED,
+               button: BUTTON.PLAY
+            });
             this.state.playbackInstance.playAsync();
         }
     };
@@ -102,7 +110,7 @@ class ChapterPlayerPage extends React.Component {
             Segment.trackWithProperties('EVENT', {
                 type: EVENT.BUTTON_CLICKED,
                 button: BUTTON.SEEK_BACKWARD
-            })
+            });
         } else if (direction === 'forward') {
             position += 30 * Utils.SECOND_IN_MILLIS;
             Segment.trackWithProperties('EVENT', {
