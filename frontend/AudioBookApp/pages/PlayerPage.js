@@ -143,10 +143,18 @@ class ChapterPlayerPage extends React.Component {
         this.state.seekPlayingStatus = this.state.playing;
 
         let status = await this.state.playbackInstance.getStatusAsync();
-        let position = Math.floor(status.durationMillis * value);
+
+        let oldPosition = status.positionMillis;
+        let newPosition = Math.floor(status.durationMillis * value);
+
+        Segment.trackWithProperties('EVENT', {
+            type: EVENT.SEEK_SLIDER,
+            initialSeekPosition: oldPosition,
+            finialSeekPosition: newPosition
+        });
 
         console.log('Setting Position');
-        await this.state.playbackInstance.setPositionAsync(position);
+        await this.state.playbackInstance.setPositionAsync(newPosition);
 
         this.state.seeking = false;
         //await this._waitForPreSeekStatus();
