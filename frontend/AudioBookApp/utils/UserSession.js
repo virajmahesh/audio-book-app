@@ -1,6 +1,7 @@
 import * as Google from "expo-google-app-auth";
 import * as AppSettings from "./AppSettings";
 import * as Utils from './Utils';
+import * as Amplitude from 'expo-analytics-amplitude';
 import {EVENT, SIGN_IN_PROVIDERS} from './Track';
 import * as SecureStore from "expo-secure-store";
 import {withNavigation} from 'react-navigation';
@@ -9,7 +10,7 @@ import * as Segment from "expo-analytics-segment";
 
 
 @withNavigation
-export default class AuthSessionManager {
+export default class UserSession {
 
     static config = {
         androidClientId: AppSettings.Google.ANDROID_CLIENT_ID_DEV,
@@ -25,7 +26,7 @@ export default class AuthSessionManager {
 
     static async loginWithGoogle() {
         console.log('LOGIN');
-        const {type, accessToken, user} = await Google.logInAsync(AuthSessionManager.config);
+        const {type, accessToken, user} = await Google.logInAsync(UserSession.config);
 
         Segment.trackWithProperties('EVENT', {
             type: EVENT.SIGN_IN_COMPLETE,
@@ -36,9 +37,9 @@ export default class AuthSessionManager {
         console.log(type);
 
         if (type === 'success') {
-            console.log(AuthSessionManager.state);
-            AuthSessionManager.state.accessToken3P = accessToken;
-            AuthSessionManager.state.user = {
+            console.log(UserSession.state);
+            UserSession.state.accessToken3P = accessToken;
+            UserSession.state.user = {
                 firstName: user.givenName,
                 lastName: user.familyName,
                 googleID: user.id,
@@ -47,16 +48,16 @@ export default class AuthSessionManager {
                 backend: 'google',
                 installationID: Constants.installationId
             };
-            AuthSessionManager.state.backend = 'Google';
-            AuthSessionManager.state.isLoggedIn = true;
+            UserSession.state.backend = 'Google';
+            UserSession.state.isLoggedIn = true;
 
-            await AuthSessionManager.get1PTokens();
-            await AuthSessionManager.saveLoginInfo();
+            await UserSession.get1PTokens();
+            await UserSession.saveLoginInfo();
         }
     }
 
     static hasGoogleToken() {
-        return AuthSessionManager.state.accessToken3P !== null || AuthSessionManager.state.backend === 'google'
+        return UserSession.state.accessToken3P !== null || UserSession.state.backend === 'google'
     }
 
     static hasFacebookToken() {
@@ -68,54 +69,67 @@ export default class AuthSessionManager {
     }
 
     static isLoggedIn() {
-        return AuthSessionManager.state !== null && AuthSessionManager.state.isLoggedIn;
+        return UserSession.state !== null && UserSession.state.isLoggedIn;
     }
 
     static getState() {
-        return AuthSessionManager.state;
+        return UserSession.state;
     }
 
     static getProfileImageURL() {
-        return AuthSessionManager.state.user.profileImageURL;
+        return UserSession.state.user.profileImageURL;
     }
 
     static getFirstName() {
-        return AuthSessionManager.state.user.firstName;
+        return UserSession.state.user.firstName;
     }
 
     static getLastName() {
-        return AuthSessionManager.state.user.lastName;
+        return UserSession.state.user.lastName;
     }
 
     static getUserID() {
-        return AuthSessionManager.state.user.userID1P;
+        return UserSession.state.user.userID1P;
     }
 
     static getFullName() {
-        return AuthSessionManager.getFirstName() + ' ' + AuthSessionManager.getLastName();
+        return UserSession.getFirstName() + ' ' + UserSession.getLastName();
     }
 
     static getEmail() {
-        return AuthSessionManager.state.user.email;
+        return UserSession.state.user.email;
     }
 
     static getUser() {
-        return AuthSessionManager.state.user;
+        return UserSession.state.user;
     }
 
     static async logOut() {
-        AuthSessionManager.state = {};
-        await AuthSessionManager.saveLoginInfo();
+        UserSession.state = {};
+        await UserSession.saveLoginInfo();
     }
 
     static setSegmentIdentity() {
-        if (!AuthSessionManager.isLoggedIn()) {
+        if (!UserSession.isLoggedIn()) {
             Segment.identify(Constants.installationId);
-        } else {
+        }
+        else {
             Segment.identifyWithTraits(
-                AuthSessionManager.getEmail(),
-                AuthSessionManager.getUser()
+                UserSession.getEmail(),
+                UserSession.getUser()
             );
+        }
+    }
+
+    static async setAmplitudeIdentity() {
+        if (!UserSession.isLoggedIn()) {
+            console.log('LOG IN STATUS' + UserSession.state);
+            await Amplitude.setUserId(Constants.installationId);
+        }
+        else {
+            Amplitude.setUserId(UserSession.getEmail()).then(async () => {
+               await Amplitude.setUserProperties(UserSession.getUser());
+            });
         }
     }
 
@@ -126,7 +140,7 @@ export default class AuthSessionManager {
                 client_id: AppSettings.AUTH_CLIENT_ID,
                 client_secret: AppSettings.AUTH_CLIENT_SECRET,
                 backend: 'google-oauth2',
-                token: AuthSessionManager.state.accessToken3P
+                token: UserSession.state.accessToken3P
             });
 
             //TODO: Log how long this request takes
@@ -141,23 +155,23 @@ export default class AuthSessionManager {
             })
                 .then((response => response.json()))
                 .then((responseJson) => {
-                    AuthSessionManager.state.accessToken1P = responseJson.access_token;
-                    AuthSessionManager.state.refreshToken1P = responseJson.refresh_token;
-                    AuthSessionManager.state.user.userID1P = responseJson.user_id.toString();
+                    UserSession.state.accessToken1P = responseJson.access_token;
+                    UserSession.state.refreshToken1P = responseJson.refresh_token;
+                    UserSession.state.user.userID1P = responseJson.user_id.toString();
                 });
         }
     }
 
     static async saveLoginInfo() {
-        await SecureStore.setItemAsync('STATE', JSON.stringify(AuthSessionManager.state));
+        await SecureStore.setItemAsync('STATE', JSON.stringify(UserSession.state));
     }
 
     static async loadLoginInfo() {
-        AuthSessionManager.state = JSON.parse(await SecureStore.getItemAsync('STATE'));
+        UserSession.state = JSON.parse(await SecureStore.getItemAsync('STATE'));
 
-        if (AuthSessionManager.state === {} || AuthSessionManager.state === null) {
+        if (UserSession.state === {} || UserSession.state === null) {
             //TODO: Log that there was no state to load
-            AuthSessionManager.state = {isLoggedIn: false};
+            UserSession.state = {isLoggedIn: false};
         }
     }
 }

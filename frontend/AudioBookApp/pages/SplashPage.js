@@ -1,11 +1,12 @@
 import React from "react";
-import AuthSessionManager from "../utils/AuthSessionManager";
+import UserSession from "../utils/UserSession";
 import {withNavigation} from 'react-navigation';
 import * as Segment from 'expo-analytics-segment';
 import * as Font from "expo-font";
 import * as Utils from '../utils/Utils';
 import * as AppSettings from '../utils/AppSettings';
-import {CSI, SCREEN} from "../utils/Track";
+import * as Amplitude from 'expo-analytics-amplitude';
+import {CSI, EVENT, SCREEN} from "../utils/Track";
 import {SplashScreen} from "expo";
 
 @withNavigation
@@ -25,39 +26,37 @@ class SplashPage extends React.Component {
         SplashScreen.preventAutoHide();
     }
 
-    componentDidMount() {
-        this.loadFonts();
-        this.loadLoginInfo();
+    async componentDidMount() {
+        await this.loadFonts();
+        await this.loadLoginInfo();
 
         Segment.initialize({
             androidWriteKey: AppSettings.Segment.ANDROID_WRITE_KEY,
             iosWriteKey: AppSettings.Segment.IOS_WRITE_KEY
         });
 
-        AuthSessionManager.setSegmentIdentity();
+        Amplitude.initialize(AppSettings.Amplitude.API_KEY);
+
+        UserSession.setSegmentIdentity();
+        UserSession.setAmplitudeIdentity();
+
+        Amplitude.logEventWithProperties('EVENT', {
+            type: EVENT.SCREEN_IMPRESSION,
+            screenName: SCREEN.SPLASH_PAGE
+        });
+
         Segment.screen(SCREEN.SPLASH_PAGE);
 
-        if (this.state.authStateLoaded && this.state.fontsLoaded) {
-            this.redirectToApp();
-        }
-    }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (!this.state.authStateLoaded || !this.state.fontsLoaded) {
-            return;
-        }
-
-        SplashScreen.hide();
         this.redirectToApp();
     }
 
     redirectToApp() {
-        if (AuthSessionManager.isLoggedIn()) {
-
+        if (UserSession.isLoggedIn()) {
             this.props.navigation.dispatch(
                 Utils.resetNavigation('HomePage')
             );
-        } else {
+        }
+        else {
             this.props.navigation.dispatch(
                 Utils.resetNavigation('AuthPage')
             );
@@ -65,14 +64,13 @@ class SplashPage extends React.Component {
     }
 
     async loadLoginInfo() {
-        await AuthSessionManager.loadLoginInfo();
+        await UserSession.loadLoginInfo();
         this.setState({
             authStateLoaded: true
         })
     }
 
     async loadFonts() {
-        //TODO: Log how long it takes to load fonts
         if (this.state.fontsLoaded) {
             return;
         }
@@ -91,6 +89,11 @@ class SplashPage extends React.Component {
         Segment.trackWithProperties('CSI', {
             type: CSI.FONTS_LOADED,
             timeMillis: (endTime - startTime)
+        });
+
+        Amplitude.logEventWithProperties('CSI', {
+           type: CSI.FONTS_LOADED,
+           timeMillis: (endTime - startTime)
         });
 
         this.setState({

@@ -2,9 +2,9 @@ import React from "react";
 
 import {Image, StyleSheet, Text, TouchableHighlight, View} from "react-native";
 import {withNavigation} from 'react-navigation';
-import AuthSessionManager from "../utils/AuthSessionManager";
+import UserSession from "../utils/UserSession";
 import {Icon} from "react-native-elements";
-
+import * as Amplitude from 'expo-analytics-amplitude';
 import * as AppSettings from '../utils/AppSettings';
 import {BUTTON, EVENT, SCREEN} from '../utils/Track';
 import * as Segment from "expo-analytics-segment";
@@ -22,8 +22,15 @@ class SettingsPage extends React.Component {
     }
 
     componentDidMount() {
-        AuthSessionManager.setSegmentIdentity();
+        UserSession.setSegmentIdentity();
+        UserSession.setAmplitudeIdentity();
+
         Segment.screen(SCREEN.SETTINGS_PAGE);
+
+        Amplitude.logEventWithProperties('EVENT', {
+            type: EVENT.SCREEN_IMPRESSION,
+            screenName: SCREEN.SETTINGS_PAGE
+        });
     }
 
     async logOut() {
@@ -32,7 +39,13 @@ class SettingsPage extends React.Component {
             button: BUTTON.SIGN_OUT
         });
 
-        await AuthSessionManager.logOut();
+        Amplitude.logEventWithProperties('EVENT', {
+            type: EVENT.BUTTON_CLICKED,
+            button: BUTTON.SIGN_OUT,
+            screenName: SCREEN.SETTINGS_PAGE
+        });
+
+        await UserSession.logOut();
         this.props.navigation.navigate('AuthPage');
     }
 
@@ -41,11 +54,11 @@ class SettingsPage extends React.Component {
             <View>
                 <View style={{paddingTop: 30, paddingLeft: 20, paddingRight: 20}}>
                     <View style={{flexDirection: 'row', marginBottom: 15}}>
-                        <Image source={{uri: AuthSessionManager.getProfileImageURL()}}
+                        <Image source={{uri: UserSession.getProfileImageURL()}}
                                style={{width: 60, height: 60, borderRadius: 30, marginRight: 15}}/>
                         <View style={{flexDirection: 'column', justifyContent: 'center'}}>
-                            <Text style={styles.fullName}>{AuthSessionManager.getFullName()}</Text>
-                            <Text style={styles.email}>{AuthSessionManager.getEmail()}</Text>
+                            <Text style={styles.fullName}>{UserSession.getFullName()}</Text>
+                            <Text style={styles.email}>{UserSession.getEmail()}</Text>
                         </View>
                     </View>
                     <View>
@@ -107,7 +120,7 @@ class ProfileHeader extends React.Component {
                 <TouchableHighlight
                     onPress={() => this.props.navigation.navigate('SettingsPage')}
                     style={{borderRadius: 15}}>
-                    <Image source={{uri: AuthSessionManager.getProfileImageURL()}}
+                    <Image source={{uri: UserSession.getProfileImageURL()}}
                            style={{width: 30, height: 30, borderRadius: 15}}/>
                 </TouchableHighlight>
             </View>

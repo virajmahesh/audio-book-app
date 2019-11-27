@@ -8,7 +8,7 @@ import * as Utils from '../utils/Utils';
 import {EVENT, SCREEN} from '../utils/Track';
 import {ProfileHeader} from "./SettingsPage";
 import * as Segment from 'expo-analytics-segment';
-import AuthSessionManager from "../utils/AuthSessionManager";
+import UserSession from "../utils/UserSession";
 
 const format = require('string-format');
 
@@ -44,7 +44,9 @@ class HomePage extends React.Component {
     }
 
     componentDidMount() {
-        AuthSessionManager.setSegmentIdentity();
+        UserSession.setSegmentIdentity();
+        UserSession.setAmplitudeIdentity();
+
         Segment.screen(SCREEN.HOME_PAGE);
 
         this.loadHomePageBooks();

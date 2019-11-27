@@ -1,7 +1,7 @@
 import React from "react";
 import {withNavigation} from 'react-navigation';
-
-import AuthSessionManager from "../utils/AuthSessionManager";
+import * as Amplitude from 'expo-analytics-amplitude';
+import UserSession from "../utils/UserSession";
 import {Image, StyleSheet, Text, TouchableHighlight, View} from "react-native";
 import * as Utils from '../utils/Utils';
 import {BUTTON, EVENT, SCREEN} from "../utils/Track";
@@ -19,7 +19,13 @@ class AuthPage extends React.Component {
     }
 
     componentDidMount() {
-        AuthSessionManager.setSegmentIdentity();
+        UserSession.setSegmentIdentity();
+        UserSession.setAmplitudeIdentity();
+
+        Amplitude.logEventWithProperties('EVENT', {
+            type: EVENT.SCREEN_IMPRESSION,
+            screenName: SCREEN.AUTH_PAGE
+        });
     }
 
     async logInWithGoogle() {
@@ -28,15 +34,21 @@ class AuthPage extends React.Component {
             button: BUTTON.SIGN_IN_WITH_GOOGLE
         });
 
+        Amplitude.logEventWithProperties('EVENT', {
+            type: EVENT.BUTTON_CLICKED,
+            button: BUTTON.SIGN_IN_WITH_GOOGLE,
+            screenName: SCREEN.AUTH_PAGE
+        });
+
         //TODO: Track how long the sign in with Google takes
-        await AuthSessionManager.loginWithGoogle();
-        if (AuthSessionManager.isLoggedIn()) {
+        await UserSession.loginWithGoogle();
+        if (UserSession.isLoggedIn()) {
             this.props.navigation.dispatch(Utils.resetNavigation('HomePage'));
         }
     }
 
     render() {
-        if (!AuthSessionManager.isLoggedIn()) {
+        if (!UserSession.isLoggedIn()) {
             // Render login screen
             Segment.screen(SCREEN.AUTH_PAGE);
 

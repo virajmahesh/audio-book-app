@@ -33,6 +33,10 @@ export const Segment = {
     IOS_WRITE_KEY: 'YE0AnTwlHdlMSAXLeYJSM4CvtT9KKLBE'
 };
 
+export const Amplitude = {
+    API_KEY: 'b70517afb8281e3d69223a1a996e9740'
+};
+
 // Deprecated
 const OPEN_LIBRARY_IMAGE_URL = 'http://covers.openlibrary.org/b/isbn/';
 const GOODREADS_REGEX_MATCH = /\._(SY|SX)(\d+)_\./gm;

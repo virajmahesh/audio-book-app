@@ -5,7 +5,8 @@ import {Image, StyleSheet, Text, TouchableHighlight, View} from "react-native";
 import {Icon} from "react-native-elements";
 import * as Utils from '../utils/Utils';
 import * as Segment from "expo-analytics-segment";
-import AuthSessionManager from "../utils/AuthSessionManager";
+import UserSession from "../utils/UserSession";
+import * as Amplitude from 'expo-analytics-amplitude';
 import {BUTTON, CSI, EVENT, SCREEN} from "../utils/Track";
 
 const format = require('string-format');
@@ -80,12 +81,26 @@ class PlayerPage extends React.Component {
                 type: EVENT.BUTTON_CLICKED,
                 button: BUTTON.PAUSE
             });
+
+            Amplitude.logEventWithProperties('EVENT', {
+               type: EVENT.BUTTON_CLICKED,
+               button: BUTTON.PAUSE,
+               screenName: SCREEN.PLAYER_PAGE
+            });
+
             this.state.playbackInstance.pauseAsync();
         } else {
             Segment.trackWithProperties('EVENT', {
                 type: EVENT.BUTTON_CLICKED,
                 button: BUTTON.PLAY
             });
+
+            Amplitude.logEventWithProperties('EVENT', {
+               type: EVENT.BUTTON_CLICKED,
+               button: BUTTON.PLAY,
+               screenName: SCREEN.PLAYER_PAGE
+            });
+
             this.state.playbackInstance.playAsync();
         }
     };
@@ -229,7 +244,7 @@ class PlayerPage extends React.Component {
     };
 
     async componentDidMount() {
-        AuthSessionManager.setSegmentIdentity();
+        UserSession.setSegmentIdentity();
         let setupStartTime = Date.now();
         let book = this.props.navigation.getParam('book');
         let chapter = this.props.navigation.getParam('chapter');
@@ -263,6 +278,8 @@ class PlayerPage extends React.Component {
             type: CSI.PLAYER_SETUP,
             timeMillis: (setupEndTime - setupStartTime)
         });
+
+        Amplitude.
 
         Segment.screenWithProperties(SCREEN.PLAYER_PAGE, {
             bookData: {

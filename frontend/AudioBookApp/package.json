@@ -10,6 +10,8 @@
   "dependencies": {
     "@react-native-community/slider": "^2.0.3",
     "expo": "^35.0.0",
+    "expo-analytics": "^1.0.13",
+    "expo-analytics-amplitude": "^7.0.0",
     "expo-analytics-segment": "~7.0.0",
     "expo-av": "~7.0.0",
     "expo-constants": "~7.0.0",
