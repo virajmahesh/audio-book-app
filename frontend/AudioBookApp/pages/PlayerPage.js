@@ -248,7 +248,7 @@ class PlayerPage extends React.Component {
             shouldPlay: true
         });
 
-        //TODO: Log that player setup was started
+        //Set up the Player and how long it takes to set up the player
         await Audio.setAudioModeAsync({
             allowsRecordingIOS: false,
             staysActiveInBackground: false,
@@ -258,12 +258,10 @@ class PlayerPage extends React.Component {
             interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
             playThroughEarpieceAndroid: false
         });
-
         let setupEndTime = Date.now();
-
         Segment.trackWithProperties('CSI', {
             type: CSI.PLAYER_SETUP,
-            time: (setupEndTime - setupStartTime)
+            timeMillis: (setupEndTime - setupStartTime)
         });
 
         Segment.screenWithProperties(SCREEN.PLAYER_PAGE, {
@@ -277,17 +275,14 @@ class PlayerPage extends React.Component {
             }
         });
 
+        // Load Audio and log how long it takes
         let startTime = Date.now();
-        //console.log("startTine: " + startTime);
-
         this.loadAudio().then(() => {
             let endTime = Date.now();
-            //console.log('StartTine: ' + startTime);
-            //console.log('EndTime: ' + endTime);
-            //Segment.trackWithProperties('CSI', {
-            //    type: CSI.AUDIO_LOADED,
-            //    time: (endTime - startTime)
-            //});
+            Segment.trackWithProperties('CSI', {
+                type: CSI.AUDIO_LOADED,
+                timeMillis: (endTime - startTime)
+            });
         });
     }
 

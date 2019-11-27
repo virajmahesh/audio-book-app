@@ -1,6 +1,6 @@
 import React from "react";
 
-import {Dimensions, FlatList, StatusBar, StyleSheet, Text, View} from "react-native";
+import {Dimensions, FlatList, StatusBar, StyleSheet, Text, View, SafeAreaView} from "react-native";
 import {withNavigation} from 'react-navigation';
 import {Book} from "../components/Book";
 import * as AppSettings from '../utils/AppSettings';
@@ -98,25 +98,27 @@ class HomePage extends React.Component {
 
     render() {
         return (
-            <View style={{flex: 1}}>
-                <StatusBar barStyle="dark-content"/>
-                <View style={styles.homePage} key='titleView'>
-                    <View>
-                        <FlatList data={this.state.bookList}
-                                  renderItem={({item}) => item}
-                                  numColumns={3}
-                                  key='bookShelf'
-                                  keyExtractor={(item, index) => index.toString()}
-                                  onEndReached={() => this.loadHomePageBooks()}
-                                  showsVerticalScrollIndicator={false}
-                                  onEndReachedThreshold={0.25}
-                                  ListHeaderComponent={HomePage.pageTitleComponent()}
-                                  ListFooterComponent={Utils.loadingIndicator(!this.state.refreshing)}
-                                  refreshControl={Utils.createRefreshControl(this.state.refreshing, this.onRefresh)}
-                        />
+            <SafeAreaView style={{flex: 1, marginTop: 30}}>
+                <View style={{flex: 1}}>
+                    <StatusBar barStyle="dark-content"/>
+                    <View style={styles.homePage} key='titleView'>
+                        <View>
+                            <FlatList data={this.state.bookList}
+                                      renderItem={({item}) => item}
+                                      numColumns={3}
+                                      key='bookShelf'
+                                      keyExtractor={(item, index) => index.toString()}
+                                      onEndReached={() => this.loadHomePageBooks()}
+                                      showsVerticalScrollIndicator={false}
+                                      onEndReachedThreshold={0.25}
+                                      ListHeaderComponent={HomePage.pageTitleComponent()}
+                                      ListFooterComponent={Utils.loadingIndicator(!this.state.refreshing)}
+                                      refreshControl={Utils.createRefreshControl(this.state.refreshing, this.onRefresh)}
+                            />
+                        </View>
                     </View>
                 </View>
-            </View>
+            </SafeAreaView>
         );
     }
 }

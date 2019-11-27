@@ -90,7 +90,7 @@ class SplashPage extends React.Component {
 
         Segment.trackWithProperties('CSI', {
             type: CSI.FONTS_LOADED,
-            time: (endTime - startTime)
+            timeMillis: (endTime - startTime)
         });
 
         this.setState({
