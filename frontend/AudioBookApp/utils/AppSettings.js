@@ -8,11 +8,12 @@ export const SOCIAL_AUTH_API_ENDPOINT = API_URL + 'auth/custom-social-auth';
 export const AUTH_CLIENT_ID = 'oaxFPKB4OmSpT4vyzmEn5mmi8zkPN0Coo6egpGqJ';
 export const AUTH_CLIENT_SECRET = 'MPYQAkzeCa2sHsEGTiocSKOn5nWiC2F0Vw85oajyJuouCgdg1OlhuAJLDilzVWHEqXQQkwQBbjSUf4Gr9unaThRcVbo2l7kNqhnF0xkI4E6zkIdHZlWVybcEozz2YQKV';
 
-export const GOOGLE_USER_INFO_URL = 'https://www.googleapis.com/userinfo/v2/me';
-export const GOOGLE_WEB_CLIENT_ID = '41859677974-7967civvsf9ea05j7kbnlaur6b8i4bd9.apps.googleusercontent.com';
-
-export const GOOGLE_ANDROID_CLIENT_ID_DEV = '41859677974-olkepi5nsldshd211qomoftfemkn0ncn.apps.googleusercontent.com';
-export const GOOGLE_ANDROID_CLIENT_ID_PROD = '41859677974-e63uqmukhu08aj7lb9egjd1np3icsail.apps.googleusercontent.com';
+export const Google = {
+    ANDROID_CLIENT_ID_DEV: '41859677974-olkepi5nsldshd211qomoftfemkn0ncn.apps.googleusercontent.com',
+    ANDROID_CLIENT_ID_PROD: '41859677974-e63uqmukhu08aj7lb9egjd1np3icsail.apps.googleusercontent.com',
+    IOS_CLIENT_ID_DEV: '41859677974-nf6uv4van5ftdcr6gnl0l73uh6ff0a10.apps.googleusercontent.com',
+    IOS_CLIENT_ID_PROD: ''
+};
 
 // App Icon
 export const APP_ICON_PATH = './assets/icon.png';
@@ -27,8 +28,10 @@ export const GREY_TINT = '#D7D7D7';
 export const GREY = '#9C9C9C';
 
 // Segment API Keys
-export const ANDROID_WRITE_KEY = 'p48UvsnHs4E8D0QtTTdaehdhW2v9t3m1';
-export const IOS_WRITE_KEY = 'YE0AnTwlHdlMSAXLeYJSM4CvtT9KKLBE';
+export const Segment = {
+    ANDROID_WRITE_KEY: 'p48UvsnHs4E8D0QtTTdaehdhW2v9t3m1',
+    IOS_WRITE_KEY: 'YE0AnTwlHdlMSAXLeYJSM4CvtT9KKLBE'
+};
 
 // Deprecated
 const OPEN_LIBRARY_IMAGE_URL =  'http://covers.openlibrary.org/b/isbn/';

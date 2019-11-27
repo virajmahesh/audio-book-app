@@ -12,8 +12,10 @@ import * as Segment from "expo-analytics-segment";
 export default class AuthSessionManager {
 
     static config = {
-        androidClientId: AppSettings.GOOGLE_ANDROID_CLIENT_ID_DEV,
-        androidStandaloneAppClientId: AppSettings.GOOGLE_ANDROID_CLIENT_ID_PROD,
+        androidClientId: AppSettings.Google.ANDROID_CLIENT_ID_DEV,
+        androidStandaloneAppClientId: AppSettings.Google.ANDROID_CLIENT_ID_PROD,
+        iosClientId: AppSettings.Google.IOS_CLIENT_ID_DEV,
+        iosStandaloneAppClientId: AppSettings.Google.IOS_CLIENT_ID_PROD,
         scopes: ['profile', 'email']
     };
 
@@ -22,6 +24,7 @@ export default class AuthSessionManager {
     };
 
     static async loginWithGoogle() {
+        console.log('LOGIN');
         const {type, accessToken, user} = await Google.logInAsync(AuthSessionManager.config);
 
         Segment.trackWithProperties('EVENT', {
@@ -30,7 +33,10 @@ export default class AuthSessionManager {
             signInProvider: SIGN_IN_PROVIDERS.GOOGLE
         });
 
+        console.log(type);
+
         if (type === 'success') {
+            console.log(AuthSessionManager.state);
             AuthSessionManager.state.accessToken3P = accessToken;
             AuthSessionManager.state.user = {
                 firstName: user.givenName,
@@ -149,7 +155,7 @@ export default class AuthSessionManager {
     static async loadLoginInfo() {
         AuthSessionManager.state = JSON.parse(await SecureStore.getItemAsync('STATE'));
 
-        if (AuthSessionManager.state === {}) {
+        if (AuthSessionManager.state === {} || AuthSessionManager.state === null) {
             //TODO: Log that there was no state to load
             AuthSessionManager.state = {isLoggedIn: false};
         }

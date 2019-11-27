@@ -30,14 +30,12 @@ class SplashPage extends React.Component {
         this.loadLoginInfo();
 
         Segment.initialize({
-            androidWriteKey: AppSettings.ANDROID_WRITE_KEY,
-            iosWriteKey: AppSettings.IOS_WRITE_KEY
+            androidWriteKey: AppSettings.Segment.ANDROID_WRITE_KEY,
+            iosWriteKey: AppSettings.Segment.IOS_WRITE_KEY
         });
 
         AuthSessionManager.setSegmentIdentity();
         Segment.screen(SCREEN.SPLASH_PAGE);
-
-        console.log('TEST');
 
         if (this.state.authStateLoaded && this.state.fontsLoaded) {
             this.redirectToApp();

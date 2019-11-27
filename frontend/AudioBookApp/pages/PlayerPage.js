@@ -1,11 +1,12 @@
 import React from "react";
 import {Audio} from 'expo-av';
-import {Image, Slider, StyleSheet, Text, TouchableHighlight, View} from "react-native";
+import Slider from "react-native-slider";
+import {Image, StyleSheet, Text, TouchableHighlight, View} from "react-native";
 import {Icon} from "react-native-elements";
 import * as Utils from '../utils/Utils';
 import * as Segment from "expo-analytics-segment";
 import AuthSessionManager from "../utils/AuthSessionManager";
-import {BUTTON, EVENT, SCREEN} from "../utils/Track";
+import {BUTTON, CSI, EVENT, SCREEN} from "../utils/Track";
 
 const format = require('string-format');
 const BACKGROUND_COLOR = '#FFFFFF';
@@ -33,6 +34,7 @@ class ChapterPlayerPage extends React.Component {
                 maximumTrackTintColor={Utils.GREY}
                 onSlidingComplete={this._onAudioBarSeekComplete}
                 onValueChange={this._onAudioBarSeeking}
+                thumbStyle={styles.audioSeekBarThumb}
             />
         )
     };
@@ -81,8 +83,8 @@ class ChapterPlayerPage extends React.Component {
             this.state.playbackInstance.pauseAsync();
         } else {
             Segment.trackWithProperties('EVENT', {
-               type: EVENT.BUTTON_CLICKED,
-               button: BUTTON.PLAY
+                type: EVENT.BUTTON_CLICKED,
+                button: BUTTON.PLAY
             });
             this.state.playbackInstance.playAsync();
         }
@@ -114,8 +116,8 @@ class ChapterPlayerPage extends React.Component {
         } else if (direction === 'forward') {
             position += 30 * Utils.SECOND_IN_MILLIS;
             Segment.trackWithProperties('EVENT', {
-               type: EVENT.BUTTON_CLICKED,
-               button: BUTTON.SEEK_FORWARD
+                type: EVENT.BUTTON_CLICKED,
+                button: BUTTON.SEEK_FORWARD
             });
         }
 
@@ -133,7 +135,7 @@ class ChapterPlayerPage extends React.Component {
     };
 
     _onAudioBarSeeking = async (value) => {
-        console.log('Updating audio bar seek value');
+        //console.log('Updating audio bar seek value');
         this.state.seeking = true;
         this.state.seekPlayingStatus = this.state.playing;
 
@@ -146,7 +148,7 @@ class ChapterPlayerPage extends React.Component {
     };
 
     _onAudioBarSeekComplete = async (value) => {
-        console.log('Audio seek complete');
+        //console.log('Audio seek complete');
         this.state.seeking = true;
         this.state.seekPlayingStatus = this.state.playing;
 
@@ -161,24 +163,24 @@ class ChapterPlayerPage extends React.Component {
             finialSeekPosition: newPosition
         });
 
-        console.log('Setting Position');
+        //console.log('Setting Position');
         await this.state.playbackInstance.setPositionAsync(newPosition);
 
         this.state.seeking = false;
         //await this._waitForPreSeekStatus();
 
         // Wait for the player to resume playing before we set seeking to false
-        console.log('Audio bar seek complete, seeking is now False');
+        //console.log('Audio bar seek complete, seeking is now False');
     };
 
     _waitForPreSeekStatus = async () => {
         if (this.state.seekPlayingStatus) {
-            console.log('Resuming playback');
+            //console.log('Resuming playback');
             // Don't mark seeking as false until the Playback has resumed
             await this.state.playbackInstance.playAsync();
             await this._waitForPlaybackStatus(true);
         } else {
-            console.log('Pausing Playback');
+            //console.log('Pausing Playback');
             await this.state.playbackInstance.pauseAsync();
             await this._waitForPlaybackStatus(false);
         }
@@ -195,14 +197,14 @@ class ChapterPlayerPage extends React.Component {
 
     _playbackStatusUpdate = (playbackStatus) => {
 
-        console.log('Playback status called');
+        //console.log('Playback status called');
         if (this.state.seeking) {
-            console.log('\tSeeking, not updating state');
+            //console.log('\tSeeking, not updating state');
             return;
         }
 
         if (playbackStatus.isLoaded) {
-            console.log('\tNot seeking, updating state. Playing: ' + playbackStatus.isPlaying);
+            //console.log('\tNot seeking, updating state. Playing: ' + playbackStatus.isPlaying);
             let playbackPercent = playbackStatus.positionMillis / playbackStatus.durationMillis;
 
             this.setState({
@@ -216,9 +218,9 @@ class ChapterPlayerPage extends React.Component {
 
             Segment.trackWithProperties('PLAYBACK_STATUS', playbackStatus);
 
-            console.log('Playing: ' + this.state.playing);
-            console.log('Buffering ' + this.state.buffering);
-            console.log('Should Play ' + this.state.shouldPlay);
+            //console.log('Playing: ' + this.state.playing);
+            //console.log('Buffering ' + this.state.buffering);
+            //console.log('Should Play ' + this.state.shouldPlay);
         }
 
         if (playbackStatus.error) {
@@ -258,8 +260,11 @@ class ChapterPlayerPage extends React.Component {
         });
 
         let setupEndTime = Date.now();
-        let playerSetupTimeMillis = setupEndTime - setupStartTime;
-        // TODO: Log player setup time
+
+        Segment.trackWithProperties('CSI', {
+            type: CSI.PLAYER_SETUP,
+            time: (setupEndTime - setupStartTime)
+        });
 
         Segment.screenWithProperties(SCREEN.PLAYER_PAGE, {
             bookID: book.getID(),
@@ -268,8 +273,18 @@ class ChapterPlayerPage extends React.Component {
             chapterTitle: chapter.getTitle()
         });
 
-        // TODO: Log the amount of time it takes to start the playback
-        this.loadAudio();
+        let startTime = Date.now();
+        //console.log("startTine: " + startTime);
+
+        this.loadAudio().then(() => {
+            let endTime = Date.now();
+            //console.log('StartTine: ' + startTime);
+            //console.log('EndTime: ' + endTime);
+            //Segment.trackWithProperties('CSI', {
+            //    type: CSI.AUDIO_LOADED,
+            //    time: (endTime - startTime)
+            //});
+        });
     }
 
     async loadAudio() {
@@ -310,16 +325,16 @@ class ChapterPlayerPage extends React.Component {
     }
 
     render() {
-        console.log('rendering');
-        console.log('Playing: ' + this.state.playing);
-        console.log('Buffering ' + this.state.buffering);
+        //console.log('rendering');
+        //console.log('Playing: ' + this.state.playing);
+        //console.log('Buffering ' + this.state.buffering);
         //console.log('Play button shape ' + this._getPlayButton());
 
         if (this.state.chapter == null) {
             return null;
         }
 
-        console.log(this.state.chapter.state);
+        //console.log(this.state.chapter.state);
 
         return (
             <View>
@@ -333,11 +348,11 @@ class ChapterPlayerPage extends React.Component {
                         <Text
                             style={styles.bookTitleAndAuthor}>{this.state.book.state.title} · {this.state.book.state.author}</Text>
                         <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 20}}>
-                            <View><Text>{Utils.millisToString(this.state.position)}</Text></View>
+                            <View style={{paddingRight: 10}}><Text>{Utils.millisToString(this.state.position)}</Text></View>
                             <View style={{alignItems: 'center'}}>
                                 {this._createAudioSeekBar()}
                             </View>
-                            <View><Text>{Utils.millisToString(this.state.duration)}</Text></View>
+                            <View style={{paddingLeft: 10}}><Text>{Utils.millisToString(this.state.duration)}</Text></View>
                         </View>
                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
                             {this._createSeekButton('replay', 30)}
@@ -386,6 +401,10 @@ const styles = StyleSheet.create({
     audioSeekBar: {
         width: 250,
         height: 20,
+    },
+    audioSeekBarThumb: {
+      width: 15,
+      height: 15
     },
     playerControlIcon: {
         marginLeft: 10,

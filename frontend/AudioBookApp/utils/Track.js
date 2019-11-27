@@ -23,7 +23,9 @@ export const SIGN_IN_PROVIDERS = {
 };
 
 export const CSI = {
-  FONTS_LOADED: 'FONTS_LOADED',
+    FONTS_LOADED: 'FONTS_LOADED',
+    AUDIO_LOADED: 'AUDIO_LOADED',
+    PLAYER_SETUP: 'PLAYER_SETUP'
 };
 
 export const SCREEN = {
