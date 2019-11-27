@@ -31,7 +31,7 @@ class AuthPage extends React.Component {
         //TODO: Track how long the sign in with Google takes
         await AuthSessionManager.loginWithGoogle();
         if (AuthSessionManager.isLoggedIn()) {
-            this.props.navigation.dispatch(Utils.resetNavigation('Home'));
+            this.props.navigation.dispatch(Utils.resetNavigation('HomePage'));
         }
     }
 

@@ -32,6 +32,17 @@ class HomePage extends React.Component {
         };
     }
 
+    static pageTitleComponent() {
+        return (
+            <View>
+                <ProfileHeader/>
+                <Text style={styles.homePageTitle} key='titleText'>
+                    Classic Audiobooks
+                </Text>
+            </View>
+        )
+    }
+
     componentDidMount() {
         AuthSessionManager.setSegmentIdentity();
         Segment.screen(SCREEN.HOME_PAGE);
@@ -83,17 +94,6 @@ class HomePage extends React.Component {
                     booksLoaded: true
                 });
             });
-    }
-
-    static pageTitleComponent() {
-        return (
-            <View>
-                <ProfileHeader/>
-                <Text style={styles.homePageTitle} key='titleText'>
-                    Classic Audiobooks
-                </Text>
-            </View>
-        )
     }
 
     render() {

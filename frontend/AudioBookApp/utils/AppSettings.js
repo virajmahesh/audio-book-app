@@ -34,5 +34,5 @@ export const Segment = {
 };
 
 // Deprecated
-const OPEN_LIBRARY_IMAGE_URL =  'http://covers.openlibrary.org/b/isbn/';
+const OPEN_LIBRARY_IMAGE_URL = 'http://covers.openlibrary.org/b/isbn/';
 const GOODREADS_REGEX_MATCH = /\._(SY|SX)(\d+)_\./gm;

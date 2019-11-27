@@ -33,7 +33,7 @@ class SettingsPage extends React.Component {
         });
 
         await AuthSessionManager.logOut();
-        this.props.navigation.navigate('Auth');
+        this.props.navigation.navigate('AuthPage');
     }
 
     render() {
@@ -105,7 +105,7 @@ class ProfileHeader extends React.Component {
         return (
             <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
                 <TouchableHighlight
-                    onPress={() => this.props.navigation.navigate('Settings')}
+                    onPress={() => this.props.navigation.navigate('SettingsPage')}
                     style={{borderRadius: 15}}>
                     <Image source={{uri: AuthSessionManager.getProfileImageURL()}}
                            style={{width: 30, height: 30, borderRadius: 15}}/>

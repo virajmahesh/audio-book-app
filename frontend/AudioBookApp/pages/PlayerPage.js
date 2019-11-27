@@ -11,16 +11,16 @@ import {BUTTON, CSI, EVENT, SCREEN} from "../utils/Track";
 const format = require('string-format');
 const BACKGROUND_COLOR = '#FFFFFF';
 
-class ChapterPlayerPage extends React.Component {
+class PlayerPage extends React.Component {
+
+    static navigationOptions = {
+        header: null
+    };
 
     constructor(props) {
         super(props);
         this.state = {};
     }
-
-    static navigationOptions = {
-        header: null
-    };
 
     _createAudioSeekBar = () => {
         return (
@@ -267,10 +267,14 @@ class ChapterPlayerPage extends React.Component {
         });
 
         Segment.screenWithProperties(SCREEN.PLAYER_PAGE, {
-            bookID: book.getID(),
-            bookTitle: book.getTitle(),
-            chapterID: chapter.getID(),
-            chapterTitle: chapter.getTitle()
+            bookData: {
+                bookID: book.getID(),
+                bookTitle: book.getTitle()
+            },
+            chapterData: {
+                chapterID: chapter.getID(),
+                chapterTitle: chapter.getTitle()
+            }
         });
 
         let startTime = Date.now();
@@ -348,11 +352,13 @@ class ChapterPlayerPage extends React.Component {
                         <Text
                             style={styles.bookTitleAndAuthor}>{this.state.book.state.title} · {this.state.book.state.author}</Text>
                         <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 20}}>
-                            <View style={{paddingRight: 10}}><Text>{Utils.millisToString(this.state.position)}</Text></View>
+                            <View
+                                style={{paddingRight: 10}}><Text>{Utils.millisToString(this.state.position)}</Text></View>
                             <View style={{alignItems: 'center'}}>
                                 {this._createAudioSeekBar()}
                             </View>
-                            <View style={{paddingLeft: 10}}><Text>{Utils.millisToString(this.state.duration)}</Text></View>
+                            <View
+                                style={{paddingLeft: 10}}><Text>{Utils.millisToString(this.state.duration)}</Text></View>
                         </View>
                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
                             {this._createSeekButton('replay', 30)}
@@ -403,8 +409,8 @@ const styles = StyleSheet.create({
         height: 20,
     },
     audioSeekBarThumb: {
-      width: 15,
-      height: 15
+        width: 15,
+        height: 15
     },
     playerControlIcon: {
         marginLeft: 10,
@@ -413,4 +419,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default ChapterPlayerPage;
+export default PlayerPage;

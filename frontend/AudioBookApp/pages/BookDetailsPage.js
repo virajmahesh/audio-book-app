@@ -29,13 +29,15 @@ class BookDetailsPage extends React.Component {
         // Initialize logging, and log that the user has seen this screen
         AuthSessionManager.setSegmentIdentity();
         Segment.screenWithProperties(SCREEN.BOOK_DETAILS_PAGE, {
-            bookID: book.getID(),
-            bookTitle: book.getTitle()
+            bookData: {
+                bookID: book.getID(),
+                bookTitle: book.getTitle()
+            }
         });
     }
 
     clickedChapter() {
-        this.props.navigation.navigate('ChapterPlayer', {
+        this.props.navigation.navigate('PlayerPage', {
             book: this.state.book,
             chapter: this.state.book.getFirstChapter()
         });

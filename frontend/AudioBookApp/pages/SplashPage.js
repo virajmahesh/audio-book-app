@@ -55,11 +55,11 @@ class SplashPage extends React.Component {
         if (AuthSessionManager.isLoggedIn()) {
 
             this.props.navigation.dispatch(
-                Utils.resetNavigation('Home')
+                Utils.resetNavigation('HomePage')
             );
         } else {
             this.props.navigation.dispatch(
-                Utils.resetNavigation('Auth')
+                Utils.resetNavigation('AuthPage')
             );
         }
     }
@@ -89,8 +89,8 @@ class SplashPage extends React.Component {
         let endTime = Date.now();
 
         Segment.trackWithProperties('CSI', {
-           type: CSI.FONTS_LOADED,
-           time: (endTime - startTime)
+            type: CSI.FONTS_LOADED,
+            time: (endTime - startTime)
         });
 
         this.setState({

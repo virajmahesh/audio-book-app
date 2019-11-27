@@ -65,7 +65,7 @@ class Book extends React.Component {
                     c.book = this; // Insert a reference to the book in the Chapter object
                     c.key = 'ChapterGroup:' + c.id.toString();
                     c.addChapter = addChapter;
-                    chapterGroupList.push( React.createElement(ChapterGroup, c));
+                    chapterGroupList.push(React.createElement(ChapterGroup, c));
                 }));
 
                 // Update the book state with the new book list
@@ -84,7 +84,7 @@ class Book extends React.Component {
     render() {
         return (
             <TouchableHighlight
-                onPress={() => this.props.navigation.navigate('BookDetails', {'book': this})}
+                onPress={() => this.props.navigation.navigate('BookDetailsPage', {'book': this})}
                 style={styles.book}>
                 <View style={{backgroundColor: 'white'}}>
                     <Image style={styles.albumArt} source={{uri: this.getImageURL()}} resizeMode='stretch'/>
@@ -189,7 +189,7 @@ class Chapter extends React.Component {
             <TouchableHighlight
                 style={chapterHighlightStyle(this.state.isLastChapter)}
                 underlayColor={Utils.GREY}
-                onPress={() => this.props.navigation.navigate('ChapterPlayer', {
+                onPress={() => this.props.navigation.navigate('PlayerPage', {
                     book: this.state.book,
                     chapter: this,
                 })}>
