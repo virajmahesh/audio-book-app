@@ -35,9 +35,9 @@ class SplashPage extends React.Component {
             iosWriteKey: AppSettings.Segment.IOS_WRITE_KEY
         });
 
-        Amplitude.initialize(AppSettings.Amplitude.API_KEY);
-
         UserSession.setSegmentIdentity();
+
+        await Amplitude.initialize(AppSettings.Amplitude.API_KEY);
         UserSession.setAmplitudeIdentity();
 
         Amplitude.logEventWithProperties('EVENT', {
@@ -45,8 +45,9 @@ class SplashPage extends React.Component {
             screenName: SCREEN.SPLASH_PAGE
         });
 
-        Segment.screen(SCREEN.SPLASH_PAGE);
+       Segment.screen(SCREEN.SPLASH_PAGE);
 
+        SplashScreen.hide();
         this.redirectToApp();
     }
 

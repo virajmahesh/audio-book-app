@@ -3,6 +3,7 @@ import {FlatList, Image, StyleSheet, Text, View} from "react-native";
 import {Button, Icon} from 'react-native-elements'
 import * as Utils from "../utils/Utils";
 import * as Segment from "expo-analytics-segment";
+import * as Amplitude from 'expo-analytics-amplitude';
 import UserSession from "../utils/UserSession";
 import {SCREEN} from "../utils/Track";
 
@@ -28,11 +29,20 @@ class BookDetailsPage extends React.Component {
 
         // Initialize logging, and log that the user has seen this screen
         UserSession.setSegmentIdentity();
+        UserSession.setAmplitudeIdentity();
+
         Segment.screenWithProperties(SCREEN.BOOK_DETAILS_PAGE, {
             bookData: {
                 bookID: book.getID(),
                 bookTitle: book.getTitle()
             }
+        });
+
+        Amplitude.logEventWithProperties('EVENT', {
+           bookData: {
+               bookID: book.getID(),
+               bookTitle: book.getTitle()
+           }
         });
     }
 

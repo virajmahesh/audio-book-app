@@ -5,10 +5,11 @@ import {withNavigation} from 'react-navigation';
 import {Book} from "../components/Book";
 import * as AppSettings from '../utils/AppSettings';
 import * as Utils from '../utils/Utils';
-import {EVENT, SCREEN} from '../utils/Track';
+import {BUTTON, EVENT, SCREEN} from '../utils/Track';
 import {ProfileHeader} from "./SettingsPage";
 import * as Segment from 'expo-analytics-segment';
 import UserSession from "../utils/UserSession";
+import * as Amplitude from "expo-analytics-amplitude";
 
 const format = require('string-format');
 
@@ -49,6 +50,11 @@ class HomePage extends React.Component {
 
         Segment.screen(SCREEN.HOME_PAGE);
 
+        Amplitude.logEventWithProperties('EVENT', {
+            type: EVENT.SCREEN_IMPRESSION,
+            screenName: SCREEN.HOME_PAGE
+        });
+
         this.loadHomePageBooks();
     }
 
@@ -64,6 +70,10 @@ class HomePage extends React.Component {
         let refreshTime = refreshEndTime - refreshStartTime;
 
         Segment.trackWithProperties('EVENT', {
+            type: EVENT.PULL_DOWN_TO_REFRESH
+        });
+
+        Amplitude.logEventWithProperties('EVENT', {
             type: EVENT.PULL_DOWN_TO_REFRESH
         });
 

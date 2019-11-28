@@ -83,9 +83,9 @@ class PlayerPage extends React.Component {
             });
 
             Amplitude.logEventWithProperties('EVENT', {
-               type: EVENT.BUTTON_CLICKED,
-               button: BUTTON.PAUSE,
-               screenName: SCREEN.PLAYER_PAGE
+                type: EVENT.BUTTON_CLICKED,
+                button: BUTTON.PAUSE,
+                screenName: SCREEN.PLAYER_PAGE
             });
 
             this.state.playbackInstance.pauseAsync();
@@ -96,9 +96,9 @@ class PlayerPage extends React.Component {
             });
 
             Amplitude.logEventWithProperties('EVENT', {
-               type: EVENT.BUTTON_CLICKED,
-               button: BUTTON.PLAY,
-               screenName: SCREEN.PLAYER_PAGE
+                type: EVENT.BUTTON_CLICKED,
+                button: BUTTON.PLAY,
+                screenName: SCREEN.PLAYER_PAGE
             });
 
             this.state.playbackInstance.playAsync();
@@ -128,11 +128,23 @@ class PlayerPage extends React.Component {
                 type: EVENT.BUTTON_CLICKED,
                 button: BUTTON.SEEK_BACKWARD
             });
+
+            Amplitude.logEventWithProperties('EVENT', {
+                type: EVENT.BUTTON_CLICKED,
+                button: BUTTON.SEEK_BACKWARD,
+                screenName: SCREEN.PLAYER_PAGE
+            });
         } else if (direction === 'forward') {
             position += 30 * Utils.SECOND_IN_MILLIS;
             Segment.trackWithProperties('EVENT', {
                 type: EVENT.BUTTON_CLICKED,
                 button: BUTTON.SEEK_FORWARD
+            });
+
+            Amplitude.logEventWithProperties('EVENT', {
+                type: EVENT.BUTTON_CLICKED,
+                button: BUTTON.SEEK_FORWARD,
+                screenName: SCREEN.PLAYER_PAGE
             });
         }
 
@@ -176,6 +188,13 @@ class PlayerPage extends React.Component {
             type: EVENT.SEEK_SLIDER,
             initialSeekPosition: oldPosition,
             finialSeekPosition: newPosition
+        });
+
+        Amplitude.logEventWithProperties('EVENT', {
+            type: EVENT.SEEK_SLIDER,
+            initialSeekPositionMillis: oldPosition,
+            finalSeekPosition: newPosition,
+            screenName: SCREEN.PLAYER_PAGE
         });
 
         //console.log('Setting Position');
@@ -232,6 +251,7 @@ class PlayerPage extends React.Component {
             });
 
             Segment.trackWithProperties('PLAYBACK_STATUS', playbackStatus);
+            Amplitude.logEventWithProperties('PLAYBACK_STATUS', playbackStatus);
 
             //console.log('Playing: ' + this.state.playing);
             //console.log('Buffering ' + this.state.buffering);
@@ -245,6 +265,8 @@ class PlayerPage extends React.Component {
 
     async componentDidMount() {
         UserSession.setSegmentIdentity();
+        UserSession.setAmplitudeIdentity();
+
         let setupStartTime = Date.now();
         let book = this.props.navigation.getParam('book');
         let chapter = this.props.navigation.getParam('chapter');
@@ -274,14 +296,30 @@ class PlayerPage extends React.Component {
             playThroughEarpieceAndroid: false
         });
         let setupEndTime = Date.now();
+
         Segment.trackWithProperties('CSI', {
             type: CSI.PLAYER_SETUP,
             timeMillis: (setupEndTime - setupStartTime)
         });
+        Amplitude.logEventWithProperties('CSI', {
+            type: CSI.PLAYER_SETUP,
+            timeMillis: (setupEndTime - setupEndTime)
+        });
 
-        Amplitude.
 
         Segment.screenWithProperties(SCREEN.PLAYER_PAGE, {
+            bookData: {
+                bookID: book.getID(),
+                bookTitle: book.getTitle()
+            },
+            chapterData: {
+                chapterID: chapter.getID(),
+                chapterTitle: chapter.getTitle()
+            }
+        });
+        Amplitude.logEventWithProperties('EVENT', {
+            type: EVENT.SCREEN_IMPRESSION,
+            screenName: SCREEN.PLAYER_PAGE,
             bookData: {
                 bookID: book.getID(),
                 bookTitle: book.getTitle()
@@ -300,6 +338,11 @@ class PlayerPage extends React.Component {
                 type: CSI.AUDIO_LOADED,
                 timeMillis: (endTime - startTime)
             });
+
+            Amplitude.logEventWithProperties('CSI', {
+                type: CSI.AUDIO_LOADED,
+                timeMillis: (endTime - startTime)
+            })
         });
     }
 

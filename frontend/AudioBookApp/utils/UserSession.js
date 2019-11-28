@@ -123,7 +123,6 @@ export default class UserSession {
 
     static async setAmplitudeIdentity() {
         if (!UserSession.isLoggedIn()) {
-            console.log('LOG IN STATUS' + UserSession.state);
             await Amplitude.setUserId(Constants.installationId);
         }
         else {

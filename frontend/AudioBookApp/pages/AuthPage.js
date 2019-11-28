@@ -20,7 +20,7 @@ class AuthPage extends React.Component {
 
     componentDidMount() {
         UserSession.setSegmentIdentity();
-        UserSession.setAmplitudeIdentity();
+        //UserSession.setAmplitudeIdentity();
 
         Amplitude.logEventWithProperties('EVENT', {
             type: EVENT.SCREEN_IMPRESSION,
