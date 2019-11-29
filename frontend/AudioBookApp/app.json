@@ -25,7 +25,10 @@
       "./assets/fonts/**"
     ],
     "android": {
-      "package": "com.aurelius.app"
+      "package": "com.aurelius.app",
+      "permissions": [
+        "LOCATION", "CAMERA_ROLL"
+      ]
     },
     "description": "",
     "androidStatusBar": {
