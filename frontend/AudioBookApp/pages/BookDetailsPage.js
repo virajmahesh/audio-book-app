@@ -1,6 +1,6 @@
 import React from "react";
 import {FlatList, Image, StyleSheet, Text, View} from "react-native";
-import {Button, Icon} from 'react-native-elements'
+import {Button} from 'react-native-elements'
 import * as Utils from "../utils/Utils";
 import * as Segment from "expo-analytics-segment";
 import * as Amplitude from 'expo-analytics-amplitude';
@@ -16,7 +16,9 @@ class BookDetailsPage extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            refreshing: false
+        }
     }
 
     async componentDidMount() {
@@ -46,7 +48,7 @@ class BookDetailsPage extends React.Component {
         });
     }
 
-    clickedChapter() {
+    clickedPlay() {
         this.props.navigation.navigate('PlayerPage', {
             book: this.state.book,
             chapter: this.state.book.getFirstChapter()
@@ -80,20 +82,21 @@ class BookDetailsPage extends React.Component {
                 </View>
                 <View style={styles.playButton}>
                     <Button
-                        icon={
-                            <Icon type="material"
-                                  name="play-arrow"
-                                  size={15}
-                                  color="#ffffff"
-                            />
-                        }
-                        title="Play"
-                        onPress={() => this.clickedChapter()}
+                        title="PLAY"
+                        fontFamily="product-sans"
+                        backgroundColor={Utils.BLUE}
+                        onPress={() => this.clickedPlay()}
                     />
                 </View>
             </View>
         )
     }
+
+    onRefresh = async () => {
+        this.state.refreshing = true;
+        await this.state.book.loadChapters();
+        this.state.refreshing = false;
+    };
 
     render() {
         // No book to show details
@@ -105,6 +108,10 @@ class BookDetailsPage extends React.Component {
             )
         }
 
+        if (this.state.refreshing) {
+            return null;
+        }
+
         //TODO: Wait for chapters? Or re-render page when they load
         return (
             <View style={styles.bookDetailsPage}>
@@ -113,6 +120,7 @@ class BookDetailsPage extends React.Component {
                           renderItem={({item}) => item}
                           showsVerticalScrollIndicator={false}
                           keyExtractor={(item, index) => index.toString()}
+                          refreshControl={Utils.createRefreshControl(this.state.refreshing, this.onRefresh)}
                 />
             </View>
         )
@@ -160,7 +168,8 @@ const styles = StyleSheet.create({
         fontSize: 15
     },
     playButton: {
-        marginBottom: 0
+        marginBottom: 0,
+        fontFamily: 'product-sans'
     }
 });
 

@@ -110,7 +110,7 @@ class HomePage extends React.Component {
 
     render() {
         return (
-            <SafeAreaView style={{flex: 1, marginTop: 30}}>
+            <SafeAreaView style={{flex: 1, marginTop: 20}}>
                 <View style={{flex: 1}}>
                     <StatusBar barStyle="dark-content"/>
                     <View style={styles.homePage} key='titleView'>

@@ -141,7 +141,7 @@ class ChapterGroup extends React.Component {
                     underlayColor={Utils.GREY}
                     onPress={() => this.setState({isCollapsed: !this.state.isCollapsed})}>
                     <View
-                        style={{flexDirection: 'row', alignItems: 'center', height: 55, backgroundColor: Utils.WHITE}}>
+                        style={{flexDirection: 'row', alignItems: 'flex-end', height: 35, backgroundColor: Utils.WHITE}}>
                         <View style={styles.chapterGroupTitle}>
                             <Text style={{fontFamily: 'product-sans-bold', fontSize: 15}}>{this.state.title}</Text>
                         </View>

@@ -431,7 +431,9 @@ const styles = StyleSheet.create({
     chapterPlayer: {
         height: '100%',
         flexDirection: 'column',
-        alignItems: 'stretch'
+        alignItems: 'stretch',
+        paddingLeft: 25,
+        paddingRight: 25
     },
     bookDetails: {
         flex: 6,
